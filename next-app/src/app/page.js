@@ -78,7 +78,7 @@ const styles = theme => {
       fontSize: 14,
       textTransform: 'uppercase',
       letterSpacing: '0.05em', // Adjusted to match likely Menu style
-      color: theme.color.secondary.main,
+      color: '#fff',
       textDecoration: 'none',
       transition: 'all 0.3s ease',
       zIndex: 10, // Ensure it's on top

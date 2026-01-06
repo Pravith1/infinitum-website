@@ -23,11 +23,10 @@ export default function SimpleHeader() {
             <div className={styles.rightSection}>
                 <div className={styles.orgLogos}>
                     <Image
-                        src="/images/PSG.png"
+                        src="/images/PSGLogo.png"
                         alt="PSG Logo"
-                        height={80}
-                        width={80}
-                        style={{ width: '80px', height: '80px', marginTop: '20px' }}
+                        height={40}
+                        width={40}
                         className={styles.orgLogo}
                     />
                     <Image

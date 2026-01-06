@@ -19,13 +19,13 @@ const styles = theme => ({
     transition: 'color 250ms ease-out',
 
     '&:hover, &:focus': {
-      color: theme.color.tertiary.main,
+      color: theme.color.secondary.light,
 
       '& $background': {
-        backgroundColor: rgba(theme.color.tertiary.main, 0.125)
+        backgroundColor: rgba(theme.color.secondary.main, 0.25)
       },
       '& $path': {
-        stroke: rgba(theme.color.tertiary.dark, 0.5)
+        stroke: rgba(theme.color.secondary.dark, 0.7)
       }
     }
   },

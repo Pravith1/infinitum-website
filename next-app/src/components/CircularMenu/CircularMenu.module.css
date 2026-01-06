@@ -3,7 +3,6 @@
     left: 20px;
     top: 20px;
     z-index: 1000;
-    /* Variables */
     --primary-color: #c72071;
     --secondary-color: #1a020b;
     --white-color: #eeeeee;
@@ -16,9 +15,9 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s ease;
@@ -49,10 +48,12 @@
     color: var(--white-color);
 }
 
-/* Move button to center when open */
 .navContainer.open .toggleBtn {
     transform: translate(calc(50vw - 50px), calc(50vh - 50px));
-    box-shadow: 0 0 0 10px rgba(199, 32, 113, 0.2);
+    background: transparent;
+    box-shadow: none;
+    pointer-events: none;
+    opacity: 0;
 }
 
 .toggleBtn i {
@@ -81,143 +82,168 @@
     transform: rotate(0);
 }
 
-/* Center Label in Button */
-.centerLabel {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--white-color);
-    animation: fadeIn 0.3s ease;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    padding: 0 4px;
-    line-height: 1.1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    word-break: break-word;
-    /* Ensure long words break if needed */
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Submenu centered */
-.submenu {
+/* Pie Menu Container */
+.pieMenu {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 0;
-    height: 0;
-    padding: 0;
-    margin: 0;
-    list-style: none;
+    transform: translate(-50%, -50%) scale(0);
+    width: 320px;
+    height: 320px;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    pointer-events: none;
     z-index: 1000;
 }
 
-/* Items */
-.submenu li {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 60px;
-    margin-left: -30px;
-    margin-top: -30px;
-
-    transform: rotate(var(--angle)) translate(0px) rotate(calc(var(--angle) * -1));
-    opacity: 0;
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s;
-    pointer-events: none;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navContainer.open .submenu li {
+.navContainer.open .pieMenu {
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
-    /* Expanded radius */
-    transform: rotate(var(--angle)) translate(140px) rotate(calc(var(--angle) * -1));
     pointer-events: auto;
-    /* Staggered Delay */
-    transition-delay: calc(var(--i) * 0.05s);
 }
 
-.link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    position: relative;
+.pieSvg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
 }
 
-.iconCircle {
+/* Segment Styling */
+.segment {
+    fill: rgba(26, 2, 11, 0.9);
+    cursor: pointer;
+    transition: fill 0.2s, filter 0.2s;
+}
+
+.segment:hover,
+.segmentHovered {
+    fill: rgba(199, 32, 113, 0.3);
+}
+
+.segmentActive {
+    fill: rgba(199, 32, 113, 0.5);
+}
+
+.segmentBorder {
+    fill: none;
+    stroke: rgba(199, 32, 113, 0.6);
+    stroke-width: 1;
+    pointer-events: none;
+}
+
+/* Icons on Segments */
+.segmentIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 44px;
     height: 44px;
-    background: var(--secondary-color);
+    margin-left: -22px;
+    margin-top: -22px;
+    transform: translate(var(--x), var(--y));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-color);
+    font-size: 22px;
+    text-decoration: none;
+    background: rgba(26, 2, 11, 0.8);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    transition: all 0.25s ease;
+    z-index: 10;
+}
+
+.segmentIcon:hover,
+.iconHovered {
+    background: var(--primary-color);
+    transform: translate(var(--x), var(--y)) scale(1.2);
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.iconActive {
+    background: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color), 0 0 0 3px rgba(255,255,255,0.3);
+}
+
+/* Center Circle - Close Button */
+.centerCircle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #1a020b, #2a0415);
     border: 2px solid var(--primary-color);
     border-radius: 50%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--white-color);
-    font-size: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
+    z-index: 20;
+    box-shadow: 0 0 30px rgba(199, 32, 113, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
 }
 
-/* External label (below icon) */
-.label {
+.centerCircle:hover {
+    background: linear-gradient(135deg, #2a0415, #3a0620);
+    box-shadow: 0 0 40px rgba(199, 32, 113, 0.6);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.centerLabel {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+/* Icon Labels - hidden by default on desktop */
+.iconLabel {
+    display: none;
     position: absolute;
     top: 100%;
-    margin-top: 8px;
-    background: var(--secondary-color);
-    color: var(--primary-color);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    opacity: 1;
-    transition: 0.3s;
-    pointer-events: none;
-    white-space: nowrap;
-    display: block;
-}
-
-.link:hover .iconCircle {
-    background: var(--primary-color);
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
     color: var(--white-color);
-    transform: scale(1.1);
-    box-shadow: 0 0 15px var(--primary-color);
+    white-space: nowrap;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    pointer-events: none;
 }
 
-/* No hover display for label on desktop since it is in center */
-
-/* Active item highlight */
-.submenu li.active .iconCircle {
-    background: var(--primary-color);
-    box-shadow: 0 0 20px var(--primary-color), 0 0 0 2px var(--white-color);
-    transform: scale(1.15);
-}
-
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-    .navContainer.open .submenu li {
-        transform: rotate(var(--angle)) translate(110px) rotate(calc(var(--angle) * -1));
+    .pieMenu {
+        width: 320px;
+        height: 320px;
     }
-
-    /* On Mobile, show labels always below the icon since we cant hover to see them in center */
-    .label {
+    
+    .segmentIcon {
+        width: 36px;
+        height: 36px;
+        margin-left: -18px;
+        margin-top: -18px;
+        font-size: 16px;
+    }
+    
+    /* Show labels on mobile */
+    .iconLabel {
         display: block;
-        opacity: 1;
+    }
+    
+    .centerCircle {
+        width: 70px;
+        height: 70px;
     }
 }

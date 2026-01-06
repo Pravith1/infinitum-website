@@ -78,9 +78,9 @@ export default function CircularMenu() {
         const index = MENU_ITEMS.findIndex(item => item.href === pathname);
         if (index !== -1) {
             setActiveIndex(index);
-            // Set initial rotation based on current page
-            const segmentAngle = 360 / MENU_ITEMS.length;
-            setRotationAngle(-index * segmentAngle);
+            setSelectedIndex(index);
+            // Only set initial rotation on first mount, not on pathname changes
+            // This prevents backward rotation after navigation
         }
     }, [pathname, isMounted]);
 
@@ -149,17 +149,19 @@ export default function CircularMenu() {
                 
                 if (e.key === 'ArrowLeft') {
                     e.preventDefault();
-                    // Rotate counterclockwise (previous item)
+                    // Rotate counterclockwise (previous item) - still forward motion
                     const newIndex = (selectedIndex - 1 + MENU_ITEMS.length) % MENU_ITEMS.length;
+                    const stepsForward = (newIndex - selectedIndex + MENU_ITEMS.length) % MENU_ITEMS.length;
                     setSelectedIndex(newIndex);
-                    setRotationAngle(-newIndex * segmentAngle);
+                    setRotationAngle(rotationAngle - stepsForward * segmentAngle);
                     if (rotateSound) rotateSound.play();
                 } else if (e.key === 'ArrowRight') {
                     e.preventDefault();
-                    // Rotate clockwise (next item)
+                    // Rotate clockwise (next item) - forward motion
                     const newIndex = (selectedIndex + 1) % MENU_ITEMS.length;
+                    const stepsForward = (newIndex - selectedIndex + MENU_ITEMS.length) % MENU_ITEMS.length;
                     setSelectedIndex(newIndex);
-                    setRotationAngle(-newIndex * segmentAngle);
+                    setRotationAngle(rotationAngle - stepsForward * segmentAngle);
                     if (rotateSound) rotateSound.play();
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
@@ -204,21 +206,31 @@ export default function CircularMenu() {
         
         const targetHref = MENU_ITEMS[index].href;
         
-        // Calculate new rotation to bring clicked item to top
-        // Always rotate in the shortest direction
+        // Calculate rotation using modulo to always go forward
         const segmentAngle = 360 / MENU_ITEMS.length;
-        const targetRotation = -index * segmentAngle;
         
-        // Calculate the shortest path
-        let delta = targetRotation - rotationAngle;
-        // Normalize delta to be between -180 and 180
-        while (delta > 180) delta -= 360;
-        while (delta < -180) delta += 360;
+        // Normalize current rotation to 0-359 range
+        const normalizedCurrent = ((rotationAngle % 360) + 360) % 360;
         
+        // Calculate current index based on normalized rotation
+        const currentNormalizedIndex = Math.round(-normalizedCurrent / segmentAngle) % MENU_ITEMS.length;
+        
+        // Calculate steps to move forward (always clockwise)
+        const stepsForward = (index - currentNormalizedIndex + MENU_ITEMS.length) % MENU_ITEMS.length;
+        
+        // If no movement needed, don't rotate
+        if (stepsForward === 0) {
+            router.push(targetHref);
+            setIsOpen(false);
+            return;
+        }
+        
+        // Always rotate clockwise (negative = clockwise)
+        const delta = -stepsForward * segmentAngle;
         const newRotation = rotationAngle + delta;
         
         // Play rotation sound
-        if (rotateSound && Math.abs(delta) > 1) {
+        if (rotateSound) {
             rotateSound.play();
         }
         
@@ -458,7 +470,7 @@ export default function CircularMenu() {
 
                     {/* Center circle with close button only */}
                     <button className={styles.centerCircle} onClick={() => setIsOpen(false)}>
-                        <i className="ri-close-line" style={{ fontSize: 28, color: '#c72071' }}></i>
+                        <i className="ri-close-line" style={{ fontSize: 20, color: '#c72071' }}></i>
                     </button>
                 </div>
             )}

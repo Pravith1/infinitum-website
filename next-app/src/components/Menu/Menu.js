@@ -174,12 +174,12 @@ class Component extends React.PureComponent {
         >
           {isAuthenticated ? (
             <>
-              <Link href='/dashboard' {...linkProps}>
+              <Link href='/portal/profile' {...linkProps}>
                 <Text
                   animation={{ animate: animateText }}
                   audio={{ silent: !animateText }}
                 >
-                  Dashboard
+                  Profile
                 </Text>
               </Link>
               <button

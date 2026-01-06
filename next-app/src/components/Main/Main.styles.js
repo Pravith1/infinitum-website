@@ -10,6 +10,10 @@ const styles = theme => ({
     maxWidth: 1000,
     width: '100%'
   },
+  // When noFrame is used, allow wider content
+  rootWide: {
+    maxWidth: 1400,
+  },
   frame: {
     position: 'absolute',
     zIndex: 1,
@@ -64,4 +68,3 @@ const styles = theme => ({
 });
 
 export { styles };
-

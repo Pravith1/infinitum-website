@@ -18,7 +18,8 @@ const Template = (props) => {
     const { classes, theme, children } = props;
     const pathname = usePathname();
 
-    // Original Gatsby flow: popup first, then show triggers animations
+    // Check if user has already seen the popup (using localStorage)
+    const [hasSeenPopup, setHasSeenPopup] = useState(true); // Default to true to prevent flash
     const [show, setShow] = useState(false);
     const [enterShow, setEnterShow] = useState(false);
     const [enterAnimationShow, setEnterAnimationShow] = useState(true);
@@ -26,15 +27,55 @@ const Template = (props) => {
     const enterElementRef = useRef(null);
 
     useEffect(() => {
-        // Show popup after a short delay
-        const timeout = setTimeout(
-            () => setEnterShow(true),
-            theme.animation.time || 250
-        );
-        return () => clearTimeout(timeout);
+        // Check localStorage for previous visit
+        const seen = localStorage.getItem('infinitum_popup_seen');
+
+        if (seen) {
+            // User has seen popup before, skip it and show site immediately
+            setHasSeenPopup(true);
+            setShow(true);
+
+            // Unlock audio on first user interaction (required by browser autoplay policy)
+            const unlockAudio = () => {
+                // Import Howler dynamically and unlock audio
+                import('howler').then(({ Howler }) => {
+                    // Create a silent sound and play it to unlock audio context
+                    if (Howler.ctx && Howler.ctx.state === 'suspended') {
+                        Howler.ctx.resume();
+                    }
+                }).catch(() => {
+                    // Howler not available, ignore
+                });
+                // Remove listeners after first interaction
+                document.removeEventListener('click', unlockAudio);
+                document.removeEventListener('touchstart', unlockAudio);
+                document.removeEventListener('keydown', unlockAudio);
+            };
+
+            document.addEventListener('click', unlockAudio, { once: true });
+            document.addEventListener('touchstart', unlockAudio, { once: true });
+            document.addEventListener('keydown', unlockAudio, { once: true });
+
+            return () => {
+                document.removeEventListener('click', unlockAudio);
+                document.removeEventListener('touchstart', unlockAudio);
+                document.removeEventListener('keydown', unlockAudio);
+            };
+        } else {
+            // First visit, show the popup
+            setHasSeenPopup(false);
+            const timeout = setTimeout(
+                () => setEnterShow(true),
+                theme.animation.time || 250
+            );
+            return () => clearTimeout(timeout);
+        }
     }, [theme]);
 
     const onEnter = () => {
+        // Mark popup as seen in localStorage
+        localStorage.setItem('infinitum_popup_seen', 'true');
+
         // Fade out popup
         setEnterAnimationShow(false);
 
@@ -45,7 +86,7 @@ const Template = (props) => {
         );
     };
 
-    const isURLContent = ['/news', '/music', '/charity', '/about'].find(path => {
+    const isURLContent = ['/news', '/music', '/charity', '/events'].find(path => {
         return pathname.startsWith(path);
     });
 
@@ -60,7 +101,7 @@ const Template = (props) => {
             >
                 {isURLContent ? <App>{children}</App> : children}
 
-                {!show && (
+                {!show && !hasSeenPopup && (
                     <div className={classes.enterOverlay}>
                         {enterShow && (
                             <Popup

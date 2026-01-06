@@ -7,7 +7,7 @@ import styles from './CircularMenu.module.css';
 
 const MENU_ITEMS = [
     { label: 'Home', icon: 'ri-home-line', href: '/' },
-    { label: 'About', icon: 'ri-user-line', href: '/about' },
+    { label: 'Events', icon: 'ri-calendar-event-line', href: '/events' },
     { label: 'Charity', icon: 'ri-heart-line', href: '/charity' },
     { label: 'Music', icon: 'ri-music-line', href: '/music' },
     { label: 'News', icon: 'ri-newspaper-line', href: '/news' },
@@ -39,16 +39,16 @@ export default function CircularMenu() {
     const getItemStyle = (index) => {
         // Calculate offset from active index
         let offset = index - activeIndex;
-        
+
         // Wrap around logic for 5 items
         // Range: -2 to 2
         if (offset > 2) offset -= 5;
         if (offset < -2) offset += 5;
-        
+
         // Map offset to slot index (0 to 4)
         const slotIndex = offset + 2;
         const angle = SLOT_ANGLES[slotIndex] || 0;
-        
+
         return {
             '--angle': `${angle}deg`
         };
@@ -63,8 +63,8 @@ export default function CircularMenu() {
             <ul className={styles.submenu}>
                 {MENU_ITEMS.map((item, index) => (
                     <li key={index} style={getItemStyle(index)}>
-                        <Link 
-                            href={item.href} 
+                        <Link
+                            href={item.href}
                             className={styles.link}
                             onClick={() => handleItemClick(index)}
                         >

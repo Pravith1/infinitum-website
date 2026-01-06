@@ -12,14 +12,19 @@ class Component extends React.Component {
     theme: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     className: PropTypes.any,
-    children: PropTypes.any
+    children: PropTypes.any,
+    noFrame: PropTypes.bool, // Hide the background frame and allow wider content
   };
 
-  componentDidMount () {
+  static defaultProps = {
+    noFrame: false,
+  };
+
+  componentDidMount() {
     window.addEventListener('route-change-start', this.onRouteChangeStart);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('route-change-start', this.onRouteChangeStart);
   }
 
@@ -29,17 +34,17 @@ class Component extends React.Component {
     }
   }
 
-  render () {
-    const { theme, classes, className, children, ...etc } = this.props;
+  render() {
+    const { theme, classes, className, children, noFrame, ...etc } = this.props;
 
     return (
       <Fader
-        className={cx(classes.root, className)}
+        className={cx(classes.root, noFrame && classes.rootWide, className)}
         node='main'
         ref={ref => (this.element = ref)}
         {...etc}
       >
-        <div className={classes.frame} />
+        {!noFrame && <div className={classes.frame} />}
         <div className={classes.content}>
           {children}
         </div>
@@ -49,4 +54,3 @@ class Component extends React.Component {
 }
 
 export { Component };
-

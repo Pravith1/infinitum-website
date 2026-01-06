@@ -39,7 +39,7 @@ export const metadata = {
 
 import StylesProvider from "@/components/ThemeRegistry";
 import ClientTemplate from "@/components/ClientTemplate/ClientTemplate";
-import CircularMenu from "@/components/CircularMenu/CircularMenu";
+import CircularMenuWrapper from "@/components/CircularMenu/CircularMenuWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 
 export default function RootLayout({ children }) {
@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
             <ClientTemplate>
               {children}
             </ClientTemplate>
-          <CircularMenu />
+            <CircularMenuWrapper />
           </AuthProvider>
         </StylesProvider>
       </body>

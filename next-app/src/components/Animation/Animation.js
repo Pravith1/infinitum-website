@@ -105,6 +105,10 @@ class Component extends React.PureComponent {
 
     if (parentEnergy.subscribe) {
       const energy = parentEnergy.getEnergy(this);
+      // Handle case where energy might be undefined
+      if (!energy) {
+        return false;
+      }
       return energy.entering || energy.entered;
     }
 

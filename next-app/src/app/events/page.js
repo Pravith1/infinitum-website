@@ -237,6 +237,18 @@ class Events extends React.Component {
 
         try {
             const response = await fetch(`${API_URL}/api/events?limit=50`);
+            
+            // Check if response is ok
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            // Check content type to ensure it's JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('API did not return JSON');
+            }
+            
             const data = await response.json();
 
             let events = [];
@@ -268,6 +280,18 @@ class Events extends React.Component {
 
         try {
             const response = await fetch(`${API_URL}/api/events/${eventId}`);
+            
+            // Check if response is ok
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            // Check content type to ensure it's JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('API did not return JSON');
+            }
+            
             const data = await response.json();
 
             let eventDetails = null;

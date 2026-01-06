@@ -21,10 +21,13 @@ class InteractiveFace extends React.Component {
         this.raycaster = new THREE.Raycaster();
         this.plane = new THREE.Plane();
         this.intersectPoint = new THREE.Vector3();
-        this.samplingRate = 18; // SKIP FACTOR: Higher = fewer dots (cleaner look)
+        this.samplingRate = 10; // RESTORED: Lower value = more points (smoother surface)
+        this.isCompMounted = false;
+        this.loadId = 0; // TRACKER: Prevents ghost models from old loads
     }
 
     componentDidMount() {
+        this.isCompMounted = true;
         this.initThree();
         window.addEventListener('resize', this.handleResize);
         
@@ -41,6 +44,7 @@ class InteractiveFace extends React.Component {
     }
 
     componentWillUnmount() {
+        this.isCompMounted = false;
         cancelAnimationFrame(this.frameId);
         window.removeEventListener('resize', this.handleResize);
         
@@ -66,13 +70,21 @@ class InteractiveFace extends React.Component {
     initThree = () => {
         if (!this.mountRef.current) return;
         
+        // Clears previous canvas to ensure clean slate
+        while(this.mountRef.current.firstChild) {
+            this.mountRef.current.removeChild(this.mountRef.current.firstChild);
+        }
+
         const width = this.mountRef.current.clientWidth;
         const height = this.mountRef.current.clientHeight;
+
+        // Capture the current load ID
+        const myLoadId = ++this.loadId;
 
         // 1. Scene & Camera
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-        this.camera.position.z = 8; // Moved camera back slightly
+        this.camera.position.z = 8;
 
         // 2. Renderer
         this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -89,109 +101,100 @@ class InteractiveFace extends React.Component {
 
         // 4. Load Model
         const loader = new GLTFLoader();
-        // NOTE: Ensure your file is at public/models/face.glb
         loader.load('/models/face.glb', (gltf) => {
-            const model = gltf.scene;
+            // FIX: Prevent ghost model by checking if this load is still relevant
+            if (!this.isCompMounted || this.loadId !== myLoadId) return;
 
-            // Find the first mesh
+            const model = gltf.scene;
             let targetMesh = null;
             model.traverse((child) => {
                 if (child.isMesh && !targetMesh) targetMesh = child;
             });
 
             if (targetMesh) {
-                // Clone geometry
                 this.geometry = targetMesh.geometry.clone();
-                this.geometry.center(); // Center at (0,0,0)
+                
+                // FIX: Rotate model geometry 90 degrees to make it upright
+                this.geometry.rotateX(1.5*Math.PI);
 
-                // --- IMPORTANT: Auto-Scale Logic ---
-                // This ensures the face is visible regardless of export dimensions (meters/mm)
+                this.geometry.center(); 
                 this.geometry.computeBoundingBox();
+                
                 const size = new THREE.Vector3();
                 this.geometry.boundingBox.getSize(size);
                 const maxDim = Math.max(size.x, size.y, size.z);
                 
                 if (maxDim > 0) {
-                    const targetSize = 5; // Target size in Three.js units
+                    const targetSize = 5; 
                     const scaleFactor = targetSize / maxDim;
                     this.geometry.scale(scaleFactor, scaleFactor, scaleFactor);
                 }
                 
-                // A2. Create "Sparse" Geometry for Points
+                // A. Create Geometry
                 this.sparseGeometry = new THREE.BufferGeometry();
                 const originalPos = this.geometry.attributes.position.array;
                 const sparsePos = [];
+                const indices = [];
                 
-                // Only take every Nth vertex
+                // Extract points with revised sampling rate for smoothness
                 for (let i = 0; i < originalPos.length; i += 3 * this.samplingRate) {
                     sparsePos.push(originalPos[i], originalPos[i+1], originalPos[i+2]);
                 }
                 
                 this.sparseGeometry.setAttribute('position', new THREE.Float32BufferAttribute(sparsePos, 3));
 
-                // B. Generate Grid Lines (Mesh Connection)
-                const indices = [];
+                // B. Generate Clean Grid Connections
                 const posCount = sparsePos.length / 3;
+                // Tuned distance: tighter threshold ensures we only connect immediate neighbors
+                const connectionDist = 0.65; 
                 
-                // For each point, find nearest neighbors to connect
-                for(let i=0; i<posCount; i++) {
-                    const i3 = i * 3;
-                    const p1x = sparsePos[i3];
-                    const p1y = sparsePos[i3+1];
-                    const p1z = sparsePos[i3+2];
+                for(let i = 0; i < posCount; i++) {
+                    const x1 = sparsePos[i*3];
+                    const y1 = sparsePos[i*3+1];
+                    const z1 = sparsePos[i*3+2];
                     
-                    const neighbors = [];
-                    // Find closest neighbors
-                    for(let j=0; j<posCount; j++) {
-                        if(i === j) continue;
-                        const j3 = j * 3;
-                        const dx = p1x - sparsePos[j3];
-                        const dy = p1y - sparsePos[j3+1];
-                        const dz = p1z - sparsePos[j3+2];
-                        const distSq = dx*dx + dy*dy + dz*dz;
+                    for(let j = i + 1; j < posCount; j++) {
+                        const x2 = sparsePos[j*3];
+                        const y2 = sparsePos[j*3+1];
+                        const z2 = sparsePos[j*3+2];
                         
-                        // Distance check (threshold squared) - tune 2.5 based on density
-                        if(distSq < 2.5) { 
-                            neighbors.push({ idx: j, dist: distSq });
-                        }
-                    }
-                    
-                    neighbors.sort((a,b) => a.dist - b.dist);
-                    // Connect to closest 2 or 3 neighbors
-                    const limit = Math.min(neighbors.length, 3);
-                    for(let k=0; k<limit; k++) {
-                        // Use idx > i to avoid double lines, though LineSegments can handle duplicates
-                         if (neighbors[k].idx > i) {
-                            indices.push(i, neighbors[k].idx);
+                        // Simple distance check
+                        const distSq = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1);
+                        
+                        if(distSq < connectionDist * connectionDist) {
+                            indices.push(i, j);
                         }
                     }
                 }
                 this.sparseGeometry.setIndex(indices);
-                
-                const lineMaterial = new THREE.LineBasicMaterial({
+
+                // C. Visual Elements
+                const wireframeMaterial = new THREE.LineBasicMaterial({
                     color: 0x00ff64,
                     opacity: 0.15,
                     transparent: true
                 });
-                this.lines = new THREE.LineSegments(this.sparseGeometry, lineMaterial);
+                // Using LineSegments ensures lines move when points move
+                this.wireframeMesh = new THREE.LineSegments(this.sparseGeometry, wireframeMaterial);
 
-                // C. Vertices (Smaller dots)
                 const pointsMaterial = new THREE.PointsMaterial({ 
                     color: 0x00ff64, 
-                    size: 0.035,
+                    size: 0.045, // Slightly larger dots
                     sizeAttenuation: true 
                 });
                 this.points = new THREE.Points(this.sparseGeometry, pointsMaterial);
 
                 this.faceGroup = new THREE.Group();
-                this.faceGroup.add(this.lines);
+                this.faceGroup.add(this.wireframeMesh);
                 this.faceGroup.add(this.points);
-                
+
+                // Clear scene just in case
+                this.scene.clear();
+                this.scene.add(ambientLight);
+                this.scene.add(directionalLight);
                 this.scene.add(this.faceGroup);
 
-                this.raycaster.params.Points.threshold = 0.15; // Larger hit radius
-            } else {
-                console.warn('GLB loaded but no mesh found inside.');
+                this.raycaster.params.Points.threshold = 0.15;
             }
         }, undefined, (error) => {
             console.error('Error loading /models/face.glb:', error);

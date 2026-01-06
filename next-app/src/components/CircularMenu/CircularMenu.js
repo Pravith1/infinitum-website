@@ -126,6 +126,24 @@ export default function CircularMenu() {
         }
     }, [isOpen, handleMouseMove]);
 
+    // Keyboard shortcut: Q to toggle menu
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            // Don't trigger if user is typing in an input/textarea
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                return;
+            }
+            
+            if (e.key === 'q' || e.key === 'Q') {
+                e.preventDefault();
+                toggleMenu();
+            }
+        };
+        
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, showHint]);
+
     const toggleMenu = () => {
         if (!isOpen && openSound) {
             openSound.play();

@@ -7,10 +7,10 @@ import styles from './CircularMenu.module.css';
 
 const MENU_ITEMS = [
     { label: 'Home', icon: 'ri-home-line', href: '/' },
-    { label: 'Events', icon: 'ri-calendar-event-line', href: '/events' },
+    { label: 'Events', icon: 'ri-calendar-event-line', href: '/events?category=events' },
     { label: 'Schedule', icon: 'ri-calendar-line', href: '/schedule' },
-    { label: 'Charity', icon: 'ri-heart-line', href: '/charity' },
-    { label: 'Music', icon: 'ri-music-line', href: '/music' },
+    { label: 'Workshops', icon: 'ri-tools-line', href: '/events?category=workshops' },
+    { label: 'Papers', icon: 'ri-article-line', href: '/events?category=papers' },
     { label: 'Profile', icon: 'ri-user-line', href: '/portal/profile' },
 ];
 

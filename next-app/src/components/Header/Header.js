@@ -338,8 +338,14 @@ class Component extends React.Component {
           ))}
         </svg>
         <div className={classes.content}>
+          {/* Left spacer for balanced centering */}
+          <div className={classes.spacer} />
+
           <Secuence animation={{ show, independent: true }}>
             <Brand className={classes.brand} stableTime variant="image" />
+          </Secuence>
+
+          <Secuence animation={{ show, independent: true }}>
             <Menu className={classes.menu} />
           </Secuence>
         </div>

@@ -30,6 +30,9 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 1000
   },
+  spacer: {
+    display: 'none'
+  },
   brand: {
     margin: [0, 'auto', 10],
     width: '100%',
@@ -64,21 +67,28 @@ const styles = theme => ({
       alignItems: 'center',
       padding: [20, 20, 30]
     },
+    spacer: {
+      display: 'block',
+      flex: '1 1 0',
+      minWidth: 0
+    },
     brand: {
+      flex: '0 0 auto',
       margin: 0,
-      maxWidth: 300
+      maxWidth: 250
     },
     menu: {
-      margin: 0,
-      maxWidth: 375
+      flex: '1 1 0',
+      minWidth: 0,
+      display: 'flex',
+      justifyContent: 'flex-end',
+      maxWidth: 'none'
     }
   },
 
   '@media screen and (min-width: 1025px)': {
-    menu: {
-      margin: 0,
-      width: 420,
-      maxWidth: 'none'
+    brand: {
+      maxWidth: 300
     }
   }
 });

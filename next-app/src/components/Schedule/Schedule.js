@@ -1,10 +1,12 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import anime from 'animejs';
+import { useRouter } from 'next/navigation';
 import cx from 'classnames';
 import { withStyles } from '@/tools/withStyles';
 import { withSounds } from '@/tools/withSounds';
 import { styles } from './Schedule.styles';
+import { eventsData } from '@/data/eventsData';
 
 const DAYS = [
     { id: 'day1', label: 'Day 1', date: 'Feb 13' },
@@ -84,6 +86,7 @@ const formatTime = (timeStr) => {
 };
 
 const Schedule = ({ classes, sounds }) => {
+    const router = useRouter();
     const [activeDay, setActiveDay] = useState('day1');
     const rootRef = useRef(null);
     const playHover = () => sounds.hover && sounds.hover.play();
@@ -144,6 +147,27 @@ const Schedule = ({ classes, sounds }) => {
     for (let h = START_HOUR; h <= END_HOUR; h++) {
         timeMarkers.push(h);
     }
+
+    // Helper to find event ID
+    const getEventId = (title) => {
+        // Normalize title for matching (remove special chars, lower case)
+        const normalizedTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+        const event = eventsData.find(e => {
+            const normalizedEventName = e.eventName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return normalizedEventName.includes(normalizedTitle) || normalizedTitle.includes(normalizedEventName);
+        });
+
+        return event ? event.eventId : null;
+    };
+
+    const handleEventClick = (title) => {
+        const eventId = getEventId(title);
+        if (eventId) {
+            router.push(`/events/${eventId}`);
+            if (sounds?.click) sounds.click.play();
+        }
+    };
 
     return (
         <div className={classes.root} ref={rootRef}>
@@ -206,8 +230,9 @@ const Schedule = ({ classes, sounds }) => {
                                                     <div
                                                         key={idx}
                                                         className={cx(classes.event, classes[event.category])}
-                                                        style={{ left: `${left}%`, width: `${width}%` }}
+                                                        style={{ left: `${left}%`, width: `${width}%`, cursor: getEventId(event.title) ? 'pointer' : 'default' }}
                                                         onMouseEnter={playHover}
+                                                        onClick={() => handleEventClick(event.title)}
                                                         title={`${event.title} (${formatTime(event.start)} - ${formatTime(event.end)})`}
                                                     >
                                                         <div className={classes.eventTitle}>{event.title}</div>
@@ -242,7 +267,11 @@ const Schedule = ({ classes, sounds }) => {
                                     <div className={classes.mobileTimelineDot} />
                                     <div
                                         className={cx(classes.mobileEventCard, classes[event.category])}
-                                        onClick={playClick}
+                                        onClick={() => {
+                                            playClick();
+                                            handleEventClick(event.title);
+                                        }}
+                                        style={{ cursor: getEventId(event.title) ? 'pointer' : 'default' }}
                                     >
                                         <div className={classes.mobileEventHeader}>
                                             <div className={classes.mobileEventTitle}>{event.title}</div>

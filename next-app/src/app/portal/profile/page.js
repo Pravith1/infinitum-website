@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { QRCodeSVG } from 'qrcode.react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import api from '@/services/api'; // Add import for api
+import api from '@/services/api'; 
+import axios from 'axios';
+
+import { Header } from '@/components/Header';
 
 import { withStyles } from '@/tools/withStyles';
 import { Secuence as SecuenceComponent } from '@/components/Secuence';
@@ -262,17 +265,16 @@ const styles = theme => {
     return {
         root: {
             width: '100%',
-            minHeight: '100vh',
+            height: '100vh', // Use height instead of minHeight
             position: 'relative',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '40px 20px 20px',
-            overflowX: 'hidden',
+            flexDirection: 'column', // Set flex direction here
+            padding: '0 20px 20px', // Remove top padding
+            overflow: 'hidden', // Hide overflow to prevent body scroll
             '@media (max-width: 960px)': {
-                alignItems: 'flex-start',
-                padding: '80px 15px 30px', 
-                height: 'auto'
+                height: 'auto', // Allow content to define height on mobile
+                padding: '20px 15px 30px', // Add top padding back for mobile
+                overflowY: 'auto', // Allow vertical scrolling on mobile
             }
         },
         headerActions: {
@@ -290,7 +292,8 @@ const styles = theme => {
         dashboardContainer: {
             width: '100%',
             maxWidth: 1200,
-            height: '80vh',
+            flex: 1, // Allow container to fill remaining space
+            minHeight: 0, // Prevent flexbox overflow issues
             display: 'flex',
             gap: 20,
             '@media (max-width: 960px)': {
@@ -1007,6 +1010,32 @@ class ProfilePage extends React.Component {
 
         if (loading || !user) return null;
 
+        // Category colors inspired by EventsGrid
+        const categoryColors = {
+            'Technical': '#c72071',
+            'Non-Technical': '#00d4ff',
+            'Workshops': '#00ff88',
+            'Other': '#888'
+        };
+
+        // Group registered events by category
+        const groupedEvents = registeredEvents.reduce((acc, event) => {
+            // Normalize category names for grouping
+            const category = (event.category || 'general').toLowerCase();
+            let groupName = 'Other';
+            if (category.includes('non technical')) groupName = 'Non-Technical';
+            else if (category.includes('technical')) groupName = 'Technical';
+            else if (category.includes('workshop')) groupName = 'Workshops';
+
+            if (!acc[groupName]) {
+                acc[groupName] = [];
+            }
+            acc[groupName].push(event);
+            return acc;
+        }, {});
+
+        const groupedEventCategories = Object.keys(groupedEvents);
+
         return (
             <SecuenceComponent>
                 <div className={classes.root}>
@@ -1018,13 +1047,9 @@ class ProfilePage extends React.Component {
                         accept=".pdf,.jpg,.jpeg,.png,.webp"
                         onChange={this.handleIdCardUpload}
                     />
-                    <div className={classes.headerActions}>
-                        <Button className={`${classes.actionBtn} ${classes.btnBack}`} onClick={this.handleBack}>
-                            Home
-                        </Button>
-                        <Button className={`${classes.actionBtn} ${classes.btnLogout}`} onClick={this.handleLogout}>
-                            Logout
-                        </Button>
+                    
+                    <div style={{ width: '100%', flexShrink: 0 }}>
+                        <Header />
                     </div>
 
                     <div className={classes.dashboardContainer}>
@@ -1212,15 +1237,35 @@ class ProfilePage extends React.Component {
                                 </div>
                                 <div className={isMobile ? `${classes.accordionContent} ${openAccordion === 'events' ? classes.accordionContentOpen : ''}` : ''}>
                                     {registeredEvents && registeredEvents.length > 0 ? (
-                                        <div className={classes.dataGrid} style={{paddingTop: isMobile ? 0 : 15}}>
-                                            {registeredEvents.map((event, index) => (
-                                                <div key={index} className={classes.dataField}>
-                                                    <label className={classes.fieldLabel}>{event.category || 'Event'}</label>
-                                                    <div className={classes.fieldValue} title={event.eventName || event.name}>
-                                                        {event.eventName || event.name || 'Unnamed Event'}
+                                        <div className={classes.dataGrid} style={{paddingTop: isMobile ? 0 : 15, gridTemplateColumns: `repeat(${groupedEventCategories.length}, 1fr)`}}>
+                                            {groupedEventCategories.map(category => {
+                                                const categoryColor = categoryColors[category] || categoryColors['Other'];
+                                                return (
+                                                    <div 
+                                                        key={category} 
+                                                        className={classes.dataField} 
+                                                        style={{ 
+                                                            display: 'flex', 
+                                                            flexDirection: 'column', 
+                                                            gap: 8,
+                                                            borderColor: categoryColor, // Apply category color to border
+                                                            borderWidth: 1, // Ensure border is visible
+                                                        }}
+                                                    >
+                                                        <label className={classes.fieldLabel} style={{ borderBottom: `1px solid ${categoryColor}40`, paddingBottom: 6, marginBottom: 4, color: categoryColor }}>{category}</label>
+                                                        {groupedEvents[category].map((event, index) => (
+                                                            <div 
+                                                                key={index} 
+                                                                className={classes.fieldValue} 
+                                                                title={event.eventName || event.name}
+                                                                style={{ fontSize: '0.8rem', whiteSpace: 'normal' }}
+                                                            >
+                                                                {event.eventName || event.name || 'Unnamed Event'}
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                     ) : (
                                         <div style={{ padding: '10px', color: '#888', fontStyle: 'italic', fontSize: '0.85rem', paddingTop: isMobile ? 0 : 15 }}>

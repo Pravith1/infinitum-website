@@ -656,27 +656,34 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .controlsContainer {
-    padding: 10px 16px;
-    gap: 10px;
-    flex-direction: row !important;
-    /* Force row */
-    flex-wrap: nowrap !important;
-    /* Prevent wrapping */
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    /* Center the register button */
     align-items: center;
+    pointer-events: none;
+  }
+
+  .controlsContainer>* {
+    pointer-events: auto;
   }
 
   .categoryDropdown {
-    min-width: 120px;
-    /* Reduce minimum width to prevent overflow */
-    flex: 1;
-    /* Allow flexible width */
-    max-width: 200px;
+    display: none;
+    /* Hide dropdown on mobile */
   }
 
   .registerButton {
+    position: static !important;
+    transform: none !important;
     white-space: nowrap;
-    padding: 8px 14px;
-    font-size: 12px;
+    padding: 10px 20px;
+    font-size: 13px;
+    margin: 0 auto;
   }
 }
 
@@ -878,13 +885,8 @@
     /* Significantly increased for mobile */
   }
 
-  .registerButton {
-    top: 15px;
-    right: 12px;
-    padding: 10px 18px;
-    font-size: 12px;
-    z-index: 50;
-  }
+  /* Removed .registerButton absolute positioning block to prevent layout breakage */
+
 
   .registerIcon {
     font-size: 15px;
@@ -938,6 +940,13 @@
   .eventName {
     font-size: 22px;
     margin-bottom: 0;
+    white-space: normal;
+    /* Allow text wrapping on mobile */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+    padding: 0 10px;
+    /* Add horizontal padding to prevent edge clipping */
   }
 
   .tagline {
@@ -1048,8 +1057,7 @@
   }
 
   .registerButton {
-    top: 12px;
-    right: 10px;
+    /* Removed absolute positioning to stay in flex flow */
     padding: 8px 14px;
     font-size: 11px;
     gap: 5px;
@@ -1644,12 +1652,10 @@
 
 @media (max-width: 768px) {
 
-  /* Mobile Register Button: Center and slightly top */
+  /* Mobile Register Button: Removed absolute positioning to keep in flex row */
   .registerButton {
-    top: 5px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
+    position: static !important;
+    transform: none !important;
     width: max-content;
   }
 

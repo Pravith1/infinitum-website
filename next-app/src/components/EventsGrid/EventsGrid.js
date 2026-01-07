@@ -37,7 +37,7 @@ const CATEGORY_CONFIG = {
 // Mock data for workshops and paper presentations
 const MOCK_EVENTS = [
     {
-        eventId: 'MOCK_WS01',
+        eventId: 'WS01',
         eventName: 'Workshop 1',
         category: 'Workshop',
     },
@@ -52,7 +52,7 @@ const MOCK_EVENTS = [
         category: 'Workshop',
     },
     {
-        eventId: 'MOCK_PP01',
+        eventId: 'PRP03',
         eventName: 'Paper Presentation',
         category: 'Paper Presentation',
     }
@@ -100,9 +100,13 @@ export default function EventsGrid() {
         playSound(hoverSoundRef);
     };
 
-    const handleCardClick = () => {
+    const handleCardClick = (eventId) => {
         playSound(clickSoundRef);
-        router.push('/events');
+        if (eventId && !eventId.startsWith('MOCK')) {
+            router.push(`/events/${eventId}`);
+        } else {
+            router.push('/events');
+        }
     };
 
     // Combine real events with mock data, excluding Thooral Hackathon
@@ -153,7 +157,7 @@ export default function EventsGrid() {
                                 background: config.gradient
                             }}
                             onMouseEnter={handleCardHover}
-                            onClick={handleCardClick}
+                            onClick={() => handleCardClick(event.eventId)}
                         >
                             <div
                                 className={styles.cardAccent}

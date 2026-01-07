@@ -189,43 +189,10 @@ export const CometCard = ({
           {children}
         </div>
 
-        {/* Subtle animated border pulse */}
-        <motion.div
-          className="pointer-events-none absolute -inset-[1px] rounded-[17px]"
-          style={{
-            border: `1px solid ${borderColor}`,
-            opacity: 0.5,
-            zIndex: 3,
-          }}
-          animate={{
-            opacity: [0.3, 0.7, 0.3],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        {/* Animated border pulse - REMOVED */}
       </motion.div>
 
-      {/* Glare circle - positioned BELOW the card vertically */}
-      <motion.div
-        className="pointer-events-none rounded-full"
-        style={{
-          position: "absolute",
-          top: "100%", // Start at the bottom of the card
-          left: 0,
-          right: 0,
-          background: glareBackground,
-          width: "100%",
-          height: "80px",
-          marginTop: isMobile ? "80px" : "280px", // Adjusted based on 'slightly down' feedback
-          opacity: isHovered ? 0.9 : 0.5,
-          filter: "blur(15px)",
-          zIndex: -1, // Ensure it's behind if needed, though top:100% puts it outside
-        }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Glare circle - REMOVED */}
     </div>
   );
 };

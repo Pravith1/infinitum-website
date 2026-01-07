@@ -269,6 +269,7 @@ const styles = theme => {
             position: 'relative',
             display: 'flex',
             flexDirection: 'column', // Set flex direction here
+            alignItems: 'center', // Center the dashboard container
             padding: '0 20px 20px', // Remove top padding
             overflow: 'hidden', // Hide overflow to prevent body scroll
             '@media (max-width: 960px)': {
@@ -1048,9 +1049,7 @@ class ProfilePage extends React.Component {
                         onChange={this.handleIdCardUpload}
                     />
                     
-                    <div style={{ width: '100%', flexShrink: 0 }}>
-                        <Header />
-                    </div>
+                    <Header />
 
                     <div className={classes.dashboardContainer}>
                         

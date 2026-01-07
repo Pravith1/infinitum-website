@@ -275,95 +275,109 @@ export default function FlagshipEvent() {
                         </button>
 
                         <div className={styles.modalContent}>
+                            {/* Left Side - Poster */}
                             <div className={styles.modalPosterWrapper}>
-                                <div className={styles.modalGlowRing}></div>
                                 <Image
                                     src={posterSrc}
                                     alt={thooral?.eventName || title}
-                                    width={350}
-                                    height={350}
+                                    width={320}
+                                    height={320}
                                     className={styles.modalPoster}
                                     unoptimized
                                 />
                             </div>
+
+                            {/* Right Side - Content */}
                             <div className={styles.modalInfo}>
-                                <span className={styles.modalLabel}>{thooral?.category || 'FLAGSHIP EVENT'}</span>
-                                <h2 className={styles.modalTitle}>{thooral?.eventName || title}</h2>
+                                {/* Category */}
+                                <div className={styles.category}>{thooral?.category || 'FLAGSHIP EVENT'}</div>
+
+                                {/* Title */}
+                                <h1 className={styles.modalTitle}>{thooral?.eventName || title}</h1>
+
+                                {/* One-liner */}
                                 {thooral?.oneLineDescription && (
-                                    <p className={styles.modalOneLiner}>{thooral.oneLineDescription}</p>
+                                    <p className={styles.oneLiner}>{thooral.oneLineDescription}</p>
                                 )}
+
+                                {/* Description */}
                                 <p className={styles.modalDesc}>{thooral?.description || fullDescription}</p>
 
-                                {/* Event Info Grid */}
-                                <div className={styles.modalInfoGrid}>
-                                    {thooral?.date && (
-                                        <div className={styles.modalInfoItem}>
-                                            <span className={styles.modalInfoLabel}>Date</span>
-                                            <span className={styles.modalInfoValue}>
-                                                {new Date(thooral.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                                            </span>
+                                {/* Info Grid - 2x2 */}
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoLabel}>Date</div>
+                                        <div className={styles.infoValue}>
+                                            {thooral?.date
+                                                ? new Date(thooral.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+                                                : 'TBA'}
                                         </div>
-                                    )}
-                                    {thooral?.timing && (
-                                        <div className={styles.modalInfoItem}>
-                                            <span className={styles.modalInfoLabel}>Timing</span>
-                                            <span className={styles.modalInfoValue}>{thooral.timing}</span>
-                                        </div>
-                                    )}
-                                    {thooral?.hall && (
-                                        <div className={styles.modalInfoItem}>
-                                            <span className={styles.modalInfoLabel}>Venue</span>
-                                            <span className={styles.modalInfoValue}>{thooral.hall}</span>
-                                        </div>
-                                    )}
-                                    {thooral?.teamSize && (
-                                        <div className={styles.modalInfoItem}>
-                                            <span className={styles.modalInfoLabel}>Team Size</span>
-                                            <span className={styles.modalInfoValue}>{thooral.teamSize} Members</span>
-                                        </div>
-                                    )}
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoLabel}>Timing</div>
+                                        <div className={styles.infoValue}>{thooral?.timing || 'TBA'}</div>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoLabel}>Venue</div>
+                                        <div className={styles.infoValue}>{thooral?.hall || 'TBA'}</div>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoLabel}>Team Size</div>
+                                        <div className={styles.infoValue}>{thooral?.teamSize || 1} Members</div>
+                                    </div>
                                 </div>
 
-                                {/* Rounds */}
+                                {/* Rounds Section */}
                                 {thooral?.rounds && thooral.rounds.length > 0 && (
-                                    <div className={styles.modalRounds}>
-                                        <h4 className={styles.modalSectionTitle}>Rounds</h4>
-                                        {thooral.rounds.map((round, index) => (
-                                            <div key={round._id || index} className={styles.modalRoundItem}>
-                                                <span className={styles.roundNumber}>{index + 1}</span>
-                                                <div>
-                                                    <strong>{round.title}</strong>
-                                                    {round.description && <p>{round.description}</p>}
+                                    <div className={styles.roundsSection}>
+                                        <h3 className={styles.roundsTitle}>ROUNDS</h3>
+                                        <div className={styles.roundsList}>
+                                            {thooral.rounds.map((round, index) => (
+                                                <div key={round._id || index} className={styles.roundItem}>
+                                                    <div className={styles.roundNumber}>{index + 1}</div>
+                                                    <div className={styles.roundContent}>
+                                                        <div className={styles.roundTitle}>
+                                                            Round {index + 1} – {round.title}
+                                                        </div>
+                                                        {round.description && (
+                                                            <p className={styles.roundDescription}>{round.description}</p>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
 
                                 {/* Contacts */}
                                 {thooral?.contacts && thooral.contacts.length > 0 && (
-                                    <div className={styles.modalContacts}>
-                                        <h4 className={styles.modalSectionTitle}>Coordinators</h4>
-                                        {thooral.contacts.map((contact, index) => (
-                                            <div key={contact._id || index} className={styles.modalContactItem}>
-                                                <span>{contact.name}</span>
-                                                <a href={`tel:${contact.mobile}`}>{contact.mobile}</a>
-                                            </div>
-                                        ))}
+                                    <div className={styles.contactsSection}>
+                                        <h3 className={styles.sectionTitle}>Event Coordinators</h3>
+                                        <div className={styles.contactsList}>
+                                            {thooral.contacts.map((contact, index) => (
+                                                <div key={contact._id || index} className={styles.contactItem}>
+                                                    <span className={styles.contactName}>{contact.name}</span>
+                                                    <a href={`tel:${contact.mobile}`} className={styles.contactPhone}>
+                                                        {contact.mobile}
+                                                    </a>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
 
+                                {/* Club Name */}
                                 {thooral?.clubName && (
-                                    <p className={styles.modalClub}>Organized by {thooral.clubName}</p>
+                                    <p className={styles.clubName}>Organized by {thooral.clubName}</p>
                                 )}
 
+                                {/* Register Button */}
                                 <Link
                                     href={registerLink}
                                     className={styles.registerBtn}
                                     onClick={() => playSound(clickSoundRef)}
                                 >
-                                    <span>Register Now</span>
-                                    <i className="ri-arrow-right-up-line"></i>
+                                    Register Now
                                 </Link>
                             </div>
                         </div>

@@ -48,13 +48,16 @@ export default function VerifyEmailComponent() {
     if (loading) {
         return (
             <div className="auth-page">
-                <div className="auth-card">
-                    <div className="auth-header">
-                        <div className="auth-icon-loading">
-                            <div className="auth-spinner"></div>
-                        </div>
-                        <h1>Verifying Email</h1>
-                        <p>Please wait while we verify your email address...</p>
+                <div className="main-frame">
+                    <div className="inner-frame"></div>
+                    <div className="side-line-left"></div>
+                    <div className="side-line-right"></div>
+
+                    <div className="login-panel">
+                        <h2 className="login-title">Verifying</h2>
+                        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', textAlign: 'center' }}>
+                            Please wait...
+                        </p>
                     </div>
                 </div>
             </div>
@@ -64,23 +67,26 @@ export default function VerifyEmailComponent() {
     if (error) {
         return (
             <div className="auth-page">
-                <div className="auth-card">
-                    <div className="auth-header">
-                        <div className="auth-icon-error">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                <div className="main-frame">
+                    <div className="inner-frame"></div>
+                    <div className="side-line-left"></div>
+                    <div className="side-line-right"></div>
+
+                    <div className="login-panel">
+                        <h2 className="login-title">Failed</h2>
+                        <p style={{ color: '#fca5a5', fontSize: '12px', textAlign: 'center', marginBottom: '20px' }}>
+                            {error}
+                        </p>
+
+                        <div className="auth-btn-row">
+                            <button
+                                onClick={() => router.push('/auth?type=send-email')}
+                                className="auth-btn"
+                            >
+                                Try Again
+                            </button>
                         </div>
-                        <h1>Verification Failed</h1>
-                        <p style={{ color: '#fca5a5' }}>{error}</p>
                     </div>
-                    <button
-                        onClick={() => router.push('/auth?type=send-email')}
-                        className="auth-btn"
-                        style={{ marginTop: '24px' }}
-                    >
-                        Try Again
-                    </button>
                 </div>
             </div>
         );
@@ -89,16 +95,16 @@ export default function VerifyEmailComponent() {
     if (success) {
         return (
             <div className="auth-page">
-                <div className="auth-card">
-                    <div className="auth-header">
-                        <div className="auth-icon-success">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
-                        <h1>Email Verified!</h1>
-                        <p>Your email has been successfully verified.</p>
-                        <p className="auth-status-text">Redirecting to complete registration...</p>
+                <div className="main-frame">
+                    <div className="inner-frame"></div>
+                    <div className="side-line-left"></div>
+                    <div className="side-line-right"></div>
+
+                    <div className="login-panel">
+                        <h2 className="login-title">Verified!</h2>
+                        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', textAlign: 'center' }}>
+                            Redirecting...
+                        </p>
                     </div>
                 </div>
             </div>

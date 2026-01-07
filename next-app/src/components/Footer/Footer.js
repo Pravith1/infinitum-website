@@ -23,12 +23,13 @@ class Component extends React.PureComponent {
     children: PropTypes.any
   };
 
-  constructor () {
+  constructor() {
     super(...arguments);
 
     this.state = {
       show: false,
-      shapes: []
+      shapes: [],
+      shutterExtension: 0
     };
 
     const { energy } = this.props;
@@ -37,16 +38,18 @@ class Component extends React.PureComponent {
     energy.updateDuration({ enter: durationEnter });
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.draw();
 
     window.addEventListener('resize', this.onResize);
+    window.addEventListener('shutter-state-change', this.onShutterChange);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.stop();
 
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('shutter-state-change', this.onShutterChange);
   }
 
   onResize = () => {
@@ -54,14 +57,37 @@ class Component extends React.PureComponent {
     this.reset();
   }
 
-  draw () {
+  onShutterChange = (event) => {
+    const { shutterState } = event.detail;
+    const isActive = shutterState === 'closing' || shutterState === 'closed';
+
+    // Calculate exact distance to screen center
+    const screenCenter = window.innerHeight / 2;
+    const footerTop = this.element.getBoundingClientRect().top;
+    const distanceToCenter = Math.max(0, footerTop - screenCenter);
+    const extension = isActive ? distanceToCenter : 0;
+
+    console.log('[FOOTER] Shutter change:', shutterState, 'extension:', extension);
+
+    this.setState({ shutterExtension: extension }, () => {
+      console.log('[FOOTER] State updated, calling draw()');
+      this.draw();
+    });
+  }
+
+  draw() {
     const { theme } = this.props;
     const { small } = getViewportRange();
+    const { shutterExtension } = this.state;
     const width = this.element.offsetWidth;
     const height = this.element.offsetHeight;
+    const totalHeight = height + shutterExtension;
 
     this.svg.setAttribute('width', width);
-    this.svg.setAttribute('height', height);
+    this.svg.setAttribute('height', totalHeight);
+    // Position SVG to grow upward by setting negative top
+    this.svg.style.top = `-${shutterExtension}px`;
+    this.svg.style.transition = 'top 0.4s ease-in-out, height 0.4s ease-in-out';
 
     const boxWidth = Math.min(1000, width);
     const offset = small ? 5 : 20;
@@ -76,11 +102,13 @@ class Component extends React.PureComponent {
     const backgroundColor = rgba(theme.color.background.dark, theme.color.alpha);
     const lineColor = rgba(theme.color.primary.dark, 0.5);
 
+    // Keep decorative lines at y=0, fill from 0 down to totalHeight
     const ground = {
-      d: `M0,0 L${x1},0 L${x2},${pit} L${x4},${pit} L${x5},0 L${width},0 L${width},${height} L0,${height} L0,0`,
+      d: `M0,0 L${x1},0 L${x2},${pit} L${x4},${pit} L${x5},0 L${width},0 L${width},${totalHeight} L0,${totalHeight} L0,0`,
       fill: backgroundColor,
       stroke: backgroundColor
     };
+    // Decorative lines at y=0 (will move with SVG)
     const line1 = {
       d: `M0,0 L${x1},0`,
       stroke: lineColor
@@ -113,13 +141,13 @@ class Component extends React.PureComponent {
     this.setState({ shapes });
   }
 
-  getDurationEnter () {
+  getDurationEnter() {
     const { theme } = this.props;
     const { small, medium } = getViewportRange();
     return (small || medium ? 2 : 4) * theme.animation.time;
   }
 
-  playSound () {
+  playSound() {
     const { sounds } = this.props;
 
     if (!sounds.deploy.playing()) {
@@ -127,12 +155,12 @@ class Component extends React.PureComponent {
     }
   }
 
-  stopSound () {
+  stopSound() {
     const { sounds } = this.props;
     sounds.deploy.stop();
   }
 
-  enter () {
+  enter() {
     const shapes = Array.from(this.svg.querySelectorAll('path'));
     const [ground, line1, slash1, line2, line3, slash2, line4] = shapes;
     const duration = this.getDurationEnter();
@@ -199,7 +227,7 @@ class Component extends React.PureComponent {
     });
   }
 
-  exit () {
+  exit() {
     const { energy, sounds } = this.props;
     const shapes = Array.from(this.svg.querySelectorAll('path'));
     const [ground, line1, slash1, line2, line3, slash2, line4] = shapes;
@@ -256,14 +284,14 @@ class Component extends React.PureComponent {
     });
   }
 
-  stop () {
+  stop() {
     const shapes = this.svg.querySelectorAll('path');
 
     anime.remove(shapes);
     anime.remove(this.element);
   }
 
-  reset () {
+  reset() {
     const { energy } = this.props;
     const show = energy.entering || energy.entered;
     const shapes = Array.from(this.svg.querySelectorAll('path'));
@@ -280,7 +308,7 @@ class Component extends React.PureComponent {
     anime.set(shapes, { opacity: show ? 1 : 0 });
   }
 
-  render () {
+  render() {
     const {
       theme,
       classes,

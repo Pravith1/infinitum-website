@@ -1,0 +1,435 @@
+[{
+  "_id": {
+    "$oid": "694ce9c4297836cde768247f"
+  },
+  "eventId": "EVNT01",
+  "eventName": "QuestX",
+  "category": "Non Technical",
+  "oneLineDescription": "Fun and challenging activities to boost creativity, analytical skills, and teamwork",
+  "description": "QuestX is a non-technical event designed to engage participants through fun yet challenging activities that enhance creativity, analytical thinking, teamwork, and problem-solving skills in an interactive environment.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cb"
+  },
+  "rounds": [
+    {
+      "title": "Round 1 – Creative & Fun Challenges",
+      "description": "Includes Limbo, Memory Game, Grid Game with mini dares, Pictionary, Emoji Decoding, Connections, and Meme Creation to encourage innovation, humour, observation skills, and collaboration.",
+      "_id": {
+        "$oid": "694ce9c4297836cde7682480"
+      }
+    },
+    {
+      "title": "Round 2 – Escape Room Challenge",
+      "description": "Participants use personal belongings to solve puzzles and unlock clues, testing teamwork, strategic thinking, and problem-solving under pressure.",
+      "_id": {
+        "$oid": "694ce9c4297836cde7682481"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Neelesh Padmanabh",
+      "mobile": "8148401083",
+      "_id": {
+        "$oid": "694ce9c4297836cde7682482"
+      }
+    },
+    {
+      "name": "Atul Vasanthakrishnan",
+      "mobile": "9345722948",
+      "_id": {
+        "$oid": "694ce9c4297836cde7682483"
+      }
+    }
+  ],
+  "hall": "Q Block Classroom",
+  "eventRules": "Participants must follow organiser instructions and maintain sportsmanship throughout the event.",
+  "teamSize": 4,
+  "date": {
+    "$date": "2026-02-01T09:00:00.000Z"
+  },
+  "closed": false,
+  "timing": "To be announced",
+  "youtubeUrl": "",
+  "createdAt": {
+    "$date": "2025-12-25T07:37:40.909Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-25T07:37:40.909Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "694ce9d2297836cde7682488"
+  },
+  "eventId": "EVNT02",
+  "eventName": "neXus",
+  "category": "Technical",
+  "oneLineDescription": "Marvel-themed beginner-friendly cybersecurity CTF with mission-based challenges",
+  "description": "neXus is a Marvel-themed Capture The Flag (CTF) event consisting of six mission-based cybersecurity challenges designed to build foundational technical skills, teamwork, and confidence through hands-on learning.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cb"
+  },
+  "rounds": [
+    {
+      "title": "Infinity Stone Missions",
+      "description": "Six beginner-friendly cybersecurity challenges covering cryptography, DNS lookup, log analysis, steganography, timestamp conversion, and web inspection. Participants capture flags and document solutions with screenshots.",
+      "_id": {
+        "$oid": "694ce9d2297836cde7682489"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Karthick J S",
+      "mobile": "9042480747",
+      "_id": {
+        "$oid": "694ce9d2297836cde768248a"
+      }
+    },
+    {
+      "name": "Pravith",
+      "mobile": "9843243610",
+      "_id": {
+        "$oid": "694ce9d2297836cde768248b"
+      }
+    }
+  ],
+  "hall": "AIR Lab",
+  "eventRules": "Time limit is 2 hours. Participants must follow organiser instructions. Any cheating leads to disqualification. Points are awarded based on accuracy, creativity, and timely completion. Organisers’ decisions are final.",
+  "teamSize": 3,
+  "date": {
+    "$date": "2026-02-01T09:00:00.000Z"
+  },
+  "closed": false,
+  "timing": "2 Hours",
+  "youtubeUrl": "",
+  "createdAt": {
+    "$date": "2025-12-25T07:37:54.049Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-25T07:37:54.049Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "694cec9c297836cde7682490"
+  },
+  "eventId": "EVNT03",
+  "eventName": "Git Wars",
+  "category": "Non Technical",
+  "oneLineDescription": "Clone. Commit. Conquer",
+  "description": "Git Wars is a two-round interactive event that blends creativity, communication, strategy, and basic technical thinking. With a Star Wars theme, participants compete as teams in progressive rounds where early performance directly impacts later advantages, fostering teamwork, improvisation, and decision-making in a fun and competitive environment.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cf"
+  },
+  "rounds": [
+    {
+      "title": "Round 1 – Code Charades (The Droid’s Transmission)",
+      "description": "Participants act out computer science-related terms using gestures only, with added constraints from Bug Cards. Points earned convert into strategic advantages for the next round.",
+      "_id": {
+        "$oid": "694cec9c297836cde7682491"
+      }
+    },
+    {
+      "title": "Round 2 – Deal or No Deal: CS Edition (The Asteroid Field)",
+      "description": "Teams answer a mix of technical and non-technical questions and use advantages earned in Round 1 to select cups containing hidden points, introducing risk-taking and strategy.",
+      "_id": {
+        "$oid": "694cec9c297836cde7682492"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Srimathikalpana T",
+      "mobile": "8122966128",
+      "_id": {
+        "$oid": "694cec9c297836cde7682493"
+      }
+    },
+    {
+      "name": "Suryaprakash B",
+      "mobile": "7339143171",
+      "_id": {
+        "$oid": "694cec9c297836cde7682494"
+      }
+    }
+  ],
+  "hall": "G Block Classroom",
+  "eventRules": "Teams must follow organiser instructions. Judging is based on accuracy, time, creativity, team synergy, and effective use of advantages. Organisers' decisions are final.",
+  "teamSize": 4,
+  "date": {
+    "$date": "2026-02-01T09:00:00.000Z"
+  },
+  "closed": false,
+  "timing": "To be announced",
+  "youtubeUrl": "",
+  "createdAt": {
+    "$date": "2025-12-25T07:49:48.371Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-25T07:49:48.371Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "694ceca6297836cde7682499"
+  },
+  "eventId": "EVNT04",
+  "eventName": "ForceCoders",
+  "category": "Technical",
+  "oneLineDescription": "Code like Tourist. Hack like a Grandmaster.",
+  "description": "ForceCoders is a high-intensity competitive coding event focused on core computer science fundamentals such as data structures, algorithms, and system logic. The event follows a progressive two-round format that tests implementation speed, algorithmic depth, debugging ability, and adversarial thinking.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cf"
+  },
+  "rounds": [
+    {
+      "title": "Round 1 – Coding Phase",
+      "description": "Participants solve 5–6 competitive programming problems ranging from easy to hard on a standard CP platform. Performance is judged on correctness, time taken, and penalties.",
+      "_id": {
+        "$oid": "694ceca6297836cde768249a"
+      }
+    },
+    {
+      "title": "Round 2 – Hacking Phase",
+      "description": "Participants attempt to break other contestants' accepted solutions by identifying edge cases and submitting failing test inputs. Points are awarded for successful hacks and deducted for failed ones.",
+      "_id": {
+        "$oid": "694ceca6297836cde768249b"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Dhaarun Abhimanyu S",
+      "mobile": "9790313358",
+      "_id": {
+        "$oid": "694ceca6297836cde768249c"
+      }
+    },
+    {
+      "name": "A T Abbilaash",
+      "mobile": "8667093591",
+      "_id": {
+        "$oid": "694ceca6297836cde768249d"
+      }
+    }
+  ],
+  "hall": "AIR Lab",
+  "eventRules": "Cheating is prohibited. Points are awarded for successful hacks and reduced for failed hacks or broken defenses. Final scores are calculated using aggregate performance across both rounds. Organisers’ decisions are final.",
+  "teamSize": 2,
+  "date": {
+    "$date": "2026-02-01T09:00:00.000Z"
+  },
+  "closed": false,
+  "timing": "To be announced",
+  "youtubeUrl": "",
+  "createdAt": {
+    "$date": "2025-12-25T07:49:58.495Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-25T07:49:58.495Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "694ced34297836cde76824a3"
+  },
+  "eventId": "EVNT05",
+  "eventName": "Open Quiz",
+  "category": "Quiz",
+  "oneLineDescription": "Prompt Engineer Battle, Stock Market Quiz, Phygital Escape Quiz",
+  "description": "Open Quiz is a multi-round interactive quiz event combining AI creativity, strategic thinking, and immersive problem-solving. The event challenges participants through an AI-based prompt engineering round, a strategy-driven stock market quiz, and a phygital escape quiz that blends physical and digital clues.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cd"
+  },
+  "rounds": [
+    {
+      "title": "Round 1 – Prompt Engineer Battle",
+      "description": "Teams reverse-engineer AI-generated images by writing prompts that recreate them. Points are awarded based on accuracy, prompt clarity, structure, and creativity.",
+      "_id": {
+        "$oid": "694ced34297836cde76824a4"
+      }
+    },
+    {
+      "title": "Round 2 – Stock Market Quiz",
+      "description": "Teams wager virtual coins on question categories before seeing the question. Scoring depends on final bank balance, smart wagering, and consistency of correct answers.",
+      "_id": {
+        "$oid": "694ced34297836cde76824a5"
+      }
+    },
+    {
+      "title": "Round 3 – Phygital Escape Quiz",
+      "description": "Participants solve a series of physical and digital puzzles using QR codes, AR objects, and hidden clues. Scoring is based on completion time, accuracy, and team coordination.",
+      "_id": {
+        "$oid": "694ced34297836cde76824a6"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Shelvaaathithyan VK",
+      "mobile": "6381466406",
+      "_id": {
+        "$oid": "694ced34297836cde76824a7"
+      }
+    },
+    {
+      "name": "Logini TS",
+      "mobile": "9842330146",
+      "_id": {
+        "$oid": "694ced34297836cde76824a8"
+      }
+    }
+  ],
+  "hall": "To be announced",
+  "eventRules": "Participants must follow organiser instructions. Judging is based on accuracy, strategy, creativity, time, and teamwork. Organisers’ decisions are final.",
+  "teamSize": 3,
+  "date": {
+    "$date": "2026-02-01T09:00:00.000Z"
+  },
+  "closed": false,
+  "timing": "To be announced",
+  "youtubeUrl": "",
+  "createdAt": {
+    "$date": "2025-12-25T07:52:20.361Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-25T07:52:20.361Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695a38a48baa56af3270686f"
+  },
+  "eventId": "EVNT06",
+  "eventName": "CodeMania",
+  "category": "Technical",
+  "oneLineDescription": "Beat the clock in code, beat the rivals in bids.",
+  "description": "CodeMania is a competitive technical event that tests participants on both algorithmic optimization and strategic decision-making. Participants must optimize inefficient code under strict time constraints and then compete in a bidding-based problem-solving round where strategy is as important as coding skills.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cd"
+  },
+  "rounds": [
+    {
+      "title": "Round 1: The Optimization Arena",
+      "description": "Participants receive 3–5 source code files using brute-force approaches. The task is to optimize the algorithms (e.g., reducing O(N^2) to O(N)) so that the code executes within 1 second. A local script evaluates execution time.",
+      "_id": {
+        "$oid": "695a38a48baa56af32706870"
+      }
+    },
+    {
+      "title": "Round 2: Strategic Bidding Challenge",
+      "description": "Qualified teams receive virtual currency and bid on questions of varying difficulty. The highest bidder attempts the question. Points are awarded based on difficulty, and incorrect answers result in loss of the bid amount.",
+      "_id": {
+        "$oid": "695a38a48baa56af32706871"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Harini P",
+      "mobile": "6366203232",
+      "_id": {
+        "$oid": "695a38a48baa56af32706872"
+      }
+    },
+    {
+      "name": "Revanth P",
+      "mobile": "7904316372",
+      "_id": {
+        "$oid": "695a38a48baa56af32706873"
+      }
+    }
+  ],
+  "hall": "To be decided by CSEA",
+  "eventRules": "1. Participants must optimize the given code without changing the logic outcome.\n2. Execution time must be under 1 second to qualify in Round 1.\n3. In Round 2, bidding rules apply and highest bidder gets to attempt the question.\n4. If the answer is incorrect, the full bid amount is deducted.\n5. Final ranking is based on virtual balance after completion.",
+  "teamSize": 1,
+  "date": null,
+  "closed": false,
+  "timing": "To be announced",
+  "createdAt": {
+    "$date": "2026-01-04T09:53:40.194Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-04T09:53:40.194Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695a3d878baa56af3270688b"
+  },
+  "eventId": "EVNT07",
+  "eventName": "Thooral Hackathon",
+  "category": "Technical",
+  "oneLineDescription": "From idea to impact—design, document, build, and present innovative solutions.",
+  "description": "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle. Participants ideate solutions, create structured documentation, develop working prototypes, and present their solutions across domains such as Full Stack Development, Machine Learning, and Blockchain. The event emphasizes innovation, teamwork, and industry-relevant development practices.",
+  "club_id": {
+    "$oid": "69495a6a719d1b3bd5a9e7cd"
+  },
+  "rounds": [
+    {
+      "title": "Ideation & Pitching",
+      "description": "Teams analyze the problem statement and present innovative solutions through a structured PPT pitch.",
+      "_id": {
+        "$oid": "695a3d878baa56af3270688c"
+      }
+    },
+    {
+      "title": "Documentation & System Design",
+      "description": "Participants prepare essential software artifacts including SRS documents and UML diagrams.",
+      "_id": {
+        "$oid": "695a3d878baa56af3270688d"
+      }
+    },
+    {
+      "title": "Implementation Phase",
+      "description": "Teams develop working prototypes or applications based on their proposed solutions.",
+      "_id": {
+        "$oid": "695a3d878baa56af3270688e"
+      }
+    },
+    {
+      "title": "Final Presentation",
+      "description": "Teams demonstrate their solution, explain design decisions, and present impact and scalability before judges.",
+      "_id": {
+        "$oid": "695a3d878baa56af3270688f"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Dinesh T M",
+      "mobile": "9535372504",
+      "_id": {
+        "$oid": "695a3d878baa56af32706890"
+      }
+    },
+    {
+      "name": "Akash",
+      "mobile": "9943803882",
+      "_id": {
+        "$oid": "695a3d878baa56af32706891"
+      }
+    }
+  ],
+  "hall": "To be decided by CSEA",
+  "eventRules": "1. Team participation as per hackathon guidelines\n2. Participants must follow all hackathon phases strictly\n3. Original work only; plagiarism leads to disqualification\n4. Judging based on ideation, documentation, implementation, innovation, and presentation\n5. Judges’ decision will be final",
+  "teamSize": 4,
+  "date": null,
+  "closed": false,
+  "timing": "2 Days (Exact schedule to be announced)",
+  "createdAt": {
+    "$date": "2026-01-04T10:14:31.740Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-04T10:14:31.740Z"
+  },
+  "__v": 0
+}]

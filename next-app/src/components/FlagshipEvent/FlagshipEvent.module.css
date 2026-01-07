@@ -539,13 +539,13 @@
 }
 
 /* ================================================
-   OVERLAY / MODAL
+   OVERLAY / MODAL - Poster Left, Content Right
    ================================================ */
 
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.92);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     display: flex;
@@ -568,25 +568,23 @@
 
 .modal {
     position: relative;
-    max-width: 900px;
+    max-width: 950px;
     width: 100%;
     max-height: 90vh;
-    overflow: hidden;
-    background: linear-gradient(145deg, #1a1a1f 0%, #25252a 50%, #1f1f24 100%);
-    border: 2px solid rgba(199, 32, 113, 0.5);
-    border-radius: 24px;
-    padding: 40px;
+    background: linear-gradient(145deg, #1a1a1f 0%, #1e1e23 50%, #1a1a1f 100%);
+    border: 1px solid rgba(199, 32, 113, 0.3);
+    border-radius: 12px;
     animation: modalSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow:
-        0 0 60px rgba(199, 32, 113, 0.3),
-        0 25px 50px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 0 80px rgba(199, 32, 113, 0.2),
+        0 25px 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
 }
 
 @keyframes modalSlide {
     from {
         opacity: 0;
-        transform: translateY(50px) scale(0.9);
+        transform: translateY(50px) scale(0.95);
     }
 
     to {
@@ -597,12 +595,12 @@
 
 .closeBtn {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     width: 44px;
     height: 44px;
     border: 2px solid #c72071;
-    background: transparent;
+    background: rgba(26, 26, 31, 0.9);
     border-radius: 50%;
     color: #c72071;
     font-size: 24px;
@@ -623,164 +621,330 @@
 
 .modalContent {
     display: flex;
-    gap: 40px;
-    align-items: flex-start;
-    max-height: calc(90vh - 80px);
+    gap: 0;
+    max-height: 90vh;
     overflow: hidden;
 }
 
+/* Left Side - Poster */
 .modalPosterWrapper {
-    position: sticky;
-    top: 50%;
-    transform: translateY(-50%);
-    flex-shrink: 0;
-    align-self: flex-start;
-}
-
-.modalGlowRing {
-    position: absolute;
-    inset: -20px;
-    border-radius: 24px;
-    background: radial-gradient(circle, rgba(199, 32, 113, 0.4) 0%, transparent 70%);
-    animation: modalGlow 3s ease-in-out infinite;
-    z-index: -1;
-}
-
-@keyframes modalGlow {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-
-    50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-    }
+    flex: 0 0 340px;
+    padding: 30px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .modalPoster {
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 1;
     object-fit: cover;
-    border-radius: 16px;
-    border: 3px solid rgba(199, 32, 113, 0.6);
-    box-shadow: 0 0 40px rgba(199, 32, 113, 0.4);
+    border-radius: 8px;
+    border: 2px solid rgba(199, 32, 113, 0.4);
+    box-shadow: 0 0 30px rgba(199, 32, 113, 0.3);
 }
 
+/* Right Side - Scrollable Content */
 .modalInfo {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    max-height: calc(90vh - 80px);
+    gap: 20px;
+    padding: 35px 40px 35px 30px;
+    max-height: 90vh;
     overflow-y: auto;
-    padding-right: 10px;
 }
 
-/* Custom scrollbar for modal info */
+/* Custom scrollbar */
 .modalInfo::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
 }
 
 .modalInfo::-webkit-scrollbar-track {
-    background: rgba(30, 30, 35, 0.5);
-    border-radius: 3px;
+    background: rgba(30, 30, 35, 0.3);
 }
 
 .modalInfo::-webkit-scrollbar-thumb {
-    background: rgba(199, 32, 113, 0.5);
+    background: rgba(199, 32, 113, 0.4);
     border-radius: 3px;
 }
 
 .modalInfo::-webkit-scrollbar-thumb:hover {
-    background: rgba(199, 32, 113, 0.7);
+    background: rgba(199, 32, 113, 0.6);
 }
 
-.modalLabel {
+/* Category Badge */
+.category {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: transparent;
+    color: rgba(238, 238, 238, 0.7);
     font-family: var(--font-electrolize), sans-serif;
-    font-size: 0.85rem;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: #c72071;
-    text-shadow: 0 0 10px rgba(199, 32, 113, 0.5);
+    letter-spacing: 3px;
+    margin-bottom: 0;
+    width: fit-content;
 }
 
+/* Modal Title */
 .modalTitle {
-    font-family: var(--font-orbitron), sans-serif;
-    font-size: 2.5rem;
-    font-weight: 700;
+    margin: 0;
+    font-size: 42px;
+    font-weight: bold;
     color: #eeeeee;
-    margin: 0;
-    text-shadow: 0 0 25px rgba(199, 32, 113, 0.6);
+    font-family: var(--font-orbitron), sans-serif;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.modalDesc {
+/* One-liner */
+.oneLiner {
+    color: rgba(238, 238, 238, 0.7);
     font-family: var(--font-electrolize), sans-serif;
-    font-size: 1rem;
+    font-size: 14px;
+    font-style: italic;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Description */
+.modalDesc {
     color: rgba(238, 238, 238, 0.85);
-    line-height: 1.8;
+    font-family: var(--font-electrolize), sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
     margin: 0;
 }
 
+/* Info Grid - 2x2 */
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.infoItem {
+    padding: 14px 18px;
+    border: 1px solid rgba(199, 32, 113, 0.25);
+    background-color: rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.infoLabel {
+    font-size: 10px;
+    color: rgba(238, 238, 238, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.infoValue {
+    font-size: 15px;
+    color: #eeeeee;
+    font-weight: 600;
+    font-family: var(--font-orbitron), sans-serif;
+}
+
+/* Rounds Section */
+.roundsSection {
+    margin-top: 10px;
+}
+
+.roundsTitle {
+    font-size: 12px;
+    color: rgba(238, 238, 238, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.roundsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.roundItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 16px 18px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(199, 32, 113, 0.2);
+    border-radius: 4px;
+}
+
+.roundNumber {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #c72071;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.roundContent {
+    flex: 1;
+}
+
+.roundTitle {
+    font-size: 14px;
+    color: #eeeeee;
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-family: var(--font-orbitron), sans-serif;
+}
+
+.roundDescription {
+    font-size: 13px;
+    color: rgba(238, 238, 238, 0.65);
+    line-height: 1.6;
+    margin: 0;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+/* Contacts Section */
+.contactsSection {
+    margin-top: 10px;
+}
+
+.sectionTitle {
+    font-size: 12px;
+    color: rgba(238, 238, 238, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin: 0 0 12px 0;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.contactsList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contactItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(199, 32, 113, 0.2);
+    border-radius: 4px;
+}
+
+.contactName {
+    font-size: 13px;
+    color: #eeeeee;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.contactPhone {
+    font-size: 13px;
+    color: #c72071;
+    text-decoration: none;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.contactPhone:hover {
+    text-decoration: underline;
+}
+
+/* Club Name */
+.clubName {
+    font-size: 11px;
+    color: rgba(238, 238, 238, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--font-electrolize), sans-serif;
+    margin: 10px 0;
+}
+
+/* Register Button */
 .registerBtn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-    padding: 16px 36px;
+    padding: 14px 32px;
+    background-color: transparent;
     border: 2px solid #c72071;
     color: #c72071;
     font-family: var(--font-orbitron), sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 13px;
+    font-weight: bold;
     cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     transition: all 0.3s ease;
+    text-decoration: none;
     width: fit-content;
-    position: relative;
-    overflow: hidden;
-}
-
-.registerBtn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.registerBtn:hover::before {
-    left: 100%;
+    margin-top: 10px;
 }
 
 .registerBtn:hover {
-    transform: translateY(-4px);
-    color: white;
-    box-shadow:
-        0 0 40px rgba(199, 32, 113, 0.8),
-        0 15px 40px rgba(0, 0, 0, 0.4);
-}
-
-.registerBtn i {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-}
-
-.registerBtn:hover i {
-    transform: translate(3px, -3px);
+    background-color: #c72071;
+    color: #1a1a1f;
+    box-shadow: 0 0 25px rgba(199, 32, 113, 0.6);
 }
 
 /* ================================================
    RESPONSIVE
    ================================================ */
+
+@media (max-width: 900px) {
+    .overlay {
+        align-items: flex-start;
+        padding: 10px;
+        overflow-y: auto;
+    }
+
+    .modal {
+        max-height: none;
+        margin: 20px auto;
+        overflow: visible;
+    }
+
+    .modalContent {
+        flex-direction: column;
+        max-height: none;
+        overflow: visible;
+    }
+
+    .modalPosterWrapper {
+        flex: none;
+        padding: 20px;
+        padding-top: 60px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .modalPoster {
+        max-width: 250px;
+    }
+
+    .modalInfo {
+        padding: 20px 25px 30px;
+        max-height: none;
+        overflow-y: visible;
+    }
+}
 
 @media (max-width: 768px) {
     .cardWrapper {
@@ -805,28 +969,12 @@
         align-items: center;
     }
 
-    .modalContent {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .modalPoster {
-        width: 220px;
-        height: 220px;
-    }
-
     .modalTitle {
-        font-size: 1.8rem;
+        font-size: 28px;
     }
 
-    .modal {
-        padding: 25px;
-        padding-top: 60px;
-    }
-
-    .modalInfo {
-        align-items: center;
+    .infoGrid {
+        grid-template-columns: 1fr;
     }
 
     /* Disable 3D tilt on mobile */
@@ -850,156 +998,12 @@
         font-size: 1.4rem;
     }
 
-    .modalPoster {
-        width: 180px;
-        height: 180px;
+    .modalTitle {
+        font-size: 24px;
     }
 
     .registerBtn {
         width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Modal Additional Elements */
-.modalOneLiner {
-    font-family: var(--font-electrolize), sans-serif;
-    font-size: 0.95rem;
-    color: #c72071;
-    font-style: italic;
-    margin: 0 0 12px 0;
-}
-
-.modalInfoGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 20px 0;
-    width: 100%;
-}
-
-.modalInfoItem {
-    background: rgba(30, 30, 35, 0.8);
-    border: 1px solid rgba(199, 32, 113, 0.3);
-    padding: 12px;
-    border-radius: 8px;
-}
-
-.modalInfoLabel {
-    display: block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(238, 238, 238, 0.6);
-    margin-bottom: 4px;
-}
-
-.modalInfoValue {
-    font-family: var(--font-orbitron), sans-serif;
-    font-size: 0.9rem;
-    color: #eeeeee;
-    font-weight: 600;
-}
-
-.modalSectionTitle {
-    font-family: var(--font-orbitron), sans-serif;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #c72071;
-    margin: 0 0 12px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(199, 32, 113, 0.3);
-}
-
-.modalRounds {
-    width: 100%;
-    margin: 16px 0;
-}
-
-.modalRoundItem {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 12px;
-    padding: 12px;
-    background: rgba(30, 30, 35, 0.8);
-    border-left: 3px solid #c72071;
-    border-radius: 0 8px 8px 0;
-}
-
-.modalRoundItem .roundNumber {
-    width: 24px;
-    height: 24px;
-    background: #c72071;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #fff;
-    flex-shrink: 0;
-}
-
-.modalRoundItem strong {
-    color: #eeeeee;
-    font-size: 0.9rem;
-}
-
-.modalRoundItem p {
-    margin: 6px 0 0;
-    font-size: 0.8rem;
-    color: rgba(238, 238, 238, 0.7);
-    line-height: 1.5;
-}
-
-.modalContacts {
-    width: 100%;
-    margin: 16px 0;
-}
-
-.modalContactItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: rgba(30, 30, 35, 0.8);
-    border: 1px solid rgba(199, 32, 113, 0.2);
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
-
-.modalContactItem span {
-    font-size: 0.85rem;
-    color: #eeeeee;
-}
-
-.modalContactItem a {
-    font-size: 0.85rem;
-    color: #c72071;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.modalContactItem a:hover {
-    color: #ff6b9d;
-    text-decoration: underline;
-}
-
-.modalClub {
-    font-family: var(--font-electrolize), sans-serif;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: rgba(238, 238, 238, 0.5);
-    margin: 16px 0;
-    text-align: center;
-}
-
-@media (max-width: 768px) {
-    .modalInfoGrid {
-        grid-template-columns: 1fr;
     }
 }
 

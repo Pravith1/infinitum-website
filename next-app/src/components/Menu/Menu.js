@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import anime from 'animejs';
 
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from '../Link';
 import { Text } from '../Text';
@@ -26,7 +27,8 @@ class Component extends React.PureComponent {
     onLinkStart: PropTypes.func,
     onLinkEnd: PropTypes.func,
     user: PropTypes.object,
-    logout: PropTypes.func
+    logout: PropTypes.func,
+    isAuthPage: PropTypes.bool
   };
 
   static defaultProps = {
@@ -148,6 +150,7 @@ class Component extends React.PureComponent {
       onLinkEnd,
       user,
       logout,
+      isAuthPage,
       ...etc
     } = this.props;
     const { showSecuence } = this.state;
@@ -161,6 +164,7 @@ class Component extends React.PureComponent {
     };
 
     const isAuthenticated = user != null;
+    const showAuthButtons = !isAuthenticated && !isAuthPage;
 
     return (
       <Secuence
@@ -195,14 +199,14 @@ class Component extends React.PureComponent {
                 </Text>
               </button>
             </>
-          ) : (
+          ) : showAuthButtons ? (
             <>
               <Link href='/auth?type=register' {...linkProps}>
                 <Text
                   animation={{ animate: animateText }}
                   audio={{ silent: !animateText }}
                 >
-                  Register
+                  RegisteR
                 </Text>
               </Link>
               <Link href='/auth?type=login' {...linkProps}>
@@ -214,7 +218,7 @@ class Component extends React.PureComponent {
                 </Text>
               </Link>
             </>
-          )}
+          ) : null}
         </nav>
       </Secuence>
     );
@@ -224,7 +228,9 @@ class Component extends React.PureComponent {
 // Wrapper component to use hooks with class component
 const MenuWithAuth = React.forwardRef((props, ref) => {
   const { user, logout } = useAuth();
-  return <Component {...props} user={user} logout={logout} ref={ref} />;
+  const pathname = usePathname();
+  const isAuthPage = pathname?.startsWith('/auth');
+  return <Component {...props} user={user} logout={logout} isAuthPage={isAuthPage} ref={ref} />;
 });
 
 MenuWithAuth.displayName = 'Menu';

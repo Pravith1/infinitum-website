@@ -9,6 +9,26 @@ body {
   overflow-x: hidden;
 }
 
+/* Hide scrollbars on mobile while keeping scroll functionality */
+@media (max-width: 768px) {
+
+  html,
+  body,
+  * {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+  }
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -145,6 +165,7 @@ a {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

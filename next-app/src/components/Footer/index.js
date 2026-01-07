@@ -8,4 +8,3 @@ import { styles } from './Footer.styles';
 const Footer = withAnimation()(withStyles(styles)(withSounds()(Component)));
 
 export { Footer };
-

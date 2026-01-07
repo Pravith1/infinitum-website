@@ -30,28 +30,26 @@ export default function ForgotPasswordComponent() {
     if (success) {
         return (
             <div className="auth-page">
-                <div className="auth-card">
-                    <div className="auth-header">
-                        <div className="auth-icon-success">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
+                <div className="main-frame">
+                    <div className="inner-frame"></div>
+                    <div className="side-line-left"></div>
+                    <div className="side-line-right"></div>
+
+                    <div className="login-panel">
+                        <h2 className="login-title">Check Email</h2>
+                        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', textAlign: 'center', marginBottom: '10px' }}>
+                            We've sent a reset link to <strong style={{ color: '#fff' }}>{email}</strong>
+                        </p>
+
+                        <div className="auth-btn-row" style={{ marginTop: '20px' }}>
+                            <button
+                                onClick={() => router.push('/auth?type=login')}
+                                className="auth-btn"
+                            >
+                                Back to Login
+                            </button>
                         </div>
-                        <h1>Check Your Email</h1>
-                        <p>
-                            We've sent a password reset link to <strong>{email}</strong>
-                        </p>
-                        <p className="auth-status-text">
-                            Click the link in the email to reset your password.
-                        </p>
                     </div>
-                    <button
-                        onClick={() => router.push('/auth?type=login')}
-                        className="auth-btn"
-                        style={{ marginTop: '24px' }}
-                    >
-                        Back to Login
-                    </button>
                 </div>
             </div>
         );
@@ -59,42 +57,49 @@ export default function ForgotPasswordComponent() {
 
     return (
         <div className="auth-page">
-            <div className="auth-card">
-                <div className="auth-header">
-                    <h1>Forgot Password</h1>
-                    <p>Enter your email to receive a password reset link</p>
-                </div>
+            <div className="main-frame">
+                <div className="inner-frame"></div>
+                <div className="side-line-left"></div>
+                <div className="side-line-right"></div>
 
-                {error && <div className="auth-error">{error}</div>}
+                <div className="login-panel">
+                    <h2 className="login-title">Forgot Password</h2>
 
-                <form onSubmit={handleSubmit} className="auth-form">
-                    <div className="auth-field">
-                        <label htmlFor="email">Email Address</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your.email@example.com"
-                            required
-                        />
+                    {error && <div className="auth-error">{error}</div>}
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="input-group">
+                            <svg className="icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                            </svg>
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
+                                required
+                            />
+                        </div>
+
+                        <div className="auth-btn-row">
+                            <button type="submit" disabled={loading} className="auth-btn">
+                                {loading ? 'Sending...' : 'Send Reset Link'}
+                            </button>
+                        </div>
+                    </form>
+
+                    <div className="auth-links">
+                        <p>
+                            Remember your password?{' '}
+                            <button
+                                onClick={() => router.push('/auth?type=login')}
+                                className="auth-link"
+                            >
+                                Back to Login
+                            </button>
+                        </p>
                     </div>
-
-                    <button type="submit" disabled={loading} className="auth-btn">
-                        {loading ? 'Sending...' : 'Send Reset Link'}
-                    </button>
-                </form>
-
-                <div className="auth-links">
-                    <p>
-                        Remember your password?{' '}
-                        <button
-                            onClick={() => router.push('/auth?type=login')}
-                            className="auth-link"
-                        >
-                            Back to Login
-                        </button>
-                    </p>
                 </div>
             </div>
         </div>

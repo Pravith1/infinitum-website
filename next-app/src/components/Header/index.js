@@ -8,4 +8,3 @@ import { styles } from './Header.styles';
 const Header = withAnimation()(withStyles(styles)(withSounds()(Component)));
 
 export { Header };
-

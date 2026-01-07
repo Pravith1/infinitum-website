@@ -23,12 +23,13 @@ class Component extends React.Component {
     children: PropTypes.any
   };
 
-  constructor () {
+  constructor() {
     super(...arguments);
 
     this.state = {
       show: false,
-      shapes: []
+      shapes: [],
+      shutterExtension: 0
     };
 
     const { energy } = this.props;
@@ -37,16 +38,18 @@ class Component extends React.Component {
     energy.updateDuration({ enter: durationEnter });
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.draw();
 
     window.addEventListener('resize', this.onResize);
+    window.addEventListener('shutter-state-change', this.onShutterChange);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.stop();
 
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('shutter-state-change', this.onShutterChange);
   }
 
   onResize = () => {
@@ -54,18 +57,37 @@ class Component extends React.Component {
     this.reset();
   }
 
-  draw () {
+  onShutterChange = (event) => {
+    const { shutterState } = event.detail;
+    const isActive = shutterState === 'closing' || shutterState === 'closed';
+
+    // Calculate exact distance to screen center
+    const screenCenter = window.innerHeight / 2;
+    const headerBottom = this.element.getBoundingClientRect().bottom;
+    const distanceToCenter = Math.max(0, screenCenter - headerBottom);
+    const extension = isActive ? distanceToCenter : 0;
+
+    this.setState({ shutterExtension: extension }, () => {
+      this.draw();
+    });
+  }
+
+  draw() {
     const { theme } = this.props;
     const { small } = getViewportRange();
+    const { shutterExtension } = this.state;
     const width = this.element.offsetWidth;
     const height = this.element.offsetHeight;
+    const totalHeight = height + shutterExtension;
 
     this.svg.setAttribute('width', width);
-    this.svg.setAttribute('height', height);
+    this.svg.setAttribute('height', totalHeight);
+    // Add transition for smooth animation
+    this.svg.style.transition = 'height 0.4s ease-in-out';
 
     const boxWidth = Math.min(1000, width);
     const offset = small ? 5 : 20;
-    const pit = height - (small ? 5 : 10);
+    const pit = totalHeight - (small ? 5 : 10);
     const double = small ? 0 : 12;
 
     const x1 = ((width - boxWidth) / 2);
@@ -78,16 +100,16 @@ class Component extends React.Component {
     const lineColor = rgba(theme.color.primary.dark, 0.5);
 
     const ground = {
-      d: `M0,0 L${width},0 L${width},${height} L${x5},${height} L${x4},${pit} L${x3},${pit} L${x2},${pit} L${x1},${height} L0,${height} L0,0`,
+      d: `M0,0 L${width},0 L${width},${totalHeight} L${x5},${totalHeight} L${x4},${pit} L${x3},${pit} L${x2},${pit} L${x1},${totalHeight} L0,${totalHeight} L0,0`,
       fill: backgroundColor,
       stroke: backgroundColor
     };
     const line1 = {
-      d: `M0,${height} L${x1},${height}`,
+      d: `M0,${totalHeight} L${x1},${totalHeight}`,
       stroke: lineColor
     };
     const slash1 = {
-      d: `M${x1},${height} L${x2},${pit} M${x1 - double},${height} L${x2 - double},${pit}`,
+      d: `M${x1},${totalHeight} L${x2},${pit} M${x1 - double},${totalHeight} L${x2 - double},${pit}`,
       stroke: theme.color.tertiary.main,
       strokeWidth: 3
     };
@@ -100,12 +122,12 @@ class Component extends React.Component {
       stroke: lineColor
     };
     const slash2 = {
-      d: `M${x5},${height} L${x4},${pit} M${x5 + double},${height} L${x4 + double},${pit}`,
+      d: `M${x5},${totalHeight} L${x4},${pit} M${x5 + double},${totalHeight} L${x4 + double},${pit}`,
       stroke: theme.color.tertiary.main,
       strokeWidth: 3
     };
     const line4 = {
-      d: `M${width},${height} L${x5},${height}`,
+      d: `M${width},${totalHeight} L${x5},${totalHeight}`,
       stroke: lineColor
     };
 
@@ -114,13 +136,13 @@ class Component extends React.Component {
     this.setState({ shapes });
   }
 
-  getDurationEnter () {
+  getDurationEnter() {
     const { theme } = this.props;
     const { small, medium } = getViewportRange();
     return (small || medium ? 2 : 4) * theme.animation.time;
   }
 
-  playSound () {
+  playSound() {
     const { sounds } = this.props;
 
     if (!sounds.deploy.playing()) {
@@ -128,12 +150,12 @@ class Component extends React.Component {
     }
   }
 
-  stopSound () {
+  stopSound() {
     const { sounds } = this.props;
     sounds.deploy.stop();
   }
 
-  enter () {
+  enter() {
     const shapes = Array.from(this.svg.querySelectorAll('path'));
     const [ground, line1, slash1, line2, line3, slash2, line4] = shapes;
     const duration = this.getDurationEnter();
@@ -200,7 +222,7 @@ class Component extends React.Component {
     });
   }
 
-  exit () {
+  exit() {
     const { energy, sounds } = this.props;
     const shapes = Array.from(this.svg.querySelectorAll('path'));
     const [ground, line1, slash1, line2, line3, slash2, line4] = shapes;
@@ -257,14 +279,14 @@ class Component extends React.Component {
     });
   }
 
-  stop () {
+  stop() {
     const shapes = this.svg.querySelectorAll('path');
 
     anime.remove(shapes);
     anime.remove(this.element);
   }
 
-  reset () {
+  reset() {
     const { energy } = this.props;
     const show = energy.entering || energy.entered;
     const shapes = Array.from(this.svg.querySelectorAll('path'));
@@ -281,7 +303,7 @@ class Component extends React.Component {
     anime.set(shapes, { opacity: show ? 1 : 0 });
   }
 
-  render () {
+  render() {
     const {
       theme,
       classes,

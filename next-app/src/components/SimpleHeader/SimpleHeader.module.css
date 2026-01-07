@@ -87,6 +87,7 @@
     .orgLogo {
         width: 32px;
         height: 32px;
+        margin-top: 0;
     }
 }
 
@@ -111,5 +112,6 @@
     .orgLogo {
         width: 26px;
         height: 26px;
+        margin-top: 0;
     }
 }

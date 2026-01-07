@@ -123,7 +123,7 @@ export default function RegisterComponent() {
 
     return (
         <div className="auth-page">
-            <div className="auth-card" style={{ maxWidth: '520px' }}>
+            <div className="auth-card register-card">
                 <div className="auth-header">
                     <h1>Complete Registration</h1>
                     <p>
@@ -133,172 +133,196 @@ export default function RegisterComponent() {
 
                 {error && <div className="auth-error">{error}</div>}
 
-                <form onSubmit={handleSubmit} className="auth-form">
-                    {/* Email (Read-only) */}
-                    <div className="auth-field">
-                        <label htmlFor="email">Email Address</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            readOnly
-                        />
+                <form onSubmit={handleSubmit} className="auth-form register-form">
+                    {/* Account Information Section */}
+                    <div className="form-section">
+                        <h3 className="section-title">Account Information</h3>
+
+                        <div className="form-row">
+                            <div className="auth-field">
+                                <label htmlFor="email">Email Address</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    readOnly
+                                    className="readonly-input"
+                                />
+                            </div>
+                        </div>
+
+                        {formData.source === 'email' && (
+                            <div className="form-row two-columns">
+                                <div className="auth-field">
+                                    <label htmlFor="password">Password *</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        placeholder="Min. 6 characters"
+                                        required
+                                        minLength={6}
+                                    />
+                                </div>
+
+                                <div className="auth-field">
+                                    <label htmlFor="confirmPassword">Confirm Password *</label>
+                                    <input
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        placeholder="Re-enter password"
+                                        required
+                                        minLength={6}
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
-                    {/* Password (Only for email source) */}
-                    {formData.source === 'email' && (
-                        <>
+                    {/* Personal Information Section */}
+                    <div className="form-section">
+                        <h3 className="section-title">Personal Information</h3>
+
+                        <div className="form-row two-columns">
                             <div className="auth-field">
-                                <label htmlFor="password">Password</label>
+                                <label htmlFor="name">Full Name *</label>
                                 <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    value={formData.password}
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
                                     onChange={handleChange}
-                                    placeholder="Enter your password"
+                                    placeholder="Your full name"
                                     required
-                                    minLength={6}
                                 />
                             </div>
 
                             <div className="auth-field">
-                                <label htmlFor="confirmPassword">Confirm Password</label>
+                                <label htmlFor="phone">Phone Number *</label>
                                 <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    value={formData.phone}
                                     onChange={handleChange}
-                                    placeholder="Confirm your password"
+                                    placeholder="10-digit mobile number"
                                     required
-                                    minLength={6}
+                                    pattern="[0-9]{10}"
                                 />
                             </div>
-                        </>
-                    )}
-
-                    {/* Name */}
-                    <div className="auth-field">
-                        <label htmlFor="name">Full Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder="Enter your full name"
-                            required
-                        />
+                        </div>
                     </div>
 
-                    {/* Phone */}
-                    <div className="auth-field">
-                        <label htmlFor="phone">Phone Number</label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder="Enter your phone number"
-                            required
-                        />
+                    {/* Academic Information Section */}
+                    <div className="form-section">
+                        <h3 className="section-title">Academic Information</h3>
+
+                        <div className="form-row">
+                            <div className="auth-field">
+                                <label htmlFor="college">College *</label>
+                                <select
+                                    id="college"
+                                    name="college"
+                                    value={formData.college}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select your college</option>
+                                    {colleges.map((college, index) => (
+                                        <option key={index} value={college}>
+                                            {college}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="form-row two-columns">
+                            <div className="auth-field">
+                                <label htmlFor="department">Department *</label>
+                                <input
+                                    type="text"
+                                    id="department"
+                                    name="department"
+                                    value={formData.department}
+                                    onChange={handleChange}
+                                    placeholder="e.g., Computer Science"
+                                    required
+                                />
+                            </div>
+
+                            <div className="auth-field">
+                                <label htmlFor="year">Year *</label>
+                                <select
+                                    id="year"
+                                    name="year"
+                                    value={formData.year}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select year</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* College */}
-                    <div className="auth-field">
-                        <label htmlFor="college">College</label>
-                        <select
-                            id="college"
-                            name="college"
-                            value={formData.college}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select your college</option>
-                            {colleges.map((college, index) => (
-                                <option key={index} value={college}>
-                                    {college}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    {/* Additional Information Section */}
+                    <div className="form-section">
+                        <h3 className="section-title">Additional Information</h3>
 
-                    {/* Department */}
-                    <div className="auth-field">
-                        <label htmlFor="department">Department</label>
-                        <input
-                            type="text"
-                            id="department"
-                            name="department"
-                            value={formData.department}
-                            onChange={handleChange}
-                            placeholder="Enter your department"
-                            required
-                        />
-                    </div>
+                        <div className="form-row two-columns">
+                            <div className="auth-field">
+                                <label htmlFor="referral">Referral Code</label>
+                                <input
+                                    type="text"
+                                    id="referral"
+                                    name="referral"
+                                    value={formData.referral}
+                                    onChange={handleChange}
+                                    placeholder="Optional"
+                                />
+                            </div>
 
-                    {/* Year */}
-                    <div className="auth-field">
-                        <label htmlFor="year">Year</label>
-                        <select
-                            id="year"
-                            name="year"
-                            value={formData.year}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select year</option>
-                            <option value="1">1st Year</option>
-                            <option value="2">2nd Year</option>
-                            <option value="3">3rd Year</option>
-                            <option value="4">4th Year</option>
-                        </select>
-                    </div>
+                            <div className="auth-field">
+                                <label htmlFor="discoveryMethod">How did you hear about us?</label>
+                                <select
+                                    id="discoveryMethod"
+                                    name="discoveryMethod"
+                                    value={formData.discoveryMethod}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select an option</option>
+                                    <option value="social_media">Social Media</option>
+                                    <option value="friends">Friends/Word of mouth</option>
+                                    <option value="posters">Posters/Flyers</option>
+                                    <option value="college_announcement">College Announcement</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    {/* Referral (Optional) */}
-                    <div className="auth-field">
-                        <label htmlFor="referral">Referral Code (Optional)</label>
-                        <input
-                            type="text"
-                            id="referral"
-                            name="referral"
-                            value={formData.referral}
-                            onChange={handleChange}
-                            placeholder="Enter referral code if any"
-                        />
-                    </div>
-
-                    {/* Accommodation */}
-                    <div className="auth-checkbox-field">
-                        <input
-                            type="checkbox"
-                            id="accomodation"
-                            name="accomodation"
-                            checked={formData.accomodation}
-                            onChange={(e) => setFormData(prev => ({ ...prev, accomodation: e.target.checked }))}
-                        />
-                        <label htmlFor="accomodation">I need accommodation</label>
-                    </div>
-
-                    {/* Discovery Method */}
-                    <div className="auth-field">
-                        <label htmlFor="discoveryMethod">How did you hear about us?</label>
-                        <select
-                            id="discoveryMethod"
-                            name="discoveryMethod"
-                            value={formData.discoveryMethod}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select an option</option>
-                            <option value="social_media">Social Media</option>
-                            <option value="friends">Friends/Word of mouth</option>
-                            <option value="posters">Posters/Flyers</option>
-                            <option value="college_announcement">College Announcement</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <div className="form-row">
+                            <div className="auth-checkbox-field">
+                                <input
+                                    type="checkbox"
+                                    id="accomodation"
+                                    name="accomodation"
+                                    checked={formData.accomodation}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, accomodation: e.target.checked }))}
+                                />
+                                <label htmlFor="accomodation">I need accommodation during the event</label>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" disabled={loading} className="auth-btn">

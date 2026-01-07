@@ -16,6 +16,7 @@ import { Header } from '@/components/Header';
 import PrizePool from '@/components/PrizePool/PrizePool';
 import SimpleHeader from '@/components/SimpleHeader/SimpleHeader';
 import FlagshipEvent from '@/components/FlagshipEvent/FlagshipEvent';
+import EventsGrid from '@/components/EventsGrid';
 
 // Original had: import { Secuence } from '../components/Secuence';
 // Note: I need to ensure import paths are correct. @/ is src/
@@ -43,7 +44,13 @@ const styles = theme => {
       color: theme.color.heading.main,
       textAlign: 'center',
       marginBottom: 20,
-      textShadow: `0 0 8px ${theme.color.secondary.main}`
+      textShadow: `0 0 8px ${theme.color.secondary.main}`,
+      maxWidth: '90%',
+      '@media (max-width: 480px)': {
+        fontSize: '0.85rem',
+        letterSpacing: '0.25em',
+        maxWidth: '85%'
+      }
     },
     brand: {
       margin: [0, 'auto', 20],
@@ -68,7 +75,12 @@ const styles = theme => {
       color: theme.color.heading.main,
       textAlign: 'center',
       marginBottom: 30,
-      textShadow: `0 0 12px ${theme.color.secondary.main}, 0 0 25px ${theme.color.secondary.dark}`
+      textShadow: `0 0 12px ${theme.color.secondary.main}, 0 0 25px ${theme.color.secondary.dark}`,
+      whiteSpace: 'nowrap',
+      '@media (max-width: 480px)': {
+        fontSize: '2.2rem',
+        letterSpacing: '0.1em'
+      }
     },
     scheduleLink: {
       position: 'absolute',
@@ -155,6 +167,7 @@ class Component extends React.Component {
             </div>
             <PrizePool />
             <FlagshipEvent />
+            <EventsGrid />
           </div>
         </SecuenceComponent>
       </>

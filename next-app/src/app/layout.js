@@ -40,6 +40,7 @@ export const metadata = {
 import StylesProvider from "@/components/ThemeRegistry";
 import ClientTemplate from "@/components/ClientTemplate/ClientTemplate";
 import { AuthProvider } from "@/context/AuthContext";
+import { ShutterProvider } from "@/context/ShutterContext";
 import CircularMenu from "@/components/CircularMenu/CircularMenu";
 
 export default function RootLayout({ children }) {
@@ -55,10 +56,12 @@ export default function RootLayout({ children }) {
       <body className={`${orbitron.variable} ${electrolize.variable}`} suppressHydrationWarning>
         <StylesProvider>
           <AuthProvider>
-            <ClientTemplate>
-              {children}
-            </ClientTemplate>
-            <CircularMenu />
+            <ShutterProvider>
+              <ClientTemplate>
+                {children}
+              </ClientTemplate>
+              <CircularMenu />
+            </ShutterProvider>
           </AuthProvider>
         </StylesProvider>
       </body>

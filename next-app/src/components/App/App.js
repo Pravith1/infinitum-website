@@ -6,6 +6,33 @@ import cx from 'classnames';
 import { AppContent } from '../AppContent';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
+import { useShutter } from '@/context/ShutterContext';
+
+// Wrapper component to use hooks
+function AppWithShutter({ classes, className, children, ...etc }) {
+  const { shutterState } = useShutter();
+  const isShuttering = shutterState === 'closing' || shutterState === 'closed' || shutterState === 'opening';
+
+  return (
+    <div className={cx(classes.root, className)} {...etc}>
+      <div
+        className={cx(
+          classes.content,
+          shutterState === 'closing' && classes.shutterClosing,
+          shutterState === 'closed' && classes.shutterClosed,
+          shutterState === 'opening' && classes.shutterOpening
+        )}
+        ref={ref => (window.__appContentElement = ref)}
+      >
+        <Header />
+        <AppContent>
+          {children}
+        </AppContent>
+        <Footer />
+      </div>
+    </div>
+  );
+}
 
 class Component extends React.Component {
   static displayName = 'App';
@@ -17,12 +44,12 @@ class Component extends React.Component {
     children: PropTypes.any
   };
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('route-change-start', this.onRouteChangeStart);
     window.addEventListener('route-change', this.onRouteChange);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('route-change-start', this.onRouteChangeStart);
     window.removeEventListener('route-change', this.onRouteChange);
   }
@@ -32,10 +59,12 @@ class Component extends React.Component {
   }
 
   onRouteChange = () => {
-    this.contentElement.scrollTo(0, 0);
+    if (window.__appContentElement) {
+      window.__appContentElement.scrollTo(0, 0);
+    }
   }
 
-  render () {
+  render() {
     const {
       theme,
       classes,
@@ -45,21 +74,11 @@ class Component extends React.Component {
     } = this.props;
 
     return (
-      <div className={cx(classes.root, className)} {...etc}>
-        <div
-          className={classes.content}
-          ref={ref => (this.contentElement = ref)}
-        >
-          <Header />
-          <AppContent>
-            {children}
-          </AppContent>
-          <Footer />
-        </div>
-      </div>
+      <AppWithShutter classes={classes} className={className} {...etc}>
+        {children}
+      </AppWithShutter>
     );
   }
 }
 
 export { Component };
-

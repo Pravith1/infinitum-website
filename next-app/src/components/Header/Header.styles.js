@@ -1,19 +1,24 @@
 'use client';
+import { rgba } from 'polished';
+
 const styles = theme => ({
   root: {
     position: 'relative',
     display: 'block',
     margin: [0, 'auto', 10],
-    width: '100%'
+    width: '100%',
+    overflow: 'visible'
   },
   svg: {
     display: 'block',
     position: 'absolute',
     left: 0,
-    top: 0
+    top: 0,
+    transition: 'transform 0.4s ease-in-out'
   },
   path: {
-    opacity: ({ energy }) => energy.animate ? 0 : 1
+    opacity: ({ energy }) => energy.animate ? 0 : 1,
+    transition: 'd 0.4s ease-in-out'
   },
   content: {
     position: 'relative',
@@ -32,6 +37,21 @@ const styles = theme => ({
   },
   menu: {
     width: '100%'
+  },
+
+  // Shutter overlay that expands downward
+  shutterOverlay: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    height: 0,
+    backgroundColor: rgba(theme.color.background.dark, theme.color.alpha),
+    transition: 'height 0.4s ease-in-out',
+    zIndex: 5
+  },
+  shutterActive: {
+    height: '50vh'
   },
 
   '@media screen and (min-width: 768px)': {
@@ -64,4 +84,3 @@ const styles = theme => ({
 });
 
 export { styles };
-

@@ -2,16 +2,19 @@
 const styles = theme => ({
   root: {
     position: 'relative',
-    marginTop: 10
+    marginTop: 10,
+    overflow: 'visible'
   },
   svg: {
     display: 'block',
     position: 'absolute',
     left: 0,
-    top: 0
+    top: 0,
+    transition: 'transform 0.4s ease-in-out'
   },
   path: {
-    opacity: ({ energy }) => energy.animate ? 0 : 1
+    opacity: ({ energy }) => energy.animate ? 0 : 1,
+    transition: 'd 0.4s ease-in-out'
   },
   content: {
     position: 'relative',

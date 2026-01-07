@@ -17,6 +17,7 @@ import PrizePool from '@/components/PrizePool/PrizePool';
 import SimpleHeader from '@/components/SimpleHeader/SimpleHeader';
 import FlagshipEvent from '@/components/FlagshipEvent/FlagshipEvent';
 import EventsGrid from '@/components/EventsGrid';
+import { Footer } from '@/components/Footer';
 
 // Original had: import { Secuence } from '../components/Secuence';
 // Note: I need to ensure import paths are correct. @/ is src/
@@ -160,14 +161,11 @@ class Component extends React.Component {
                 scheme='expand'
                 onLinkStart={this.onLinkStart}
               />
-              <SocialLinks
-                className={classes.social}
-                onLinkStart={this.onLinkStart}
-              />
             </div>
             <PrizePool />
             <FlagshipEvent />
             <EventsGrid />
+            <Footer/>
           </div>
         </SecuenceComponent>
       </>

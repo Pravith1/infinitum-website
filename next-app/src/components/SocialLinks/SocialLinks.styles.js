@@ -3,7 +3,8 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    gap: 20,
     userSelect: 'none',
     opacity: 0
   },

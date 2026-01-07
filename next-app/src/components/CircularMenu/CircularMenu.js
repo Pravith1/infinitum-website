@@ -11,7 +11,7 @@ const MENU_ITEMS = [
     { label: 'Schedule', icon: 'ri-calendar-line', href: '/schedule' },
     { label: 'Charity', icon: 'ri-heart-line', href: '/charity' },
     { label: 'Music', icon: 'ri-music-line', href: '/music' },
-    { label: 'News', icon: 'ri-newspaper-line', href: '/news' },
+    { label: 'Profile', icon: 'ri-user-line', href: '/portal/profile' },
 ];
 
 // Sound effects
@@ -81,6 +81,10 @@ export default function CircularMenu() {
             setSelectedIndex(index);
             // Only set initial rotation on first mount, not on pathname changes
             // This prevents backward rotation after navigation
+        } else {
+            // For login/register pages or any other page not in menu, remove selection
+            setActiveIndex(-1);
+            setSelectedIndex(-1);
         }
     }, [pathname, isMounted]);
 

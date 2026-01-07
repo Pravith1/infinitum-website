@@ -1,14 +1,123 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { eventsData } from '@/data/eventsData';
+import { eventService } from '@/services/eventservice';
 import { CometCard } from '@/components/ui/comet-card';
 import styles from './EventShowcase.module.css';
 
 export default function EventShowcase({ sounds }) {
+    const [category, setCategory] = useState('events');
+    const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [activeEventIndex, setActiveEventIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Fetch events
+    useEffect(() => {
+        const fetchEvents = async () => {
+            setIsLoading(true);
+            try {
+                let items = [];
+                if (category === 'events') {
+                    const data = await eventService.getAllEvents();
+                    if (data.success && data.events) {
+                        // Filter out 'thooral' as requested
+                        items = data.events.filter(e => !e.eventName.toLowerCase().includes('thooral'));
+                    }
+                } else if (category === 'workshops') {
+                    const data = await eventService.getAllWorkshops();
+                    if (data.success && data.workshops) {
+                        items = data.workshops.map(w => ({
+                            ...w,
+                            eventName: w.workshopName,
+                            oneLineDescription: w.description ? (w.description.length > 60 ? w.description.substring(0, 60) + '...' : w.description) : 'Technical Workshop',
+                            timing: w.time,
+                            // Workshop specific
+                            isWorkshop: true
+                        }));
+                    }
+                } else if (category === 'papers') {
+                    const data = await eventService.getAllPapers();
+                    if (data.success && data.papers) {
+                        items = data.papers.map(p => ({
+                            ...p,
+                            eventName: p.eventName || "Paper Presentation",
+                            oneLineDescription: p.theme || 'Paper Presentation',
+                            timing: p.time,
+                            isPaper: true
+                        }));
+                    }
+                }
+                setEvents(items);
+                setActiveEventIndex(0);
+            } catch (error) {
+                console.error(`Failed to fetch ${category}`, error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchEvents();
+    }, [category]);
+
+    // Fetch full details for the active item
+    useEffect(() => {
+        const current = events[activeEventIndex];
+        if (!current || current.isFullDetailsLoaded) return;
+
+        let isMounted = true;
+        const fetchDetails = async () => {
+            try {
+                let fullData = null;
+                if (category === 'events' && current.eventId) {
+                    const res = await eventService.getEventById(current.eventId);
+                    if (res && res.success) fullData = res.event;
+                } else if (category === 'workshops' && current.workshopId) {
+                    const res = await eventService.getWorkshopById(current.workshopId);
+                    if (res && res.success) {
+                        const w = res.workshop;
+                        fullData = {
+                            ...w,
+                            eventName: w.workshopName,
+                            oneLineDescription: w.description ? (w.description.length > 60 ? w.description.substring(0, 60) + '...' : w.description) : 'Technical Workshop',
+                            timing: w.time,
+                            isWorkshop: true
+                        };
+                    }
+                } else if (category === 'papers' && current.paperId) {
+                    const res = await eventService.getPaperById(current.paperId);
+                    if (res && res.success) {
+                        const p = res.paper;
+                        fullData = {
+                            ...p,
+                            eventName: p.eventName || "Paper Presentation",
+                            oneLineDescription: p.theme || 'Paper Presentation',
+                            timing: p.time,
+                            isPaper: true
+                        };
+                    }
+                }
+
+                if (isMounted && fullData) {
+                    setEvents(prev => {
+                        const newEvents = [...prev];
+                        if (newEvents[activeEventIndex]) {
+                             newEvents[activeEventIndex] = { ...newEvents[activeEventIndex], ...fullData, isFullDetailsLoaded: true };
+                        }
+                        return newEvents;
+                    });
+                }
+            } catch (err) {
+                console.error("Error fetching full details:", err);
+            }
+        };
+
+        const timer = setTimeout(fetchDetails, 100); 
+        return () => {
+            isMounted = false;
+            clearTimeout(timer);
+        };
+    }, [activeEventIndex, category, events]);
 
     // Lock body scroll when overlay is open
     useEffect(() => {
@@ -52,12 +161,13 @@ export default function EventShowcase({ sounds }) {
         }
     };
 
-    const currentEvent = eventsData[activeEventIndex];
+    const currentEvent = events[activeEventIndex];
 
     const handleEventChange = (direction) => {
+        if (events.length === 0) return;
         const newIndex = direction === 'next'
-            ? (activeEventIndex + 1) % eventsData.length
-            : (activeEventIndex - 1 + eventsData.length) % eventsData.length;
+            ? (activeEventIndex + 1) % events.length
+            : (activeEventIndex - 1 + events.length) % events.length;
 
         // Play click sound immediately
         if (sounds && sounds.click) {
@@ -84,19 +194,175 @@ export default function EventShowcase({ sounds }) {
     };
 
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         // Play click sound
         if (sounds && sounds.click) {
             sounds.click.play();
         }
-        // TODO: Navigate to registration page or open modal
-        alert(`Register for ${currentEvent.eventName}`);
+
+        const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+        if (!token) {
+             alert("Please login to register.");
+             return;
+        }
+
+        if (!confirm(`Are you sure you want to register for ${currentEvent.eventName}?`)) return;
+
+        try {
+            let res;
+            if (category === 'events') {
+                res = await eventService.registerEvent(currentEvent.eventId);
+            } else if (category === 'workshops') {
+                res = await eventService.registerWorkshop(currentEvent.workshopId);
+            } else if (category === 'papers') {
+                res = await eventService.registerPaper(currentEvent.paperId);
+            }
+
+            if (res && res.success) {
+                alert(res.message || "Registered successfully!");
+            } else {
+                 alert(res?.message || "Registration failed.");
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            const msg = error.response?.data?.message || "An error occurred during registration.";
+            alert(msg);
+        }
     };
+
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (isDropdownOpen && !e.target.closest('.category-dropdown')) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isDropdownOpen]);
+
+    const dropdownContainerStyle = {
+        position: 'absolute',
+        top: '100px', // Adjusted to not overlap with potentially hidden header or padding
+        left: '40px',
+        zIndex: 60,
+        pointerEvents: 'auto',
+        fontFamily: 'inherit'
+    };
+
+    const dropdownToggleStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 24px',
+        background: 'rgba(26, 2, 11, 0.6)', // Theme background main
+        border: '1px solid rgba(224, 78, 148, 0.3)', // Theme secondary light
+        boxShadow: '0 0 15px rgba(199, 32, 113, 0.2)', // Theme secondary main
+        color: '#e04e94', // Theme secondary light
+        minWidth: '220px',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        textTransform: 'uppercase',
+        letterSpacing: '0.15em',
+        transition: 'all 0.3s ease',
+        backdropFilter: 'blur(10px)',
+        clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)',
+        userSelect: 'none'
+    };
+
+    const dropdownMenuStyle = {
+        position: 'absolute',
+        top: 'calc(100% + 5px)',
+        left: '0',
+        width: '100%',
+        background: 'rgba(26, 2, 11, 0.95)', // Theme background main
+        border: '1px solid rgba(224, 78, 148, 0.2)', // Theme secondary light
+        color: '#fff',
+        zIndex: 61,
+        display: isDropdownOpen ? 'block' : 'none',
+        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', 
+        boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+    };
+
+    const dropdownItemStyle = (itemCategory) => ({
+        padding: '12px 24px',
+        cursor: 'pointer',
+        color: category === itemCategory ? '#e04e94' : 'rgba(255, 255, 255, 0.7)',
+        background: category === itemCategory ? 'rgba(199, 32, 113, 0.15)' : 'transparent',
+        fontSize: '0.9rem',
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+        transition: 'all 0.2s ease',
+        borderLeft: category === itemCategory ? '3px solid #e04e94' : '3px solid transparent'
+    });
+
+    const categoryLabels = {
+        'events': 'Events',
+        'workshops': 'Workshops',
+        'papers': 'Paper Presentation'
+    };
+
+    const currentCategoryLabel = categoryLabels[category];
+
+    const renderDropdown = () => (
+        <div style={dropdownContainerStyle} className="category-dropdown">
+            <div 
+                style={dropdownToggleStyle} 
+                onClick={() => {
+                    if (sounds?.click) sounds.click.play();
+                    setIsDropdownOpen(!isDropdownOpen);
+                }}
+            >
+                <span>{currentCategoryLabel}</span>
+                <span style={{ 
+                    fontSize: '0.8rem', 
+                    transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease'
+                }}>▼</span>
+            </div>
+            <div style={dropdownMenuStyle}>
+                {Object.keys(categoryLabels).map((cat) => (
+                    <div
+                        key={cat}
+                        style={dropdownItemStyle(cat)}
+                        onClick={() => {
+                            if (sounds?.click) sounds.click.play();
+                            setCategory(cat);
+                            setIsDropdownOpen(false);
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(199, 32, 113, 0.1)';
+                            e.currentTarget.style.color = '#fff';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = category === cat ? 'rgba(199, 32, 113, 0.15)' : 'transparent';
+                            e.currentTarget.style.color = category === cat ? '#e04e94' : 'rgba(255, 255, 255, 0.7)';
+                        }}
+                    >
+                        {categoryLabels[cat]}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
+    if (!currentEvent && !isLoading && events.length === 0) {
+        return (
+            <div className={styles.showcase} style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
+               {renderDropdown()}
+               <div style={{color: 'rgba(255,255,255,0.7)', marginTop: '0', fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.1em'}}>No {categoryLabels[category]} available</div>
+            </div>
+        );
+   }
 
     if (!currentEvent) return null;
 
     return (
         <div className={styles.showcase}>
+            {renderDropdown()}
+
             {/* Register Button - Top Right */}
             <button className={styles.registerButton} onClick={handleRegister}>
                 <span>Register Now</span>
@@ -152,7 +418,7 @@ export default function EventShowcase({ sounds }) {
                     <div className={styles.eventImageContainer}>
                         {/* Mobile Swipe Indicator (Dots) */}
                         <div className={styles.mobileSwipeIndicator}>
-                            {eventsData.map((_, index) => (
+                            {events.map((_, index) => (
                                 <span
                                     key={index}
                                     className={`${styles.swipeDot} ${index === activeEventIndex ? styles.activeDot : ''}`}
@@ -161,7 +427,7 @@ export default function EventShowcase({ sounds }) {
                         </div>
 
                         {/* Navigation Arrows - Using absolute positioning relative to this container which hugs the image */}
-                        {eventsData.length > 1 && (
+                        {events.length > 1 && (
                             <>
                                 <button
                                     className={`${styles.navArrow} ${styles.navLeft}`}
@@ -204,10 +470,10 @@ export default function EventShowcase({ sounds }) {
                     </div>
 
                     {/* Event Counter - Below Image */}
-                    {eventsData.length > 1 && (
+                    {events.length > 1 && (
                         <div className={styles.eventCounterContainer}>
                             <span className={styles.eventCounter}>
-                                Event {activeEventIndex + 1} of {eventsData.length}
+                                Event {activeEventIndex + 1} of {events.length}
                             </span>
                         </div>
                     )}

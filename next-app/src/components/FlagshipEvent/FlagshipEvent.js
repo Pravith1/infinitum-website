@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './FlagshipEvent.module.css';
+import { eventService } from '@/services/eventservice';
 
 // Static event data
 const EVENT_DATA = {
@@ -13,9 +14,6 @@ const EVENT_DATA = {
     posterSrc: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=400&fit=crop',
     registerLink: '/events'
 };
-
-// Get API URL from environment
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export default function FlagshipEvent() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
@@ -35,8 +33,7 @@ export default function FlagshipEvent() {
         const fetchFlagshipEvent = async () => {
             try {
                 // Step 1: Fetch all events
-                const response = await fetch(`${API_URL}/api/events?limit=50`);
-                const data = await response.json();
+                const data = await eventService.getAllEvents({ limit: 50 });
 
                 // Handle different response formats
                 let events = [];
@@ -64,8 +61,7 @@ export default function FlagshipEvent() {
                     });
 
                     // Step 3: Fetch detailed event data
-                    const detailResponse = await fetch(`${API_URL}/api/events/${thooral_hackathon.eventId}`);
-                    const detailData = await detailResponse.json();
+                    const detailData = await eventService.getEventById(thooral_hackathon.eventId);
 
                     let eventDetails = null;
                     if (detailData.event && Array.isArray(detailData.event)) {
@@ -83,7 +79,7 @@ export default function FlagshipEvent() {
                     }
 
                     setThooral(eventDetails);
-                    console.log('Thooral Details:', eventDetails);
+                    // console.log('Thooral Details:', eventDetails);
                 }
             } catch (err) {
                 console.error('Error fetching flagship event:', err);

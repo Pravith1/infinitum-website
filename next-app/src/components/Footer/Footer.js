@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { rgba } from 'polished';
 import anime from 'animejs';
+import Image from 'next/image';
 
 import { getViewportRange } from '../../tools/viewport';
 import { Secuence } from '../Secuence';
 import { SocialLinks } from '../SocialLinks';
-import { Legal } from '../Legal';
 
 class Component extends React.PureComponent {
   static displayName = 'Footer';
@@ -67,10 +67,7 @@ class Component extends React.PureComponent {
     const distanceToCenter = Math.max(0, footerTop - screenCenter);
     const extension = isActive ? distanceToCenter : 0;
 
-    console.log('[FOOTER] Shutter change:', shutterState, 'extension:', extension);
-
     this.setState({ shutterExtension: extension }, () => {
-      console.log('[FOOTER] State updated, calling draw()');
       this.draw();
     });
   }
@@ -320,6 +317,48 @@ class Component extends React.PureComponent {
     } = this.props;
     const { show, shapes } = this.state;
 
+    // Contact sections data
+    const contactSections = [
+      {
+        title: 'Heads',
+        contacts: [
+          { name: 'Arulkumara B R', position: 'Secretary', phone: '+91 XXXXX XXXXX' },
+          { name: 'Sanjay J', position: 'Joint Secretary', phone: '+91 XXXXX XXXXX' },
+          { name: 'Naren Siddharth M', position: 'Head-Sponsorship', phone: '+91 XXXXX XXXXX' }
+        ]
+      },
+      {
+        title: 'Tech Support',
+        contacts: [
+          { name: 'Darshan V G', phone: '+91 XXXXX XXXXX' },
+          { name: 'Adhish Krishna S', phone: '+91 XXXXX XXXXX' },
+          { name: 'Abinav P', phone: '+91 XXXXX XXXXX' }
+        ]
+      },
+      {
+        title: 'Event Support',
+        contacts: [
+          { name: 'Rohith Dharshan', phone: '+91 XXXXX XXXXX' },
+          { name: 'Shashwath', phone: '+91 XXXXX XXXXX' },
+          { name: 'Dinesh T M', phone: '+91 XXXXX XXXXX' }
+        ]
+      },
+      {
+        title: 'Accommodation (Boys)',
+        contacts: [
+          { name: 'Rohith Sarveshaa', phone: '+91 XXXXX XXXXX' },
+          { name: 'Karthick Saravanan', phone: '+91 XXXXX XXXXX' },
+        ]
+      },
+      {
+        title: 'Accommodation (Girls)',
+        contacts: [
+          { name: 'Kanishka', phone: '+91 XXXXX XXXXX' },
+          { name: 'Thejashree N', phone: '+91 XXXXX XXXXX' }
+        ]
+      }
+    ];
+
     return (
       <footer
         className={cx(classes.root, className)}
@@ -344,14 +383,48 @@ class Component extends React.PureComponent {
         </svg>
         <div className={classes.content}>
           <Secuence animation={{ show, independent: true }}>
-            <SocialLinks
-              className={classes.socialLinks}
-              itemClassName={classes.socialLinksItem}
-              animateY={false}
-            />
-            <Legal
-              className={classes.legal}
-            />
+            {/* Logo Section */}
+            <div className={classes.logoSection}>
+              <Image
+                src="/images/Infinitum.png"
+                alt="Infinitum Logo"
+                width={200}
+                height={70}
+                className={classes.logo}
+                priority
+              />
+            </div>
+
+            {/* Contact Sections Grid */}
+            <div className={classes.contactGrid}>
+              {contactSections.map((section, sectionIndex) => (
+                <div key={sectionIndex} className={classes.contactSection}>
+                  <span className={classes.sectionTitle}>{section.title}</span>
+                  {section.contacts.map((contact, contactIndex) => (
+                    <div key={contactIndex} className={classes.contactEntry}>
+                      <span className={classes.contactName}>{contact.name}</span>
+                      {contact.position && (
+                        <span className={classes.contactPosition}>{contact.position}</span>
+                      )}
+                      <span className={classes.contactPhone}>
+                        <a href={`tel:${contact.phone.replace(/\s/g, '')}`} className={classes.phoneLink}>
+                          {contact.phone}
+                        </a>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Social Links */}
+            <div className={classes.socialSection}>
+              <SocialLinks
+                className={classes.socialLinks}
+                itemClassName={classes.socialLinksItem}
+                animateY={false}
+              />
+            </div>
           </Secuence>
         </div>
       </footer>

@@ -8,9 +8,9 @@
     --frame-glow: rgba(224, 78, 148, 0.5);
     --accent-color: #c72071;
     --yellow-accent: #fae127;
-    --bg-grey: rgba(40, 35, 45, 0.92);
-    --bg-inner: rgba(55, 50, 60, 0.85);
-    --input-bg: rgba(30, 25, 35, 0.7);
+    --bg-grey: rgba(0, 0, 0, 0.5);
+    --bg-inner: rgba(0, 0, 0, 0.6);
+    --input-bg: rgba(0, 0, 0, 0.4);
     --input-border: rgba(199, 32, 113, 0.5);
     --text-dim: rgba(255, 255, 255, 0.6);
 }

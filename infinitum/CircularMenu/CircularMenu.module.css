@@ -1,0 +1,369 @@
+.navContainer {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    z-index: 1000;
+    --primary-color: #c72071;
+    --secondary-color: #1a020b;
+    --white-color: #eeeeee;
+}
+
+/* Backdrop */
+.menuBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.navContainer.open .menuBackdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Toggle Button */
+.toggleBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    z-index: 1001;
+    border: none;
+    outline: none;
+    color: var(--white-color);
+}
+
+/* Pulsing animation for new users */
+.toggleBtn.pulsing {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(199, 32, 113, 0.7), 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(199, 32, 113, 0), 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* First-time user hint tooltip */
+.menuHint {
+    position: absolute;
+    left: 75px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, rgba(30, 30, 35, 0.95), rgba(20, 20, 25, 0.98));
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 10px 16px;
+    white-space: nowrap;
+    z-index: 1002;
+    cursor: pointer;
+    animation: hintFadeIn 0.5s ease-out, hintBounce 2s ease-in-out infinite 0.5s;
+}
+
+.menuHint span {
+    color: var(--white-color);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.hintArrow {
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid var(--primary-color);
+}
+
+@keyframes hintFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+@keyframes hintBounce {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0);
+    }
+    50% {
+        transform: translateY(-50%) translateX(5px);
+    }
+}
+
+.navContainer.open .toggleBtn {
+    transform: translate(calc(50vw - 50px), calc(50vh - 50px));
+    background: transparent;
+    box-shadow: none;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.toggleBtn i {
+    font-size: 24px;
+    position: absolute;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.closeIcon {
+    opacity: 0;
+    transform: rotate(-180deg);
+}
+
+.menuIcon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.navContainer.open .menuIcon {
+    opacity: 0;
+    transform: rotate(180deg);
+}
+
+.navContainer.open .closeIcon {
+    opacity: 1;
+    transform: rotate(0);
+}
+
+/* Pie Menu Container */
+.pieMenu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 420px;
+    height: 420px;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.navContainer.open .pieMenu {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Rotating container for segments and icons */
+.rotatingContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Disable transition while dragging for smooth rotation */
+.rotatingContainer.dragging {
+    transition: none;
+}
+
+.pieSvg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    touch-action: none; /* Prevent scroll while rotating */
+}
+
+/* Segment Styling */
+.segment {
+    fill: rgba(20, 20, 25, 0.9);
+    cursor: pointer;
+    transition: fill 0.2s, filter 0.2s;
+}
+
+.segment:hover,
+.segmentHovered {
+    fill: rgba(199, 32, 113, 0.2);
+}
+
+.segmentActive {
+    fill: rgba(199, 32, 113, 0.35);
+}
+
+/* Keyboard selected segment */
+.segmentSelected {
+    fill: rgba(199, 32, 113, 0.25);
+}
+
+.segmentBorder {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 1;
+    pointer-events: none;
+}
+
+/* Icons on Segments */
+.segmentIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 52px;
+    height: 52px;
+    margin-left: -26px;
+    margin-top: -26px;
+    transform: translate(var(--x), var(--y)) rotate(var(--counter-rotate, 0deg));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-color);
+    font-size: 24px;
+    text-decoration: none;
+    background: rgba(20, 20, 25, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.25s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 10;
+}
+
+.segmentIcon:hover,
+.iconHovered {
+    background: var(--primary-color);
+    transform: translate(var(--x), var(--y)) rotate(var(--counter-rotate, 0deg)) scale(1.15);
+    border-color: var(--primary-color);
+}
+
+.iconActive {
+    background: var(--primary-color);
+    border-color: #fff;
+}
+
+/* Keyboard selected icon */
+.iconSelected {
+    background: rgba(199, 32, 113, 0.6);
+    border-color: var(--primary-color);
+    transform: translate(var(--x), var(--y)) rotate(var(--counter-rotate, 0deg)) scale(1.1);
+}
+
+/* Disable transitions during drag for instant counter-rotation */
+.iconDragging {
+    transition: none !important;
+}
+
+/* Center Circle - Close Button Only */
+.centerCircle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110px;
+    height: 110px;
+    background: linear-gradient(135deg, #151518, #1f1f25);
+    border: 2px solid rgba(199, 32, 113, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.centerCircle:hover {
+    background: linear-gradient(135deg, #1f1f25, #2a2a32);
+    border-color: var(--primary-color);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Icon Labels - always visible on segments */
+.iconLabel {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--white-color);
+    white-space: nowrap;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .navContainer {
+        left: 12px;
+        top: 12px;
+    }
+
+    .toggleBtn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .toggleBtn i {
+        font-size: 20px;
+    }
+
+    .pieMenu {
+        width: 360px;
+        height: 360px;
+    }
+    
+    .segmentIcon {
+        width: 44px;
+        height: 44px;
+        margin-left: -22px;
+        margin-top: -22px;
+        font-size: 18px;
+    }
+
+    .iconLabel {
+        font-size: 9px;
+        margin-top: 5px;
+    }
+    
+    .centerCircle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .centerCircle i {
+        font-size: 24px !important;
+    }
+
+    /* Mobile hint positioning */
+    .menuHint {
+        left: 55px;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .menuHint span {
+        font-size: 11px;
+    }
+}

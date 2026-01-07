@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { eventService } from '@/services/eventservice';
 import { useAuth } from '@/context/AuthContext';
@@ -9,9 +10,18 @@ import styles from './EventShowcase.module.css';
 
 export default function EventShowcase({ sounds, initialEventId }) {
     const { isAuthenticated, user } = useAuth();
-    const [category, setCategory] = useState('events');
+    const [category, setCategory] = useState(searchParams.get('category') || 'events');
     const [events, setEvents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    // Update category when URL parameter changes
+    useEffect(() => {
+        const cat = searchParams.get('category');
+        if (cat && ['events', 'workshops', 'papers'].includes(cat)) {
+            setCategory(cat);
+        }
+    }, [searchParams]);
+
     const [activeEventIndex, setActiveEventIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);

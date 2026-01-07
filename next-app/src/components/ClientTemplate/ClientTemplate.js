@@ -86,7 +86,7 @@ const Template = (props) => {
         );
     };
 
-    const isURLContent = ['/news', '/music', '/charity', '/events', '/schedule', '/auth'].find(path => {
+    const isURLContent = ['/news', '/music', '/charity', '/events', '/schedule', '/auth', '/portal'].find(path => {
         return pathname.startsWith(path);
     });
 

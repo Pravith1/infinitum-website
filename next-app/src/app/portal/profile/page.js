@@ -7,8 +7,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import api from '@/services/api'; 
 import axios from 'axios';
 
-import { Header } from '@/components/Header';
-
 import { withStyles } from '@/tools/withStyles';
 import { Secuence as SecuenceComponent } from '@/components/Secuence';
 import { Button } from '@/components/Button';
@@ -1048,8 +1046,6 @@ class ProfilePage extends React.Component {
                         accept=".pdf,.jpg,.jpeg,.png,.webp"
                         onChange={this.handleIdCardUpload}
                     />
-                    
-                    <Header />
 
                     <div className={classes.dashboardContainer}>
                         

@@ -34,7 +34,7 @@ export default function Speakers() {
 
     return (
         <section className={styles.container}>
-            <h2 className={styles.heading}>Mentors & Speakers</h2>
+            <h2 className={styles.heading}>Speakers & Panelists</h2>
 
             {!hasSpeakers ? (
                 <div className={styles.toBeAnnounced}>

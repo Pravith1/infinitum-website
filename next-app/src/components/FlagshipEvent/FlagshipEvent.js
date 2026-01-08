@@ -12,7 +12,7 @@ const EVENT_DATA = {
     title: 'Thooral Hackathon',
     shortDescription: 'The ultimate hackathon challenge awaits. Test your skills and compete with the best minds in an intense 24-hour coding marathon.',
     fullDescription: 'Prepare yourself for the most anticipated event of Infinitum! Thooral Hackathon brings together the brightest minds to compete in an intense coding marathon. Showcase your problem-solving skills, algorithmic thinking, and creativity as you tackle challenging problems designed to push your limits. Whether you\'re a seasoned coder or an enthusiastic beginner, this event offers something for everyone. Join us for an unforgettable experience filled with learning, competition, and amazing prizes!',
-    posterSrc: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=400&fit=crop',
+    posterSrc: 'images/Thooral.jpeg',
 };
 
 export default function FlagshipEvent() {

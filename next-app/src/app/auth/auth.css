@@ -362,6 +362,77 @@ main>div::-webkit-scrollbar {
     box-shadow: 0 0 12px rgba(199, 32, 113, 0.25);
 }
 
+/* Password Toggle Button - for login/reset password pages */
+.input-group .password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    transition: color 0.2s ease;
+    z-index: 10;
+}
+
+.input-group .password-toggle-btn:hover {
+    color: var(--accent-color);
+}
+
+.input-group .password-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Adjust input padding when toggle button exists */
+.input-group:has(.password-toggle-btn) input {
+    padding-right: 40px;
+}
+
+/* Password Input Wrapper - for register page */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 40px !important;
+}
+
+.password-input-wrapper .password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    transition: color 0.2s ease;
+    z-index: 10;
+}
+
+.password-input-wrapper .password-toggle-btn:hover {
+    color: var(--accent-color);
+}
+
+.password-input-wrapper .password-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
 /* Floating Particles */
 .particle {
     position: absolute;

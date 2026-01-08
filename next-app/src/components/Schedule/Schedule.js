@@ -18,19 +18,18 @@ const DAYS = [
 const RAW_EVENTS = [
     // Day 1
     { title: 'Inauguration', start: '09:10', end: '09:45', category: 'general', day: 'day1' },
-    { title: 'Agenda', start: '10:00', end: '11:00', category: 'general', day: 'day1' },
-    { title: 'Speaker Talk', start: '10:00', end: '16:30', category: 'talk', day: 'day1' },
-    { title: 'Thooral – Hackathon', start: '10:00', end: '16:00', category: 'competition', day: 'day1' },
-    { title: 'Force Coders', start: '10:00', end: '15:00', category: 'competition', day: 'day1' },
-    { title: 'Quest X', start: '10:30', end: '16:00', category: 'competition', day: 'day1' },
-    { title: 'Workshop 1', start: '13:45', end: '16:00', category: 'workshop', day: 'day1' },
-    { title: 'Infinitum Open Quiz', start: '16:30', end: '17:15', category: 'quiz', day: 'day1' },
-    { title: 'Award Ceremony I', start: '17:15', end: '18:00', category: 'awards', day: 'day1' },
+    { title: 'Speaker Talk', start: '10:00', end: '11:00', category: 'talk', day: 'day1' },
+    { title: 'Thooral – Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1' },
+    { title: 'Force Coders', start: '10:00', end: '16:00', category: 'competition', day: 'day1' },
+    { title: 'Quest X', start: '10:00', end: '15:00', category: 'competition', day: 'day1' },
+    { title: 'Workshop 1', start: '10:30', end: '16:00', category: 'workshop', day: 'day1' },
+    { title: 'Infinitum Open Quiz', start: '13:45', end: '16:00', category: 'quiz', day: 'day1' },
+    { title: 'Award Ceremony I', start: '16:30', end: '17:15', category: 'awards', day: 'day1' },
 
     // Day 2
     { title: 'Code Mania', start: '09:00', end: '15:00', category: 'competition', day: 'day2' },
     { title: 'Paper Presentation on AI and Emerging Trends', start: '10:00', end: '14:00', category: 'presentation', day: 'day2' },
-    { title: 'Thooral – Hackathon', start: '09:00', end: '15:00', category: 'competition', day: 'day2' },
+    { title: 'Thooral – Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2' },
     { title: 'Nexus', start: '09:00', end: '15:00', category: 'competition', day: 'day2' },
     { title: 'Git Wars', start: '09:00', end: '14:00', category: 'competition', day: 'day2' },
     { title: 'Workshop 2', start: '09:00', end: '15:00', category: 'workshop', day: 'day2' },
@@ -40,6 +39,7 @@ const RAW_EVENTS = [
 
 const CATEGORIES = {
     general: 'General',
+    flagship: 'Flagship',
     competition: 'Events',
     workshop: 'Workshops',
     talk: 'Talks',
@@ -47,6 +47,9 @@ const CATEGORIES = {
     presentation: 'Presentation',
     awards: 'Awards'
 };
+
+// Define display order: general, talk, flagship, events, quiz, presentation, workshop, awards
+const CATEGORY_ORDER = ['general', 'talk', 'flagship', 'competition', 'quiz', 'presentation', 'workshop', 'awards'];
 
 const START_HOUR = 9;
 const END_HOUR = 18;
@@ -81,10 +84,24 @@ const packEvents = (events) => {
 };
 
 const formatTime = (timeStr) => {
-    const [h, m] = timeStr.split(':').map(Number);
+    if (!timeStr || typeof timeStr !== 'string') return 'Invalid Time';
+    const parts = timeStr.split(':');
+    if (parts.length !== 2) return timeStr;
+    const [h, m] = parts.map(Number);
+    if (isNaN(h) || isNaN(m)) return timeStr;
     const period = h >= 12 ? 'PM' : 'AM';
     const hour = h % 12 || 12;
     return `${hour}:${m.toString().padStart(2, '0')} ${period}`;
+};
+
+const formatTimeShort = (timeStr) => {
+    if (!timeStr || typeof timeStr !== 'string') return 'N/A';
+    const parts = timeStr.split(':');
+    if (parts.length !== 2) return timeStr;
+    const [h, m] = parts.map(Number);
+    if (isNaN(h) || isNaN(m)) return timeStr;
+    const hour = h % 12 || 12;
+    return `${hour}:${m.toString().padStart(2, '0')}`;
 };
 
 const Schedule = ({ classes, sounds }) => {
@@ -272,7 +289,7 @@ const Schedule = ({ classes, sounds }) => {
                     </div>
 
                     {/* Event Rows by Category */}
-                    {Object.keys(CATEGORIES).map(catKey => {
+                    {CATEGORY_ORDER.map(catKey => {
                         const catEvents = RAW_EVENTS.filter(e => e.day === activeDay && e.category === catKey);
                         if (catEvents.length === 0) return null;
 
@@ -300,13 +317,23 @@ const Schedule = ({ classes, sounds }) => {
                                                         style={{ left: `${left}%`, width: `${width}%`, cursor: getEventId(event.title) ? 'pointer' : 'default' }}
                                                         onMouseEnter={playHover}
                                                         onClick={() => handleEventClick(event.title)}
-                                                        title={`${event.title} (${formatTime(event.start)} - ${formatTime(event.end)})${isRegistered ? ' - REGISTERED' : ''}`}
                                                     >
                                                         <div className={classes.eventTitle}>
                                                             {event.title}
                                                             {isRegistered && <span className={classes.registeredBadge}><span>✓</span><span>REGISTERED</span></span>}
                                                         </div>
                                                         <div className={classes.eventTime}>{formatTime(event.start)} - {formatTime(event.end)}</div>
+                                                        
+                                                        {/* Custom Tooltip */}
+                                                        <div className={classes.eventTooltip}>
+                                                            <div className={classes.tooltipTitle}>
+                                                                {event.title}
+                                                                {isRegistered && ' ✓'}
+                                                            </div>
+                                                            <div className={classes.tooltipTime}>
+                                                                {formatTime(event.start)} - {formatTime(event.end)}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 );
                                             })}
@@ -321,7 +348,7 @@ const Schedule = ({ classes, sounds }) => {
 
             {/* Mobile List View */}
             <div className={classes.mobileView}>
-                {Object.keys(CATEGORIES).map(catKey => {
+                {CATEGORY_ORDER.map(catKey => {
                     const catEvents = RAW_EVENTS
                         .filter(e => e.day === activeDay && e.category === catKey)
                         .sort((a, b) => timeToPercent(a.start) - timeToPercent(b.start));

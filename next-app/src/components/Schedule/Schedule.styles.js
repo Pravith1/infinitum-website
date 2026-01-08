@@ -5,6 +5,7 @@ export const styles = theme => ({
     width: '100%',
     maxWidth: '100vw', // Ensure it doesn't overflow viewport
     overflowX: 'hidden', // Prevent page-level scroll
+    overflowY: 'auto',
     color: theme.color.text.main,
     fontFamily: theme.typography.secondary,
     padding: '50px 0 20px 0',
@@ -21,7 +22,7 @@ export const styles = theme => ({
     alignItems: 'center', // Force center alignment
     justifyContent: 'center',
     textAlign: 'center',
-    marginBottom: 2,
+    marginBottom: 0,
     marginTop: 0,
     padding: '0 10px' // Add padding to prevent text touching edges
   },
@@ -56,7 +57,7 @@ export const styles = theme => ({
     gap: 10,
     marginBottom: 8,
     flexWrap: 'wrap',
-    marginTop: 2,
+    marginTop: 0,
     width: '100%' // Ensure tabs container is full width
   },
   dayTab: {
@@ -90,15 +91,16 @@ export const styles = theme => ({
     maxWidth: '100%',
     padding: '0 5px',
     overflowX: 'auto', // Enable horizontal scroll
-    overflowY: 'hidden',
+    overflowY: 'visible',
     WebkitOverflowScrolling: 'touch',
     display: 'block', // Ensure block display
-    position: 'relative' // Layout context
+    position: 'relative', // Layout context
+    paddingTop: 80 // Add padding for first row tooltips
   },
   timeline: {
     minWidth: '100%',
     position: 'relative',
-    paddingTop: 40,
+    paddingTop: 60,
     paddingBottom: 40,
     '@media (max-width: 600px)': {
       minWidth: 1000
@@ -166,6 +168,7 @@ export const styles = theme => ({
     position: 'relative',
     paddingRight: 110,
     zIndex: 1,
+    overflow: 'visible',
     '@media (max-width: 600px)': {
       paddingRight: 100
     }
@@ -196,49 +199,127 @@ export const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     flexDirection: 'column',
-    gap: 8
+    gap: 8,
+    marginLeft: 8,
+    marginRight: 8
   },
   eventLane: {
     position: 'relative',
-    height: 50
+    height: 56
   },
   event: {
     position: 'absolute',
     top: 2,
     bottom: 2,
     borderRadius: 2,
-    padding: '0 10px',
+    padding: '8px 8px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     cursor: 'pointer',
     transition: 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-    overflow: 'hidden',
+    overflow: 'visible',
     backdropFilter: 'blur(5px)',
     border: '1px solid rgba(255,255,255,0.1)',
+    minHeight: 50,
     '&:hover': {
-      transform: 'translateY(-2px) scale(1.01)',
+      transform: 'translateY(-4px) scale(1.05)',
       zIndex: 100,
-      filter: 'brightness(1.1)'
+      filter: 'brightness(1.15)',
+      boxShadow: '0 8px 25px rgba(0,0,0,0.5)'
+    },
+    '&:hover $eventTooltip': {
+      opacity: 1,
+      visibility: 'visible',
+      transform: 'translateY(0)'
     }
   },
   eventTitle: {
-    fontSize: '0.8rem',
+    fontSize: '0.75rem',
     fontWeight: 700,
     color: '#000',
-    whiteSpace: 'normal', // Allow wrapping
+    whiteSpace: 'nowrap',
     overflow: 'hidden',
-    lineHeight: 1,
-    textShadow: '0 0 2px rgba(255,255,255,0.3)',
+    textOverflow: 'ellipsis',
+    lineHeight: 1.2,
+    textShadow: '0 1px 3px rgba(255,255,255,0.5)',
     position: 'relative',
-    paddingRight: 70 // Space for REGISTERED badge
+    paddingRight: 0,
+    maxWidth: '100%',
+    display: 'block'
   },
   eventTime: {
     fontSize: '0.65rem',
-    color: 'rgba(0,0,0,0.7)',
+    color: 'rgba(0,0,0,0.75)',
     whiteSpace: 'nowrap',
-    fontWeight: 500,
-    marginTop: 1
+    fontWeight: 600,
+    marginTop: 3,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    textShadow: '0 1px 2px rgba(255,255,255,0.3)'
+  },
+
+  // Custom Tooltip
+  eventTooltip: {
+    position: 'absolute',
+    bottom: 'calc(100% + 12px)',
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+    width: 'max-content',
+    maxWidth: '300px',
+    minWidth: '200px',
+    padding: '12px 16px',
+    background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%)',
+    backdropFilter: 'blur(20px)',
+    border: `1px solid ${rgba(theme.color.secondary.main, 0.5)}`,
+    borderRadius: 8,
+    boxShadow: `0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px ${rgba(theme.color.secondary.main, 0.3)}`,
+    opacity: 0,
+    visibility: 'hidden',
+    transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+    pointerEvents: 'none',
+    zIndex: 9999,
+    whiteSpace: 'normal',
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 0,
+      height: 0,
+      borderStyle: 'solid',
+      borderWidth: '10px 10px 0 10px',
+      borderColor: `rgba(20, 20, 20, 0.98) transparent transparent transparent`
+    },
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      top: 'calc(100% - 1px)',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 0,
+      height: 0,
+      borderStyle: 'solid',
+      borderWidth: '11px 11px 0 11px',
+      borderColor: `${rgba(theme.color.secondary.main, 0.5)} transparent transparent transparent`
+    }
+  },
+  tooltipTitle: {
+    fontSize: '0.9rem',
+    fontWeight: 700,
+    color: '#fff',
+    marginBottom: 6,
+    fontFamily: theme.typography.primary,
+    textShadow: `0 0 10px ${rgba(theme.color.secondary.main, 0.8)}`,
+    lineHeight: 1.3
+  },
+  tooltipTime: {
+    fontSize: '0.75rem',
+    color: theme.color.secondary.main,
+    fontFamily: theme.typography.secondary,
+    fontWeight: 600
   },
 
   // Neon Color Variants with Gradients and Glows
@@ -246,6 +327,12 @@ export const styles = theme => ({
     background: 'linear-gradient(135deg, #FF1E64 0%, #D81552 100%)', // Neon Pink
     boxShadow: '0 0 15px rgba(255, 30, 100, 0.4)',
     '&:hover': { boxShadow: '0 0 25px rgba(255, 30, 100, 0.6)' }
+  },
+  flagship: {
+    background: 'linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%)', // Bright Orange/Gold
+    boxShadow: '0 0 20px rgba(255, 107, 0, 0.5)',
+    '&:hover': { boxShadow: '0 0 30px rgba(255, 107, 0, 0.7)' },
+    border: '2px solid rgba(255, 215, 0, 0.3)'
   },
   competition: {
     background: 'linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%)', // Cyan
@@ -281,7 +368,6 @@ export const styles = theme => ({
   // Registered Event Styles
   registeredEvent: {
     border: `2px solid ${theme.color.primary.main} !important`,
-    transform: 'scale(1.02)',
     zIndex: 10,
     '&:hover': {
       transform: 'translateY(-2px) scale(1.03) !important'
@@ -289,24 +375,23 @@ export const styles = theme => ({
   },
   registeredBadge: {
     position: 'absolute',
-    right: 5,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    fontSize: '0.65rem',
+    right: 3,
+    top: 3,
+    fontSize: '0.6rem',
     fontWeight: 700,
     color: '#000',
     borderRadius: 3,
-    padding: '2px 6px',
+    padding: '2px 4px',
     textAlign: 'center',
     letterSpacing: '0.05em',
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
     display: 'flex',
     alignItems: 'center',
-    gap: 3,
+    gap: 2,
     '@media (max-width: 768px)': {
       right: 10,
-      top: '30%',
+      top: -4,
       fontSize: '1.2rem',
       color: '#fff',
       padding: 0,

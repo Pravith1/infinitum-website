@@ -10,13 +10,13 @@ export const eventsData = [
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cb" },
         "rounds": [
             {
-                "title": "Round 1 – Creative & Fun Challenges",
+                "title": "Creative & Fun Challenges",
                 "tagline": "Unleash creativity, think fast, and have fun as a team.",
                 "description": "Includes Limbo, Memory Game, Grid Game with mini dares, Pictionary, Emoji Decoding, Connections, and Meme Creation to encourage innovation, humour, observation skills, and collaboration.",
                 "_id": { "$oid": "694ce9c4297836cde7682480" }
             },
             {
-                "title": "Round 2 – Escape Room Challenge",
+                "title": "Escape Room Challenge",
                 "tagline": "Solve together, escape together, beat the clock.",
                 "description": "Participants use personal belongings to solve puzzles and unlock clues, testing teamwork, strategic thinking, and problem-solving under pressure.",
                 "_id": { "$oid": "694ce9c4297836cde7682481" }
@@ -29,9 +29,13 @@ export const eventsData = [
         "hall": "Q Block Classroom",
         "eventRules": "Participants must follow organiser instructions and maintain sportsmanship throughout the event.",
         "teamSize": 4,
+        "prizePool": "₹5,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "timing": "To be announced",
+        "scheduleStart": "10:30",
+        "scheduleEnd": "16:00",
+        "scheduleDay": "day1",
         "youtubeUrl": "",
         "createdAt": { "$date": "2025-12-25T07:37:40.909Z" },
         "updatedAt": { "$date": "2025-12-25T07:37:40.909Z" },
@@ -62,9 +66,13 @@ export const eventsData = [
         "hall": "AIR Lab",
         "eventRules": "Time limit is 2 hours. Participants must follow organiser instructions. Any cheating leads to disqualification. Points are awarded based on accuracy, creativity, and timely completion. Organisers' decisions are final.",
         "teamSize": 3,
+        "prizePool": "₹3,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "timing": "2 Hours",
+        "scheduleStart": "09:00",
+        "scheduleEnd": "15:00",
+        "scheduleDay": "day2",
         "youtubeUrl": "",
         "createdAt": { "$date": "2025-12-25T07:37:54.049Z" },
         "updatedAt": { "$date": "2025-12-25T07:37:54.049Z" },
@@ -101,9 +109,13 @@ export const eventsData = [
         "hall": "G Block Classroom",
         "eventRules": "Teams must follow organiser instructions. Judging is based on accuracy, time, creativity, team synergy, and effective use of advantages. Organisers' decisions are final.",
         "teamSize": 4,
+        "prizePool": "₹4,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "timing": "To be announced",
+        "scheduleStart": "09:00",
+        "scheduleEnd": "14:00",
+        "scheduleDay": "day2",
         "youtubeUrl": "",
         "createdAt": { "$date": "2025-12-25T07:49:48.371Z" },
         "updatedAt": { "$date": "2025-12-25T07:49:48.371Z" },
@@ -140,6 +152,7 @@ export const eventsData = [
         "hall": "AIR Lab",
         "eventRules": "Cheating is prohibited. Points are awarded for successful hacks and reduced for failed hacks or broken defenses. Final scores are calculated using aggregate performance across both rounds. Organisers' decisions are final.",
         "teamSize": 2,
+        "prizePool": "₹10,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "timing": "To be announced",
@@ -178,7 +191,16 @@ export const eventsData = [
                 "_id": { "$oid": "694ced34297836cde76824a6" }
             }
         ],
+        "contacts": [
+            { "name": "Quiz Coordinator", "mobile": "9876543210", "_id": { "$oid": "694ced34297836cde76824a7" } }
+        ],
+        "hall": "Main Auditorium",
+        "eventRules": "Follow organiser instructions. Maintain integrity. Organisers' decisions are final.",
         "teamSize": 3,
+        "date": { "$date": "2026-02-01T09:00:00.000Z" },
+        "closed": false,
+        "timing": "To be announced",
+        "prizePool": "₹6,000",
         "image": "/images/events/paper_presentation.png"
     },
 
@@ -204,6 +226,15 @@ export const eventsData = [
                 "_id": { "$oid": "695a38a48baa56af32706871" }
             }
         ],
+        "contacts": [
+            { "name": "Tech Lead", "mobile": "9876543211", "_id": { "$oid": "695a38a48baa56af32706872" } }
+        ],
+        "hall": "Computer Lab",
+        "eventRules": "Individual participation only. Follow coding standards. Organisers' decisions are final.",
+        "date": { "$date": "2026-02-01T09:00:00.000Z" },
+        "closed": false,
+        "timing": "3 Hours",
+        "prizePool": "₹8,000",
         "teamSize": 1,
         "image": "/images/events/paper_presentation.png"
     },
@@ -242,6 +273,15 @@ export const eventsData = [
                 "_id": { "$oid": "695a3d878baa56af3270688f" }
             }
         ],
+        "contacts": [
+            { "name": "Hackathon Organizer", "mobile": "9876543212", "_id": { "$oid": "695a3d878baa56af32706890" } }
+        ],
+        "hall": "Innovation Lab",
+        "eventRules": "Follow all guidelines. Plagiarism leads to disqualification. Organisers' decisions are final.",
+        "date": { "$date": "2026-02-01T09:00:00.000Z" },
+        "closed": false,
+        "timing": "2 Days",
+        "prizePool": "₹25,000",
         "teamSize": 4,
         "image": "/images/events/paper_presentation.png"
     }

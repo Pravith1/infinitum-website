@@ -178,18 +178,11 @@ class Component extends React.PureComponent {
         >
           {isAuthenticated ? (
             <>
-              <Link href='/portal/profile' {...linkProps}>
-                <Text
-                  animation={{ animate: animateText }}
-                  audio={{ silent: !animateText }}
-                >
-                  Profile
-                </Text>
-              </Link>
               <button
                 className={cx(classes.item, classes.link)}
                 onMouseEnter={() => sounds.hover.play()}
                 onClick={this.handleLogout}
+                style={{ marginRight: '60px' }}
               >
                 <Text
                   animation={{ animate: animateText }}

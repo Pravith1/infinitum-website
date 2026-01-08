@@ -36,10 +36,10 @@ const styles = theme => ({
     transformOrigin: 'center center'
   },
   link: {
-    overflow: 'hidden',
+    overflow: 'visible',
     opacity: ({ scheme }) => scheme === SCHEME_EXPAND ? 0 : 1,
     backgroundColor: 'transparent',
-    borderRadius: 0,
+    clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)',
     border: `2px solid ${theme.color.secondary.main}`,
     cursor: 'pointer',
     padding: [12, 24],

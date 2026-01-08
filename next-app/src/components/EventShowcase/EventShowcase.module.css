@@ -62,7 +62,7 @@
   padding: 10px 20px;
   background: linear-gradient(135deg, rgba(199, 32, 113, 0.8), rgba(139, 22, 79, 0.9));
   border: 2px solid #c72071;
-  border-radius: 6px;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   color: #ffffff;
   font-family: 'Orbitron', sans-serif;
   font-size: 14px;
@@ -76,7 +76,6 @@
 
 .registerButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(199, 32, 113, 0.9), 0 5px 20px rgba(0, 0, 0, 0.3);
   background: linear-gradient(135deg, rgba(224, 78, 148, 0.9), rgba(199, 32, 113, 1));
 }
 
@@ -1691,6 +1690,7 @@
   margin-top: 10px;
   padding: 16px 36px;
   border: 2px solid #c72071;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
   color: #c72071;
   font-family: 'Orbitron', sans-serif;
   font-size: 1rem;
@@ -1723,9 +1723,6 @@
 .registerBtn:hover {
   transform: translateY(-4px);
   color: white;
-  box-shadow:
-    0 0 40px rgba(199, 32, 113, 0.8),
-    0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 .registerBtn i {

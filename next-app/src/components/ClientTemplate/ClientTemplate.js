@@ -90,6 +90,9 @@ const Template = (props) => {
         return pathname.startsWith(path);
     });
 
+    // For events pages, show immediately to prevent header vanishing
+    const shouldShowImmediately = pathname.startsWith('/events') || pathname.startsWith('/schedule') || pathname.startsWith('/portal');
+
     const layoutProps = {};
     const backgroundProps = {};
 
@@ -97,9 +100,9 @@ const Template = (props) => {
         <Layout {...layoutProps}>
             <Background
                 {...backgroundProps}
-                animation={{ show, ...(backgroundProps.animation || {}) }}
+                animation={{ show: shouldShowImmediately ? true : show, ...(backgroundProps.animation || {}) }}
             >
-                {show && (isURLContent ? <App>{children}</App> : children)}
+                {(show || shouldShowImmediately) && (isURLContent ? <App>{children}</App> : children)}
 
                 {!show && !hasSeenPopup && (
                     <div className={classes.enterOverlay}>

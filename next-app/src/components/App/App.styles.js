@@ -15,7 +15,8 @@ const styles = theme => ({
     flexDirection: 'column',
     overflowX: 'hidden',
     overflowY: 'auto',
-    width: '100%'
+    width: '100%',
+    '-webkit-overflow-scrolling': 'touch'
   },
 
   // When shutter is active, hide main content (not header/footer)

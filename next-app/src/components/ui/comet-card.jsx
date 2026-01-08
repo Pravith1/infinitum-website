@@ -165,7 +165,7 @@ export const CometCard = ({
         }}
         className="relative rounded-2xl"
       >
-        {/* Outer glow border */}
+        {/* Outer glow border - disabled */}
         <div
           className="absolute -inset-[2px] rounded-[18px]"
           style={{

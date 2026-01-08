@@ -297,6 +297,7 @@ const colleges = [
   `Prince Shri Venkateshwara Padmavathy Enginering College, Ponmar, Chennai 600048`,
   `Priyadarshini Engineering College, Vaniyambadi Post, Thiruppattur District 635751`,
   `PSG College of Technology (Autonomous), Peelamedu, Coimbatore District 641004`,
+  `PSG Institute of Advanced Studies, Peelamedu, Coimbatore District 641004`,
   `PSG Institute of Technology and Applied Research, Avinashi Road, Neelambur, Coimbatore 641062`,
   `R M D Engineering College, Kavaraipettai, Gummidipoondi, Thiruvallur District 601206`,
   `R M K College of Engineering and Technology, Puduvoyal, Gummidipoondi Taluk, Thiruvallur District 601206`,

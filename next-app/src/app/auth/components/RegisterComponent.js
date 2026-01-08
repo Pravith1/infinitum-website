@@ -6,6 +6,12 @@ import { authService } from '@/services/authService';
 import '../auth.css';
 import colleges from '@/app/CollegeList';
 
+// PSG Colleges that require specific email domains
+const PSG_COLLEGES = {
+    'PSG College of Technology (Autonomous), Peelamedu, Coimbatore District 641004': '@psgtech.ac.in',
+    'PSG Institute of Advanced Studies, Peelamedu, Coimbatore District 641004': '@psgias.ac.in',
+    'PSG Institute of Technology and Applied Research, Avinashi Road, Neelambur, Coimbatore 641062': '@psgitech.ac.in'
+};
 
 export default function RegisterComponent() {
     const router = useRouter();
@@ -30,6 +36,7 @@ export default function RegisterComponent() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showEmailOverlay, setShowEmailOverlay] = useState(false);
 
     useEffect(() => {
         const storedEmail = localStorage.getItem('registration_email');
@@ -48,16 +55,38 @@ export default function RegisterComponent() {
         }));
     }, [source, router]);
 
+    // Check if the selected college is a PSG college and validate email domain
+    const validatePSGEmail = () => {
+        const selectedCollege = formData.college;
+        const email = formData.email.toLowerCase();
+
+        if (PSG_COLLEGES[selectedCollege]) {
+            const requiredDomain = PSG_COLLEGES[selectedCollege];
+            return email.endsWith(requiredDomain);
+        }
+        return true; // Not a PSG college, no domain restriction
+    };
+
     const handleChange = (e) => {
         setFormData(prev => ({
             ...prev,
             [e.target.name]: e.target.value
         }));
+        // Reset overlay when college changes
+        if (e.target.name === 'college') {
+            setShowEmailOverlay(false);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        // Check PSG college email validation
+        if (!validatePSGEmail()) {
+            setShowEmailOverlay(true);
+            return;
+        }
 
         if (formData.source === 'email' && formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
@@ -320,6 +349,43 @@ export default function RegisterComponent() {
                     </p>
                 </div>
             </div>
+
+            {/* PSG College Email Validation Overlay */}
+            {showEmailOverlay && (
+                <div className="psg-email-overlay">
+                    <div className="psg-email-overlay-content">
+                        <div className="psg-email-overlay-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h2>College Email Required</h2>
+                        <p>
+                            To register as a student of <strong>{formData.college}</strong>,
+                            please use your official college email address ending with
+                            <span className="psg-email-domain">{PSG_COLLEGES[formData.college]}</span>
+                        </p>
+                        <button
+                            className="auth-btn psg-overlay-btn"
+                            onClick={() => {
+                                localStorage.removeItem('registration_email');
+                                localStorage.removeItem('registration_googleId');
+                                router.push('/auth?type=register');
+                            }}
+                        >
+                            Register with College Email
+                        </button>
+                        <button
+                            className="auth-link psg-overlay-close"
+                            onClick={() => setShowEmailOverlay(false)}
+                        >
+                            Go Back
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

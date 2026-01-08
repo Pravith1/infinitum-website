@@ -10,39 +10,39 @@ const contactSections = [
     {
         title: 'Heads',
         contacts: [
-            { name: 'Arulkumara B R', position: 'Secretary', phone: '+91 XXXXX XXXXX' },
-            { name: 'Sanjay J', position: 'Joint Secretary', phone: '+91 XXXXX XXXXX' },
-            { name: 'Naren Siddharth M', position: 'Head-Sponsorship', phone: '+91 XXXXX XXXXX' }
+            { name: 'Arulkumara B R', position: 'Secretary', phone: '+91 8610202823' },
+            { name: 'Sanjay J', position: 'Joint Secretary', phone: '+91 9789710033' },
+            { name: 'Naren Siddharth M', position: 'Head-Sponsorship', phone: '+91 9940979069' }
         ]
     },
     {
         title: 'Tech Support',
         contacts: [
-            { name: 'Darshan V G', phone: '+91 XXXXX XXXXX' },
-            { name: 'Adhish Krishna S', phone: '+91 XXXXX XXXXX' },
-            { name: 'Abinav P', phone: '+91 XXXXX XXXXX' }
+            { name: 'Darshan V G', phone: '+91 9790521129' },
+            { name: 'Adhish Krishna S', phone: '+91 8217896832' },
+            { name: 'Abinav P', phone: '+91 9965511133' }
         ]
     },
     {
         title: 'Event Support',
         contacts: [
-            { name: 'Rohith Dharshan', phone: '+91 XXXXX XXXXX' },
-            { name: 'Shashwath', phone: '+91 XXXXX XXXXX' },
-            { name: 'Dinesh T M', phone: '+91 XXXXX XXXXX' }
+            { name: 'Rohith Dharshan', phone: '+91 9920946666' },
+            { name: 'Shashwath', phone: '+91 9845677934' },
+            { name: 'Dinesh T M', phone: '+91 9535372504' }
         ]
     },
     {
         title: 'Accommodation (Boys)',
         contacts: [
-            { name: 'Rohith Sarveshaa', phone: '+91 XXXXX XXXXX' },
-            { name: 'Karthick Saravanan', phone: '+91 XXXXX XXXXX' },
+            { name: 'Rohith Sarveshaa', phone: '+91 8610272023' },
+            { name: 'Karthick Saravanan', phone: '+91 8056936690' },
         ]
     },
     {
         title: 'Accommodation (Girls)',
         contacts: [
-            { name: 'Kanishka', phone: '+91 XXXXX XXXXX' },
-            { name: 'Thejashree N', phone: '+91 XXXXX XXXXX' }
+            { name: 'Kanishka', phone: '+91 8838401957' },
+            { name: 'Thejashree N', phone: '+91 9842119832' }
         ]
     }
 ];

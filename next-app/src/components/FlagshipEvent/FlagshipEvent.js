@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './FlagshipEvent.module.css';
 import { eventService } from '@/services/eventservice';
 import { useSound } from '@/context/SoundContext';
+import { useAuth } from '@/context/AuthContext';
 
 // Static event data
 const EVENT_DATA = {
@@ -13,7 +13,6 @@ const EVENT_DATA = {
     shortDescription: 'The ultimate hackathon challenge awaits. Test your skills and compete with the best minds in an intense 24-hour coding marathon.',
     fullDescription: 'Prepare yourself for the most anticipated event of Infinitum! Thooral Hackathon brings together the brightest minds to compete in an intense coding marathon. Showcase your problem-solving skills, algorithmic thinking, and creativity as you tackle challenging problems designed to push your limits. Whether you\'re a seasoned coder or an enthusiastic beginner, this event offers something for everyone. Join us for an unforgettable experience filled with learning, competition, and amazing prizes!',
     posterSrc: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=400&fit=crop',
-    registerLink: '/events'
 };
 
 export default function FlagshipEvent() {
@@ -21,9 +20,18 @@ export default function FlagshipEvent() {
     const [isVisible, setIsVisible] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [flagship, setFlagship] = useState({});
-    const [thooral, setThooral] = useState({})
+    const [thooral, setThooral] = useState({});
+    const [isRegistered, setIsRegistered] = useState(false);
+    const [notification, setNotification] = useState({
+        isOpen: false,
+        type: '', // 'confirm', 'success', 'error'
+        title: '',
+        message: '',
+        onConfirm: null
+    });
     const cardRef = useRef(null);
     const { isMuted } = useSound();
+    const { isAuthenticated } = useAuth();
 
     // Audio refs
     const clickSoundRef = useRef(null);
@@ -81,7 +89,18 @@ export default function FlagshipEvent() {
                     }
 
                     setThooral(eventDetails);
-                    // console.log('Thooral Details:', eventDetails);
+
+                    // Check if user is already registered
+                    if (isAuthenticated && thooral_hackathon.eventId) {
+                        try {
+                            const userEvents = await eventService.getUserEvents();
+                            const list = Array.isArray(userEvents) ? userEvents : (userEvents.events || userEvents.data || []);
+                            const registeredIds = list.map(e => e.eventId);
+                            setIsRegistered(registeredIds.includes(thooral_hackathon.eventId));
+                        } catch (err) {
+                            console.error('Error checking registration status:', err);
+                        }
+                    }
                 }
             } catch (err) {
                 console.error('Error fetching flagship event:', err);
@@ -89,7 +108,7 @@ export default function FlagshipEvent() {
         };
 
         fetchFlagshipEvent();
-    }, []);
+    }, [isAuthenticated]);
 
     // Initialize audio on mount
     useEffect(() => {
@@ -187,13 +206,100 @@ export default function FlagshipEvent() {
         playSound(hoverSoundRef);
     };
 
+    // Notification handlers
+    const closeNotification = () => {
+        playSound(clickSoundRef);
+        setNotification(prev => ({ ...prev, isOpen: false }));
+    };
+
+    const handleRegisterClick = () => {
+        playSound(clickSoundRef);
+
+        const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+
+        if (!isAuthenticated && !token) {
+            setNotification({
+                isOpen: true,
+                type: 'error',
+                title: 'Login Required',
+                message: 'Please login to register for this event.',
+                onConfirm: () => closeNotification()
+            });
+            return;
+        }
+
+        setNotification({
+            isOpen: true,
+            type: 'confirm',
+            title: 'Confirm Registration',
+            message: `Are you sure you want to register for ${thooral?.eventName || 'Thooral Hackathon'}?`,
+            onConfirm: () => performRegistration()
+        });
+    };
+
+    const performRegistration = async () => {
+        closeNotification();
+
+        try {
+            const res = await eventService.registerEvent(flagship.eventId);
+
+            if (res && res.success) {
+                setNotification({
+                    isOpen: true,
+                    type: 'success',
+                    title: 'Registration Successful',
+                    message: res.message || "You have been registered successfully!",
+                    onConfirm: () => closeNotification()
+                });
+                setIsRegistered(true);
+            } else {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'Registration Failed',
+                    message: res?.message || "Registration failed. Please try again.",
+                    onConfirm: () => closeNotification()
+                });
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            const msg = error.response?.data?.message || "An error occurred during registration.";
+
+            if (error.response?.status === 401) {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'Login Required',
+                    message: 'Please login to register for this event.',
+                    onConfirm: () => closeNotification()
+                });
+            } else if (error.response?.status === 400 && msg.toLowerCase().includes("general fee")) {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'General Fee Required',
+                    message: 'General fee payment is not done. Please complete the general fee payment to register for events.',
+                    onConfirm: () => closeNotification()
+                });
+            } else {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'Error',
+                    message: msg,
+                    onConfirm: () => closeNotification()
+                });
+            }
+        }
+    };
+
     // Calculate 3D transform
     const tiltX = (mousePosition.y - 0.5) * 10;
     const tiltY = (mousePosition.x - 0.5) * -10;
     const glareX = mousePosition.x * 100;
     const glareY = mousePosition.y * 100;
 
-    const { title, shortDescription, fullDescription, posterSrc, registerLink } = EVENT_DATA;
+    const { title, shortDescription, fullDescription, posterSrc } = EVENT_DATA;
 
     return (
         <>
@@ -218,11 +324,6 @@ export default function FlagshipEvent() {
                     <span></span><span></span><span></span>
                 </div>
 
-                {/* Corner accents */}
-                <div className={styles.cornerTL}></div>
-                <div className={styles.cornerTR}></div>
-                <div className={styles.cornerBL}></div>
-                <div className={styles.cornerBR}></div>
 
                 {/* Holographic overlay */}
                 <div className={styles.holographic}></div>
@@ -371,14 +472,162 @@ export default function FlagshipEvent() {
                                 )}
 
                                 {/* Register Button */}
-                                <Link
-                                    href={registerLink}
+                                <button
                                     className={styles.registerBtn}
-                                    onClick={() => playSound(clickSoundRef)}
+                                    onClick={isRegistered ? undefined : handleRegisterClick}
+                                    style={{
+                                        cursor: isRegistered ? 'default' : 'pointer',
+                                        background: isRegistered ? 'transparent' : undefined,
+                                        borderColor: isRegistered ? '#00E676' : undefined,
+                                        color: isRegistered ? '#00E676' : undefined,
+                                        boxShadow: isRegistered ? 'none' : undefined,
+                                    }}
                                 >
-                                    Register Now
-                                </Link>
+                                    {isRegistered ? 'Registered' : 'Register Now'}
+                                </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Notification Modal */}
+            {notification.isOpen && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.8)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 10001,
+                        backdropFilter: 'blur(4px)',
+                    }}
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) closeNotification();
+                    }}
+                >
+                    <div
+                        style={{
+                            background: 'linear-gradient(135deg, rgba(26, 2, 11, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%)',
+                            border: `2px solid ${notification.type === 'success' ? '#00E676' : notification.type === 'error' ? '#c72071' : '#c72071'}`,
+                            borderRadius: '12px',
+                            padding: '32px',
+                            maxWidth: '400px',
+                            width: '90%',
+                            textAlign: 'center',
+                            boxShadow: `0 0 40px ${notification.type === 'success' ? 'rgba(0, 230, 118, 0.3)' : 'rgba(199, 32, 113, 0.3)'}`,
+                        }}
+                    >
+                        {/* Icon */}
+                        <div
+                            style={{
+                                width: '60px',
+                                height: '60px',
+                                margin: '0 auto 20px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: notification.type === 'success'
+                                    ? 'rgba(0, 230, 118, 0.2)'
+                                    : notification.type === 'error'
+                                        ? 'rgba(199, 32, 113, 0.2)'
+                                        : 'rgba(250, 225, 39, 0.2)',
+                                border: `2px solid ${notification.type === 'success' ? '#00E676' : notification.type === 'error' ? '#c72071' : '#fae127'}`,
+                            }}
+                        >
+                            <i
+                                className={
+                                    notification.type === 'success'
+                                        ? 'ri-check-line'
+                                        : notification.type === 'error'
+                                            ? 'ri-error-warning-line'
+                                            : 'ri-question-line'
+                                }
+                                style={{
+                                    fontSize: '28px',
+                                    color: notification.type === 'success' ? '#00E676' : notification.type === 'error' ? '#c72071' : '#fae127',
+                                }}
+                            />
+                        </div>
+
+                        {/* Title */}
+                        <h3
+                            style={{
+                                fontFamily: 'Orbitron, sans-serif',
+                                fontSize: '1.3rem',
+                                color: '#fff',
+                                marginBottom: '12px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                            }}
+                        >
+                            {notification.title}
+                        </h3>
+
+                        {/* Message */}
+                        <p
+                            style={{
+                                fontFamily: 'Electrolize, sans-serif',
+                                fontSize: '1rem',
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                marginBottom: '24px',
+                                lineHeight: 1.6,
+                            }}
+                        >
+                            {notification.message}
+                        </p>
+
+                        {/* Buttons */}
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                            {notification.type === 'confirm' && (
+                                <button
+                                    onClick={closeNotification}
+                                    style={{
+                                        padding: '12px 24px',
+                                        background: 'transparent',
+                                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                                        borderRadius: '6px',
+                                        color: 'rgba(255, 255, 255, 0.7)',
+                                        fontFamily: 'Orbitron, sans-serif',
+                                        fontSize: '0.9rem',
+                                        cursor: 'pointer',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em',
+                                        transition: 'all 0.3s ease',
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            )}
+                            <button
+                                onClick={notification.onConfirm}
+                                style={{
+                                    padding: '12px 24px',
+                                    background: notification.type === 'success'
+                                        ? 'linear-gradient(135deg, #00E676, #00C853)'
+                                        : 'linear-gradient(135deg, #c72071, #8b164f)',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    color: '#fff',
+                                    fontFamily: 'Orbitron, sans-serif',
+                                    fontSize: '0.9rem',
+                                    cursor: 'pointer',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                    boxShadow: notification.type === 'success'
+                                        ? '0 4px 20px rgba(0, 230, 118, 0.4)'
+                                        : '0 4px 20px rgba(199, 32, 113, 0.4)',
+                                    transition: 'all 0.3s ease',
+                                }}
+                            >
+                                {notification.type === 'confirm' ? 'Confirm' : 'OK'}
+                            </button>
                         </div>
                     </div>
                 </div>

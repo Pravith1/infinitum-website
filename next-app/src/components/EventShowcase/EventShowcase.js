@@ -63,11 +63,11 @@ export default function EventShowcase({ sounds, initialEventId }) {
 
     const onTouchEnd = () => {
         if (!touchStart || !touchEnd) return;
-        
+
         const distance = touchStart - touchEnd;
         const isLeftSwipe = distance > minSwipeDistance;
         const isRightSwipe = distance < -minSwipeDistance;
-        
+
         if (isLeftSwipe) {
             handleEventChange('next');
         }
@@ -566,7 +566,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                 {/* Center Event Display - Now contains primarily the image */}
                 <div className={styles.eventDisplay}>
                     {/* Event Image on Platform */}
-                    <div 
+                    <div
                         className={styles.eventImageContainer}
                         onTouchStart={isMobile ? onTouchStart : undefined}
                         onTouchMove={isMobile ? onTouchMove : undefined}
@@ -798,119 +798,134 @@ export default function EventShowcase({ sounds, initialEventId }) {
                         left: 0,
                         width: '100%',
                         height: '100%',
-                        background: 'rgba(0, 0, 0, 0.7)',
-                        zIndex: 9999,
+                        background: 'rgba(0, 0, 0, 0.8)',
                         display: 'flex',
-                        justifyContent: 'center',
                         alignItems: 'center',
-                        backdropFilter: 'blur(5px)'
+                        justifyContent: 'center',
+                        zIndex: 10001,
+                        backdropFilter: 'blur(4px)',
                     }}
                     onClick={(e) => {
                         if (e.target === e.currentTarget && notification.type !== 'confirm') closeNotification();
                     }}
                 >
-                    <div style={{
-                        width: '90%',
-                        maxWidth: '450px',
-                        background: 'rgba(26, 2, 11, 0.95)',
-                        border: '1px solid #e04e94',
-                        boxShadow: '0 0 30px rgba(199, 32, 113, 0.3)',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        position: 'relative',
-                        animation: 'fadeIn 0.3s ease-out'
-                    }}>
-                        <div style={{
-                            padding: '20px 25px',
-                            borderBottom: '1px solid rgba(224, 78, 148, 0.2)',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
-                            <h3 style={{
-                                color: notification.type === 'error' ? '#ff3366' :
-                                    notification.type === 'success' ? '#00ff00' : '#e04e94',
-                                margin: 0,
-                                fontSize: '1.2rem',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.05em'
-                            }}>
-                                {notification.title}
-                            </h3>
-                            <button
-                                onClick={closeNotification}
+                    <div
+                        style={{
+                            background: 'linear-gradient(135deg, rgba(26, 2, 11, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%)',
+                            border: `2px solid ${notification.type === 'success' ? '#00E676' : notification.type === 'error' ? '#c72071' : '#c72071'}`,
+                            borderRadius: '12px',
+                            padding: '32px',
+                            maxWidth: '400px',
+                            width: '90%',
+                            textAlign: 'center',
+                            boxShadow: `0 0 40px ${notification.type === 'success' ? 'rgba(0, 230, 118, 0.3)' : 'rgba(199, 32, 113, 0.3)'}`,
+                        }}
+                    >
+                        {/* Icon */}
+                        <div
+                            style={{
+                                width: '60px',
+                                height: '60px',
+                                margin: '0 auto 20px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: notification.type === 'success'
+                                    ? 'rgba(0, 230, 118, 0.2)'
+                                    : notification.type === 'error'
+                                        ? 'rgba(199, 32, 113, 0.2)'
+                                        : 'rgba(250, 225, 39, 0.2)',
+                                border: `2px solid ${notification.type === 'success' ? '#00E676' : notification.type === 'error' ? '#c72071' : '#fae127'}`,
+                            }}
+                        >
+                            <i
+                                className={
+                                    notification.type === 'success'
+                                        ? 'ri-check-line'
+                                        : notification.type === 'error'
+                                            ? 'ri-error-warning-line'
+                                            : 'ri-question-line'
+                                }
                                 style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    color: 'rgba(255,255,255,0.6)',
-                                    fontSize: '1.5rem',
-                                    cursor: 'pointer'
+                                    fontSize: '28px',
+                                    color: notification.type === 'success' ? '#00E676' : notification.type === 'error' ? '#c72071' : '#fae127',
                                 }}
-                            >
-                                ✕
-                            </button>
+                            />
                         </div>
-                        <div style={{ padding: '25px', color: '#ddd', fontSize: '1rem', lineHeight: '1.5' }}>
+
+                        {/* Title */}
+                        <h3
+                            style={{
+                                fontFamily: 'Orbitron, sans-serif',
+                                fontSize: '1.3rem',
+                                color: '#fff',
+                                marginBottom: '12px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                            }}
+                        >
+                            {notification.title}
+                        </h3>
+
+                        {/* Message */}
+                        <p
+                            style={{
+                                fontFamily: 'Electrolize, sans-serif',
+                                fontSize: '1rem',
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                marginBottom: '24px',
+                                lineHeight: 1.6,
+                            }}
+                        >
                             {notification.message}
-                        </div>
-                        <div style={{
-                            padding: '20px 25px',
-                            background: 'rgba(0,0,0,0.2)',
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            gap: '15px'
-                        }}>
-                            {notification.type === 'confirm' ? (
-                                <>
-                                    <button
-                                        onClick={closeNotification}
-                                        style={{
-                                            padding: '8px 20px',
-                                            background: 'transparent',
-                                            border: '1px solid rgba(255,255,255,0.2)',
-                                            color: '#ccc',
-                                            borderRadius: '4px',
-                                            cursor: 'pointer',
-                                            textTransform: 'uppercase',
-                                            fontSize: '0.85rem'
-                                        }}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={notification.onConfirm}
-                                        style={{
-                                            padding: '8px 24px',
-                                            background: 'rgba(199, 32, 113, 0.2)',
-                                            border: '1px solid #e04e94',
-                                            color: '#fff',
-                                            borderRadius: '4px',
-                                            cursor: 'pointer',
-                                            textTransform: 'uppercase',
-                                            fontSize: '0.85rem',
-                                            boxShadow: '0 0 10px rgba(199, 32, 113, 0.2)'
-                                        }}
-                                    >
-                                        Confirm
-                                    </button>
-                                </>
-                            ) : (
+                        </p>
+
+                        {/* Buttons */}
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                            {notification.type === 'confirm' && (
                                 <button
                                     onClick={closeNotification}
                                     style={{
-                                        padding: '8px 24px',
-                                        background: 'rgba(199, 32, 113, 0.2)',
-                                        border: '1px solid #e04e94',
-                                        color: '#fff',
-                                        borderRadius: '4px',
+                                        padding: '12px 24px',
+                                        background: 'transparent',
+                                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                                        borderRadius: '6px',
+                                        color: 'rgba(255, 255, 255, 0.7)',
+                                        fontFamily: 'Orbitron, sans-serif',
+                                        fontSize: '0.9rem',
                                         cursor: 'pointer',
                                         textTransform: 'uppercase',
-                                        fontSize: '0.85rem'
+                                        letterSpacing: '0.05em',
+                                        transition: 'all 0.3s ease',
                                     }}
                                 >
-                                    Close
+                                    Cancel
                                 </button>
                             )}
+                            <button
+                                onClick={notification.onConfirm}
+                                style={{
+                                    padding: '12px 24px',
+                                    background: notification.type === 'success'
+                                        ? 'linear-gradient(135deg, #00E676, #00C853)'
+                                        : 'linear-gradient(135deg, #c72071, #8b164f)',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    color: '#fff',
+                                    fontFamily: 'Orbitron, sans-serif',
+                                    fontSize: '0.9rem',
+                                    cursor: 'pointer',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                    boxShadow: notification.type === 'success'
+                                        ? '0 4px 20px rgba(0, 230, 118, 0.4)'
+                                        : '0 4px 20px rgba(199, 32, 113, 0.4)',
+                                    transition: 'all 0.3s ease',
+                                }}
+                            >
+                                {notification.type === 'confirm' ? 'Confirm' : 'OK'}
+                            </button>
                         </div>
                     </div>
                 </div>

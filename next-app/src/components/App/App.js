@@ -24,8 +24,8 @@ function AppWithShutter({ classes, className, children, ...etc }) {
     }
   }, []);
 
-  // Only show footer on routes other than home
-  const showFooter = pathname !== '/';
+  // Only show footer on routes other than home and about
+  const showFooter = pathname !== '/' && pathname !== '/about';
   return (
     <div className={cx(classes.root, className)} {...etc}>
       <div

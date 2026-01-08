@@ -40,7 +40,7 @@ export const eventsData = [
         "createdAt": { "$date": "2025-12-25T07:37:40.909Z" },
         "updatedAt": { "$date": "2025-12-25T07:37:40.909Z" },
         "__v": 0,
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/questx.png"
     },
 
     {
@@ -77,7 +77,7 @@ export const eventsData = [
         "createdAt": { "$date": "2025-12-25T07:37:54.049Z" },
         "updatedAt": { "$date": "2025-12-25T07:37:54.049Z" },
         "__v": 0,
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/nexus.png"
     },
 
     {
@@ -120,7 +120,7 @@ export const eventsData = [
         "createdAt": { "$date": "2025-12-25T07:49:48.371Z" },
         "updatedAt": { "$date": "2025-12-25T07:49:48.371Z" },
         "__v": 0,
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/gitwars.png"
     },
 
     {
@@ -163,7 +163,7 @@ export const eventsData = [
         "createdAt": { "$date": "2025-12-25T07:49:58.495Z" },
         "updatedAt": { "$date": "2025-12-25T07:49:58.495Z" },
         "__v": 0,
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/forcecoders.png"
     },
 
     {
@@ -195,22 +195,22 @@ export const eventsData = [
             }
         ],
         "contacts": [
-    {
-      "name": "Shelvaaathithyan VK",
-      "mobile": "6381466406",
-      "_id": {
-        "$oid": "694ced34297836cde76824a7"
-      }
-    },
-    {
-      "name": "Logini TS",
-      "mobile": "9842330146",
-      "_id": {
-        "$oid": "694ced34297836cde76824a8"
-      }
-    }
-  ]
-       ,
+            {
+                "name": "Shelvaaathithyan VK",
+                "mobile": "6381466406",
+                "_id": {
+                    "$oid": "694ced34297836cde76824a7"
+                }
+            },
+            {
+                "name": "Logini TS",
+                "mobile": "9842330146",
+                "_id": {
+                    "$oid": "694ced34297836cde76824a8"
+                }
+            }
+        ]
+        ,
         "hall": "D Block",
         "eventRules": "Follow organiser instructions. Maintain integrity. Organisers' decisions are final.",
         "teamSize": 3,
@@ -221,7 +221,7 @@ export const eventsData = [
         "scheduleEnd": "16:00",
         "scheduleDay": "day1",
         "prizePool": "₹6,000",
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/openquiz.png"
     },
 
     {
@@ -247,21 +247,21 @@ export const eventsData = [
             }
         ],
         "contacts": [
-    {
-      "name": "Harini P",
-      "mobile": "6366203232",
-      "_id": {
-        "$oid": "695a38a48baa56af32706872"
-      }
-    },
-    {
-      "name": "Revanth P",
-      "mobile": "7904316372",
-      "_id": {
-        "$oid": "695a38a48baa56af32706873"
-      }
-    }
-  ],
+            {
+                "name": "Harini P",
+                "mobile": "6366203232",
+                "_id": {
+                    "$oid": "695a38a48baa56af32706872"
+                }
+            },
+            {
+                "name": "Revanth P",
+                "mobile": "7904316372",
+                "_id": {
+                    "$oid": "695a38a48baa56af32706873"
+                }
+            }
+        ],
         "hall": "GRD and Programming Labs",
         "eventRules": "Individual participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
@@ -272,7 +272,7 @@ export const eventsData = [
         "scheduleDay": "day2",
         "prizePool": "₹8,000",
         "teamSize": 1,
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/codemania.png"
     },
 
     {

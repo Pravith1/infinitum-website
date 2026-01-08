@@ -552,13 +552,16 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* CometCard wrapper for event image */
 .eventImageCard {
   position: relative;
   z-index: 5;
-  filter: drop-shadow(0 5px 15px rgba(199, 32, 113, 0.25));
   animation: tilt-hint 6s ease-in-out infinite;
   transform-style: preserve-3d;
 }

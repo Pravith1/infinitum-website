@@ -10,7 +10,7 @@ export default function SimpleHeader() {
             {/* Left side - Infinitum Logo */}
             <div className={styles.leftSection}>
                 <Image
-                    src="/images/Infinitum.png"
+                    src="/images/InfinitumPink.png"
                     alt="Infinitum Logo"
                     width={120}
                     height={40}

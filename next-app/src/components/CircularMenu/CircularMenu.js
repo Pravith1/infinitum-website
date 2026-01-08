@@ -325,7 +325,7 @@ export default function CircularMenu() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Only start dragging if touch is on the wheel (not center button)
-        if (distance > 40 && distance < 180) {
+        if (distance > 50 && distance < 210) {
             touchStartRef.current = {
                 angle: getTouchAngle(touch),
                 rotation: rotationAngle
@@ -349,7 +349,7 @@ export default function CircularMenu() {
         if (Math.abs(deltaAngle) > 5) {
             isDraggingRef.current = true;
             setIsDragging(true); // Disable icon transitions
-            
+
             // Play hover sound while dragging
             playHowl(hoverSound);
         }
@@ -398,8 +398,8 @@ export default function CircularMenu() {
         const total = MENU_ITEMS.length;
         const segmentAngle = 360 / total;
         const angle = index * segmentAngle; // 0 = top
-        // Desktop: (65+195)/2=130, Mobile: (45+135)/2=90
-        const radius = isMobile ? 90 : 130;
+        // Desktop: (65+195)/2=130, Mobile: (55+175)/2=115
+        const radius = isMobile ? 115 : 130;
 
         const rad = (angle - 90) * (Math.PI / 180);
         const x = Math.cos(rad) * radius;
@@ -416,8 +416,8 @@ export default function CircularMenu() {
         const endAngle = startAngle + segmentAngle;
 
         // Desktop vs Mobile radii
-        const innerRadius = isMobile ? 45 : 65;
-        const outerRadius = isMobile ? 135 : 195;
+        const innerRadius = isMobile ? 55 : 65;
+        const outerRadius = isMobile ? 175 : 195;
 
         const startRad = startAngle * (Math.PI / 180);
         const endRad = endAngle * (Math.PI / 180);
@@ -476,7 +476,7 @@ export default function CircularMenu() {
                         style={{ transform: `rotate(${rotationAngle}deg)` }}
                     >
                         <svg
-                            viewBox={isMobile ? "-180 -180 360 360" : "-210 -210 420 420"}
+                            viewBox={isMobile ? "-210 -210 420 420" : "-210 -210 420 420"}
                             className={styles.pieSvg}
                         >
                             {/* Segment backgrounds */}

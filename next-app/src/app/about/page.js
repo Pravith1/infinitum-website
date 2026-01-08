@@ -292,7 +292,7 @@ class AboutPage extends React.Component {
                                     </div>
                                     <div className={classes.sectionImageContainer}>
                                         <Image
-                                            src="/images/Infinitum.png"
+                                            src="/images/InfinitumPink.png"
                                             alt="Infinitum Logo"
                                             width={250}
                                             height={90}

@@ -229,7 +229,9 @@ export const styles = theme => ({
     whiteSpace: 'normal', // Allow wrapping
     overflow: 'hidden',
     lineHeight: 1,
-    textShadow: '0 0 2px rgba(255,255,255,0.3)'
+    textShadow: '0 0 2px rgba(255,255,255,0.3)',
+    position: 'relative',
+    paddingRight: 70 // Space for REGISTERED badge
   },
   eventTime: {
     fontSize: '0.65rem',
@@ -276,6 +278,50 @@ export const styles = theme => ({
     '&:hover': { boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)' }
   },
 
+  // Registered Event Styles
+  registeredEvent: {
+    border: `2px solid ${theme.color.primary.main} !important`,
+    transform: 'scale(1.02)',
+    zIndex: 10,
+    '&:hover': {
+      transform: 'translateY(-2px) scale(1.03) !important'
+    }
+  },
+  registeredBadge: {
+    position: 'absolute',
+    right: 5,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    fontSize: '0.65rem',
+    fontWeight: 700,
+    color: '#000',
+    borderRadius: 3,
+    padding: '2px 6px',
+    textAlign: 'center',
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase',
+    whiteSpace: 'nowrap',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 3,
+    '@media (max-width: 768px)': {
+      right: 10,
+      top: '30%',
+      fontSize: '1.2rem',
+      color: '#fff',
+      padding: 0,
+      '& span:last-child': {
+        display: 'none'
+      }
+    },
+    '& span:first-child': {
+      fontSize: '1em',
+      fontWeight: 900,
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  },
   // Mobile View Styles
   // Mobile View Styles
   desktopView: {
@@ -364,7 +410,9 @@ export const styles = theme => ({
     fontFamily: theme.typography.primary,
     letterSpacing: '0.05em',
     lineHeight: 1.2,
-    textShadow: '0 0 10px rgba(0,0,0,0.5)'
+    textShadow: '0 0 10px rgba(0,0,0,0.5)',
+    position: 'relative',
+    paddingRight: 35 // Space for tick icon
   },
   mobileEventTime: {
     fontSize: '0.8rem',

@@ -65,7 +65,7 @@ class Component extends React.PureComponent {
                     {/* Logo Section */}
                     <div className={classes.logoSection}>
                         <Image
-                            src="/images/Infinitum.png"
+                            src="/images/InfinitumPink.png"
                             alt="Infinitum Logo"
                             width={200}
                             height={70}

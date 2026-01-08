@@ -1117,23 +1117,19 @@ class ProfilePage extends React.Component {
                                                     <div className={classes.fieldValue}>{user.phone}</div>
                                                 </div>
                                                 <div className={classes.dataField}>
-                                                    <label className={classes.fieldLabel}>Gender</label>
-                                                    <div className={classes.fieldValue}>{user.gender || '-'}</div>
+                                                    <label className={classes.fieldLabel}>Department</label>
+                                                    <div className={classes.fieldValue}>{user.department}</div>
                                                 </div>
                                                 <div className={classes.dataField} style={{ gridColumn: '1 / -1' }}>
                                                     <label className={classes.fieldLabel}>College / Institution</label>
                                                     <div className={classes.fieldValue} style={{ whiteSpace: 'normal', lineHeight: 1.4 }}>{user.college}</div>
                                                 </div>
-                                                <div className={classes.dataField} style={{ gridColumn: '1 / -1' }}>
-                                                    <label className={classes.fieldLabel}>Department</label>
-                                                    <div className={classes.fieldValue}>{user.department}</div>
-                                                </div>
                                             </div>
-                                        </div>
+                                        </div> 
 
                                         {/* QR Side (Desktop only now) */}
                                         {!isMobile && (
-                                            <div className={classes.qrContainer} onClick={this.toggleQRExpansion}>
+                                            <div className={classes.qrContainer} onClick={this.toggleQRExpansion} style={{ marginTop: -15 }}>
                                                 <div className={classes.qrBox}>
                                                     <QRCodeSVG
                                                         value={JSON.stringify({ type: "PARTICIPANT", uniqueId: user.uniqueId })}
@@ -1163,21 +1159,19 @@ class ProfilePage extends React.Component {
                                             <label className={classes.fieldLabel}>Email</label>
                                             <div className={classes.fieldValue}>{user.email}</div>
                                         </div>
-                                        <div className={classes.dataField}>
-                                            <label className={classes.fieldLabel}>General Fee</label>
-                                            {user.generalFeePaid ? (
-                                                <span className={classes.statusPaid}><span>●</span> Paid</span>
-                                            ) : (
-                                                <span className={classes.statusPending}>Pending</span>
-                                            )}
-                                        </div>
+                                        {!user.isPSGStudent && (
+                                            <div className={classes.dataField}>
+                                                <label className={classes.fieldLabel}>General Fee</label>
+                                                {user.generalFeePaid ? (
+                                                     <span className={classes.statusPaid}><span>●</span> Paid</span>
+                                                ) : (
+                                                    <span className={classes.statusPending}>Pending</span>
+                                                )}
+                                            </div>
+                                        )}
                                         <div className={classes.dataField}>
                                             <label className={classes.fieldLabel}>Student Type</label>
                                             <div className={classes.fieldValue}>{user.isPSGStudent ? 'PSG Student' : 'External'}</div>
-                                        </div>
-                                        <div className={classes.dataField}>
-                                            <label className={classes.fieldLabel}>Accommodation</label>
-                                            <div className={classes.fieldValue}>{user.accomodation ? 'Yes' : 'No'}</div>
                                         </div>
                                         <div className={classes.dataField}>
                                             <label className={classes.fieldLabel}>Reg. Source</label>

@@ -7,6 +7,8 @@ import { withStyles } from '@/tools/withStyles';
 import { withSounds } from '@/tools/withSounds';
 import { styles } from './Schedule.styles';
 import { eventsData } from '@/data/eventsData';
+import { useAuth } from '@/context/AuthContext';
+import { eventService } from '@/services/eventservice';
 
 const DAYS = [
     { id: 'day1', label: 'Day 1', date: 'Feb 13' },
@@ -87,10 +89,58 @@ const formatTime = (timeStr) => {
 
 const Schedule = ({ classes, sounds }) => {
     const router = useRouter();
+    const { isAuthenticated } = useAuth();
     const [activeDay, setActiveDay] = useState('day1');
+    const [registeredEventTitles, setRegisteredEventTitles] = useState(new Set());
     const rootRef = useRef(null);
     const playHover = () => sounds.hover && sounds.hover.play();
     const playClick = () => sounds.click && sounds.click.play();
+
+    // Fetch user's registered events
+    useEffect(() => {
+        const fetchRegisteredEvents = async () => {
+            if (!isAuthenticated) {
+                setRegisteredEventTitles(new Set());
+                return;
+            }
+
+            try {
+                const registeredTitles = new Set();
+
+                // Fetch registered events
+                try {
+                    const userEvents = await eventService.getUserEvents();
+                    const eventsList = Array.isArray(userEvents) ? userEvents : (userEvents.events || userEvents.data || []);
+                    eventsList.forEach(event => {
+                        if (event.eventName) {
+                            registeredTitles.add(event.eventName.toLowerCase().trim());
+                        }
+                    });
+                } catch (err) {
+                    console.error('Error fetching user events:', err);
+                }
+
+                // Fetch registered workshops
+                try {
+                    const userWorkshops = await eventService.getUserWorkshops();
+                    const workshopsList = Array.isArray(userWorkshops) ? userWorkshops : (userWorkshops.workshops || userWorkshops.data || []);
+                    workshopsList.forEach(workshop => {
+                        if (workshop.workshopName) {
+                            registeredTitles.add(workshop.workshopName.toLowerCase().trim());
+                        }
+                    });
+                } catch (err) {
+                    console.error('Error fetching user workshops:', err);
+                }
+
+                setRegisteredEventTitles(registeredTitles);
+            } catch (error) {
+                console.error('Error fetching registered events:', error);
+            }
+        };
+
+        fetchRegisteredEvents();
+    }, [isAuthenticated]);
 
     useEffect(() => {
         if (!rootRef.current) return;
@@ -161,6 +211,18 @@ const Schedule = ({ classes, sounds }) => {
         return event ? event.eventId : null;
     };
 
+    // Helper to check if event is registered
+    const isEventRegistered = (title) => {
+        const normalizedTitle = title.toLowerCase().trim();
+        // Check exact match or partial match
+        for (let registeredTitle of registeredEventTitles) {
+            if (registeredTitle.includes(normalizedTitle) || normalizedTitle.includes(registeredTitle)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     const handleEventClick = (title) => {
         const eventId = getEventId(title);
         if (eventId) {
@@ -226,16 +288,24 @@ const Schedule = ({ classes, sounds }) => {
                                                 const left = timeToPercent(event.start);
                                                 const width = timeToPercent(event.end) - left;
 
+                                                const isRegistered = isEventRegistered(event.title);
                                                 return (
                                                     <div
                                                         key={idx}
-                                                        className={cx(classes.event, classes[event.category])}
+                                                        className={cx(
+                                                            classes.event,
+                                                            classes[event.category],
+                                                            isRegistered && classes.registeredEvent
+                                                        )}
                                                         style={{ left: `${left}%`, width: `${width}%`, cursor: getEventId(event.title) ? 'pointer' : 'default' }}
                                                         onMouseEnter={playHover}
                                                         onClick={() => handleEventClick(event.title)}
-                                                        title={`${event.title} (${formatTime(event.start)} - ${formatTime(event.end)})`}
+                                                        title={`${event.title} (${formatTime(event.start)} - ${formatTime(event.end)})${isRegistered ? ' - REGISTERED' : ''}`}
                                                     >
-                                                        <div className={classes.eventTitle}>{event.title}</div>
+                                                        <div className={classes.eventTitle}>
+                                                            {event.title}
+                                                            {isRegistered && <span className={classes.registeredBadge}><span>✓</span><span>REGISTERED</span></span>}
+                                                        </div>
                                                         <div className={classes.eventTime}>{formatTime(event.start)} - {formatTime(event.end)}</div>
                                                     </div>
                                                 );
@@ -262,26 +332,36 @@ const Schedule = ({ classes, sounds }) => {
                         <div key={catKey} className={classes.mobileCategoryGroup}>
                             <div className={classes.mobileTimelineLine} />
                             <div className={classes.mobileCategoryTitle}>{CATEGORIES[catKey]}</div>
-                            {catEvents.map((event, idx) => (
-                                <div key={idx} className={classes.mobileEventWrapper}>
-                                    <div className={classes.mobileTimelineDot} />
-                                    <div
-                                        className={cx(classes.mobileEventCard, classes[event.category])}
-                                        onClick={() => {
-                                            playClick();
-                                            handleEventClick(event.title);
-                                        }}
-                                        style={{ cursor: getEventId(event.title) ? 'pointer' : 'default' }}
-                                    >
-                                        <div className={classes.mobileEventHeader}>
-                                            <div className={classes.mobileEventTitle}>{event.title}</div>
-                                        </div>
-                                        <div className={classes.mobileEventTime}>
-                                            {formatTime(event.start)} - {formatTime(event.end)}
+                            {catEvents.map((event, idx) => {
+                                const isRegistered = isEventRegistered(event.title);
+                                return (
+                                    <div key={idx} className={classes.mobileEventWrapper}>
+                                        <div className={classes.mobileTimelineDot} />
+                                        <div
+                                            className={cx(
+                                                classes.mobileEventCard,
+                                                classes[event.category],
+                                                isRegistered && classes.registeredEvent
+                                            )}
+                                            onClick={() => {
+                                                playClick();
+                                                handleEventClick(event.title);
+                                            }}
+                                            style={{ cursor: getEventId(event.title) ? 'pointer' : 'default' }}
+                                        >
+                                            <div className={classes.mobileEventHeader}>
+                                                <div className={classes.mobileEventTitle}>
+                                                    {event.title}
+                                                    {isRegistered && <span className={classes.registeredBadge}><span>✓</span><span>REGISTERED</span></span>}
+                                                </div>
+                                            </div>
+                                            <div className={classes.mobileEventTime}>
+                                                {formatTime(event.start)} - {formatTime(event.end)}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     );
                 })}

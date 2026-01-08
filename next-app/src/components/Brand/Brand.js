@@ -160,7 +160,7 @@ class Component extends React.Component {
             <img
               ref={ref => (this.imageElement = ref)}
               className={classes.image}
-              src="/images/Infinitum.png"
+              src="/images/InfinitumPink.png"
               alt="Infinitum"
               onMouseEnter={() => sounds.hover.play()}
             />

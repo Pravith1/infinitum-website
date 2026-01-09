@@ -13,9 +13,11 @@ export default function PreRegistrationModal() {
         email,
         isLoading,
         error,
+        resendCooldown,
         closeModal,
         sendVerificationCode,
         verifyCode,
+        resendCode,
         resetFlow,
         setError,
     } = usePreRegistration();
@@ -255,10 +257,13 @@ export default function PreRegistrationModal() {
                             <button
                                 type="button"
                                 className={styles.resendLink}
-                                onClick={() => sendVerificationCode(email)}
-                                disabled={isLoading}
+                                onClick={resendCode}
+                                disabled={isLoading || resendCooldown > 0}
                             >
-                                Didn't receive the code? Resend
+                                {resendCooldown > 0
+                                    ? `Resend code in ${resendCooldown}s`
+                                    : "Didn't receive the code? Resend"
+                                }
                             </button>
                         </form>
                     )}

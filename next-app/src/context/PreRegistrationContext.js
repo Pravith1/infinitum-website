@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { authService } from '@/services/authService';
 
 const PreRegistrationContext = createContext(undefined);
@@ -19,6 +19,15 @@ export function PreRegistrationProvider({ children }) {
     const [verificationCode, setVerificationCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [resendCooldown, setResendCooldown] = useState(0);
+
+    // Cooldown timer effect
+    useEffect(() => {
+        if (resendCooldown > 0) {
+            const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [resendCooldown]);
 
     const openModal = useCallback(() => {
         setIsModalOpen(true);
@@ -26,6 +35,7 @@ export function PreRegistrationProvider({ children }) {
         setEmail('');
         setVerificationCode('');
         setError('');
+        setResendCooldown(0);
     }, []);
 
     const closeModal = useCallback(() => {
@@ -35,6 +45,7 @@ export function PreRegistrationProvider({ children }) {
         setVerificationCode('');
         setError('');
         setIsLoading(false);
+        setResendCooldown(0);
     }, []);
 
     const sendVerificationCode = useCallback(async (emailInput) => {
@@ -44,6 +55,7 @@ export function PreRegistrationProvider({ children }) {
             await authService.sendPreRegistrationCode(emailInput);
             setEmail(emailInput);
             setCurrentStep(PRE_REG_STEPS.VERIFY);
+            setResendCooldown(120); // Start cooldown after sending code
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to send verification code. Please try again.');
         } finally {
@@ -65,11 +77,28 @@ export function PreRegistrationProvider({ children }) {
         }
     }, [email]);
 
+    const resendCode = useCallback(async () => {
+        if (resendCooldown > 0 || !email || isLoading) return;
+
+        setIsLoading(true);
+        setError('');
+        try {
+            await authService.resendPreRegistrationCode(email);
+            setResendCooldown(120); // Reset cooldown after resend
+            setError(''); // Clear any previous errors
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to resend code. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    }, [email, resendCooldown, isLoading]);
+
     const resetFlow = useCallback(() => {
         setCurrentStep(PRE_REG_STEPS.EMAIL);
         setEmail('');
         setVerificationCode('');
         setError('');
+        setResendCooldown(0);
     }, []);
 
     const value = {
@@ -79,10 +108,12 @@ export function PreRegistrationProvider({ children }) {
         verificationCode,
         isLoading,
         error,
+        resendCooldown,
         openModal,
         closeModal,
         sendVerificationCode,
         verifyCode,
+        resendCode,
         resetFlow,
         setError,
     };

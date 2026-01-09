@@ -169,7 +169,7 @@ export const eventsData = [
     {
         "_id": { "$oid": "694ced34297836cde76824a3" },
         "eventId": "EVNT05",
-        "eventName": "Infinitum Open Quiz",
+        "eventName": "Open Quiz",
         "category": "Quiz",
         "oneLineDescription": "Prompt Engineer Battle, Stock Market Quiz, Phygital Escape Quiz",
         "description": "Open Quiz is a multi-round interactive quiz event combining AI creativity, strategic thinking, and immersive problem-solving.",

@@ -23,7 +23,7 @@ const RAW_EVENTS = [
     { title: 'Force Coders', start: '10:00', end: '16:00', category: 'competition', day: 'day1', venue: 'GRD and Programming Labs' },
     { title: 'Quest X', start: '10:00', end: '15:00', category: 'competition', day: 'day1', venue: 'Q Block Classrooms' },
     { title: 'Workshop 1', start: '10:30', end: '16:00', category: 'workshop', day: 'day1', venue: 'SCPS Lab' },
-    { title: 'Infinitum Open Quiz', start: '13:45', end: '16:00', category: 'quiz', day: 'day1', venue: 'D Block' },
+    { title: 'Open Quiz', start: '13:45', end: '16:00', category: 'quiz', day: 'day1', venue: 'D Block' },
     { title: 'Award Ceremony I', start: '16:30', end: '17:15', category: 'awards', day: 'day1', venue: 'F203' },
 
     // Day 2
@@ -323,7 +323,7 @@ const Schedule = ({ classes, sounds }) => {
                                                             {isRegistered && <span className={classes.registeredBadge}><span>✓</span><span>REGISTERED</span></span>}
                                                         </div>
                                                         <div className={classes.eventTime}>{formatTime(event.start)} - {formatTime(event.end)}</div>
-                                                        
+
                                                         {/* Custom Tooltip */}
                                                         <div className={classes.eventTooltip}>
                                                             <div className={classes.tooltipTitle}>

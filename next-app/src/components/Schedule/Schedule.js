@@ -17,24 +17,24 @@ const DAYS = [
 
 const RAW_EVENTS = [
     // Day 1
-    { title: 'Inauguration', start: '09:10', end: '09:45', category: 'general', day: 'day1' },
-    { title: 'Speaker Talk', start: '10:00', end: '11:00', category: 'talk', day: 'day1' },
-    { title: 'Thooral – Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1' },
-    { title: 'Force Coders', start: '10:00', end: '16:00', category: 'competition', day: 'day1' },
-    { title: 'Quest X', start: '10:00', end: '15:00', category: 'competition', day: 'day1' },
-    { title: 'Workshop 1', start: '10:30', end: '16:00', category: 'workshop', day: 'day1' },
-    { title: 'Infinitum Open Quiz', start: '13:45', end: '16:00', category: 'quiz', day: 'day1' },
-    { title: 'Award Ceremony I', start: '16:30', end: '17:15', category: 'awards', day: 'day1' },
+    { title: 'Inauguration', start: '09:10', end: '09:45', category: 'general', day: 'day1', venue: 'D Block' },
+    { title: 'Speaker Talk', start: '10:00', end: '11:00', category: 'talk', day: 'day1', venue: 'Seminar Hall A' },
+    { title: 'Thooral – Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1', venue: 'CC Lab' },
+    { title: 'Force Coders', start: '10:00', end: '16:00', category: 'competition', day: 'day1', venue: 'GRD and Programming Labs' },
+    { title: 'Quest X', start: '10:00', end: '15:00', category: 'competition', day: 'day1', venue: 'Q Block Classrooms' },
+    { title: 'Workshop 1', start: '10:30', end: '16:00', category: 'workshop', day: 'day1', venue: 'SCPS Lab' },
+    { title: 'Infinitum Open Quiz', start: '13:45', end: '16:00', category: 'quiz', day: 'day1', venue: 'D Block' },
+    { title: 'Award Ceremony I', start: '16:30', end: '17:15', category: 'awards', day: 'day1', venue: 'F203' },
 
     // Day 2
-    { title: 'Code Mania', start: '09:00', end: '15:00', category: 'competition', day: 'day2' },
-    { title: 'Paper Presentation on AI and Emerging Trends', start: '10:00', end: '14:00', category: 'presentation', day: 'day2' },
-    { title: 'Thooral – Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2' },
-    { title: 'Nexus', start: '09:00', end: '15:00', category: 'competition', day: 'day2' },
-    { title: 'Git Wars', start: '09:00', end: '14:00', category: 'competition', day: 'day2' },
-    { title: 'Workshop 2', start: '09:00', end: '15:00', category: 'workshop', day: 'day2' },
-    { title: 'Workshop 3', start: '09:00', end: '15:00', category: 'workshop', day: 'day2' },
-    { title: 'Award Ceremony II', start: '15:30', end: '16:00', category: 'awards', day: 'day2' }
+    { title: 'Code Mania', start: '09:00', end: '15:00', category: 'competition', day: 'day2', venue: '3AI and AIR Labs' },
+    { title: 'Paper Presentation on AI and Emerging Trends', start: '10:00', end: '14:00', category: 'presentation', day: 'day2', venue: 'Classroom' },
+    { title: 'Thooral – Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2', venue: 'CC Lab' },
+    { title: 'Nexus', start: '09:00', end: '15:00', category: 'competition', day: 'day2', venue: '3AI and CSP Labs' },
+    { title: 'Git Wars', start: '09:00', end: '14:00', category: 'competition', day: 'day2', venue: 'G Block Classrooms' },
+    { title: 'Workshop 2', start: '09:00', end: '15:00', category: 'workshop', day: 'day2', venue: 'AIR Lab' },
+    { title: 'Workshop 3', start: '09:00', end: '15:00', category: 'workshop', day: 'day2', venue: 'SCPS Lab' },
+    { title: 'Award Ceremony II', start: '15:30', end: '16:00', category: 'awards', day: 'day2', venue: 'F203' }
 ];
 
 const CATEGORIES = {
@@ -333,6 +333,7 @@ const Schedule = ({ classes, sounds }) => {
                                                             <div className={classes.tooltipTime}>
                                                                 {formatTime(event.start)} - {formatTime(event.end)}
                                                             </div>
+                                                            {event.venue && <div className={classes.tooltipVenue}>Venue: {event.venue}</div>}
                                                         </div>
                                                     </div>
                                                 );
@@ -385,6 +386,7 @@ const Schedule = ({ classes, sounds }) => {
                                             <div className={classes.mobileEventTime}>
                                                 {formatTime(event.start)} - {formatTime(event.end)}
                                             </div>
+                                            {event.venue && <div className={classes.mobileEventVenue}>Venue: {event.venue}</div>}
                                         </div>
                                     </div>
                                 );

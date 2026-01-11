@@ -7,7 +7,7 @@ import styles from './Collaboration.module.css';
 export default function Collaboration() {
     return (
         <section className={styles.collaboration}>
-            <h2 className={styles.title}>In Collaboration With</h2>
+            <h2 className={styles.title}>In Association With</h2>
             <div className={styles.logos}>
                 <a
                     href="https://ghcc.psgtech.ac.in"
@@ -33,8 +33,8 @@ export default function Collaboration() {
                     <Image
                         src="/images/eye.png"
                         alt="The Eye"
-                        width={80}
-                        height={80}
+                        width={120}
+                        height={120}
                         className={styles.logo}
                     />
                     <span className={styles.subtitle}>The Eye</span>

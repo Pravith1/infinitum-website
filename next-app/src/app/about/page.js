@@ -294,8 +294,8 @@ class AboutPage extends React.Component {
                                         <Image
                                             src="/images/eye.png"
                                             alt="The Eye Logo"
-                                            width={120}
-                                            height={120}
+                                            width={180}
+                                            height={180}
                                             className={classes.sectionImage}
                                             style={{ objectFit: 'contain' }}
                                         />

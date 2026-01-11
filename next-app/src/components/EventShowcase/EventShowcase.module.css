@@ -666,8 +666,9 @@
   }
 }
 
-/* Glowing Platform */
+/* Glowing Platform - Hidden */
 .platform {
+  display: none;
   position: absolute;
   bottom: -65px;
   left: 50%;

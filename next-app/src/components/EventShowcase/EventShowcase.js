@@ -133,8 +133,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                         timing: w.time,
                         isWorkshop: true,
                         isFullDetailsLoaded: true,
-                        // Ensure required fields like teamSize and date are present
-                        teamSize: w.teamSize || 1,
+                        // Ensure required fields like date are present
                         date: w.date?.$date || w.date,
                         rounds: w.agenda ? w.agenda.map((a, i) => ({
                             title: a.time,
@@ -554,7 +553,21 @@ export default function EventShowcase({ sounds, initialEventId }) {
             <div className={styles.mainContent}>
                 {/* Left Stats Panel */}
                 <div className={styles.statsPanel}>
-                    {currentEvent.teamSize && (
+                    {category === 'workshops' && currentEvent.contacts && currentEvent.contacts.length > 0 && (
+                        <div className={styles.contactsContainer}>
+                            <div className={styles.statLabel}>Speakers</div>
+                            {currentEvent.contacts.map((contact, index) => (
+                                <div key={contact._id?.$oid || index} className={styles.speakerItem}>
+                                    <div className={styles.speakerName}>{contact.name}</div>
+                                    {contact.designation && (
+                                        <div className={styles.speakerDesignation}>{contact.designation}</div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    
+                    {category !== 'workshops' && currentEvent.teamSize && (
                         <div className={styles.statItem}>
                             <div className={styles.statLabel}>Team Size</div>
                             <div className={styles.statValue}>
@@ -562,11 +575,6 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             </div>
                         </div>
                     )}
-
-                    <div className={styles.statItem}>
-                        <div className={styles.statLabel}>Venue</div>
-                        <div className={styles.statValue}>{currentEvent.hall}</div>
-                    </div>
 
                     <div className={styles.statItem}>
                         <div className={styles.statLabel}>DATE AND TIME</div>
@@ -577,6 +585,11 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                 ))
                             }
                         </div>
+                    </div>
+
+                    <div className={styles.statItem}>
+                        <div className={styles.statLabel}>Venue</div>
+                        <div className={styles.statValue}>{currentEvent.hall}</div>
                     </div>
                 </div>
 
@@ -666,8 +679,10 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                 }</div>
                             </div>
                             {currentEvent.rounds.map((round, index) => (
-                                <div key={round._id?.$oid || index} className={styles.roundItem}>
-                                    <div className={styles.roundBadge}>R{index + 1}</div>
+                                <div key={round._id?.$oid || index} className={`${styles.roundItem} ${category === 'workshops' ? styles.workshopRoundItem : ''}`}>
+                                    <div className={styles.roundBadge}>
+                                        {category === 'workshops' ? '▸' : `R${index + 1}`}
+                                    </div>
                                     <div className={styles.roundDetails}>
                                         <div className={styles.roundItemTitle}>{round.title}</div>
                                         {round.tagline && (
@@ -721,6 +736,12 @@ export default function EventShowcase({ sounds, initialEventId }) {
 
                                 {/* Event Info Grid */}
                                 <div className={styles.modalInfoGrid}>
+                                    {category === 'workshops' && currentEvent.contacts && currentEvent.contacts.length > 0 && (
+                                        <div className={styles.modalInfoItem}>
+                                            <span className={styles.modalInfoLabel}>Speakers</span>
+                                            <span className={styles.modalInfoValue}>{currentEvent.contacts.length} Speaker{currentEvent.contacts.length > 1 ? 's' : ''}</span>
+                                        </div>
+                                    )}
                                     {(currentEvent.dateAndTime || currentEvent.timing) && (
                                         <div className={styles.modalInfoItem}>
                                             <span className={styles.modalInfoLabel}>DATE AND TIME</span>
@@ -737,7 +758,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                             <span className={styles.modalInfoValue}>{currentEvent.hall}</span>
                                         </div>
                                     )}
-                                    {currentEvent.teamSize && (
+                                    {category !== 'workshops' && currentEvent.teamSize && (
                                         <div className={styles.modalInfoItem}>
                                             <span className={styles.modalInfoLabel}>Team Size</span>
                                             <span className={styles.modalInfoValue}>{currentEvent.teamSize} Members</span>
@@ -753,7 +774,9 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                         </h4>
                                         {currentEvent.rounds.map((round, index) => (
                                             <div key={round._id?.$oid || index} className={styles.modalRoundItem}>
-                                                <span className={styles.roundNumber}>{index + 1}</span>
+                                                <span className={styles.roundNumber}>
+                                                    {category === 'workshops' ? '▸' : index + 1}
+                                                </span>
                                                 <div>
                                                     <strong>{round.title}</strong>
                                                     {round.description && <p>{round.description}</p>}
@@ -766,7 +789,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                 {/* Contacts */}
                                 {currentEvent.contacts && currentEvent.contacts.length > 0 && (
                                     <div className={styles.modalContacts}>
-                                        <h4 className={styles.modalSectionTitle}>Coordinators</h4>
+                                        <h4 className={styles.modalSectionTitle}>{category === 'workshops' ? 'Speakers' : 'Coordinators'}</h4>
                                         {currentEvent.contacts.map((contact, index) => (
                                             <div key={contact._id?.$oid || index} className={styles.modalContactItem}>
                                                 <span>{contact.name}</span>

@@ -100,9 +100,72 @@
 
 /* Contacts Container */
 .contactsContainer {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(199, 32, 113, 0.3);
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(199, 32, 113, 0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.contactsContainer::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(135deg, rgba(199, 32, 113, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.contactsContainer:hover::before {
+  opacity: 1;
+}
+
+.speakerItem {
+  margin-top: 12px;
+  padding-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.speakerItem:last-child {
+  padding-bottom: 0;
+}
+
+.speakerItem:first-child {
+  margin-top: 8px;
+}
+
+.speakerName {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.speakerDesignation {
+  font-family: 'Electrolize', sans-serif;
+  font-size: 13px;
+  color: #c72071;
+  line-height: 1.4;
+}
+
+.speakerPhone {
+  font-family: 'Electrolize', sans-serif;
+  font-size: 14px;
+  color: #c72071;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.speakerPhone:hover {
+  color: #ff3399;
 }
 
 .contactItem {
@@ -254,13 +317,25 @@
   opacity: 0;
   overflow: hidden;
   transition: all 0.4s ease-out;
+  margin-top: 0;
 }
 
 .roundItem:hover .roundItemDesc {
   max-height: 300px;
-  /* Allow expansion */
   opacity: 1;
   margin-top: 10px;
+  color: #ffffff;
+}
+
+/* Workshop specific - always show description */
+.workshopRoundItem .roundItemDesc {
+  max-height: 300px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+.workshopRoundItem:hover .roundItemDesc {
+  color: #ffffff;
 }
 
 
@@ -1685,6 +1760,38 @@
 .modalContacts {
   width: 100%;
   margin: 16px 0;
+}
+
+.hoverReveal {
+  position: relative;
+  overflow: hidden;
+  max-height: 60px;
+  transition: max-height 0.4s ease;
+}
+
+.hoverReveal::after {
+  content: 'Hover to view';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: linear-gradient(to top, rgba(10, 10, 15, 0.98), transparent);
+  text-align: center;
+  font-size: 0.75rem;
+  color: #c72071;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.hoverReveal:hover {
+  max-height: 1000px;
+}
+
+.hoverReveal:hover::after {
+  opacity: 0;
 }
 
 .modalContactItem {

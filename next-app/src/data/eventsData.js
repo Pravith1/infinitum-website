@@ -322,64 +322,67 @@ export const workshopsData = [
         "club_id": {
             "$oid": "69495a6a719d1b3bd5a9e7cd"
         },
-        "workshopName": "Introduction to Machine Learning",
+        "workshopName": "AI Infrastructure: From Big Picture to Everyday Reality",
         "date": {
             "$date": "2026-03-15T00:00:00.000Z"
         },
-        "tagline": "Learn ML fundamentals hands-on",
+        "tagline": "Understanding AI Infrastructure - From Big Picture to Everyday Reality",
         "hall": "Computer Lab 1",
         "time": "2:00 PM - 5:00 PM",
         "contacts": [
             {
-                "name": "John Doe",
+                "name": "Supriya Rajamanickam",
+                "designation": "Senior Technical Leader, Cisco Systems",
                 "mobile": "9876543210",
                 "_id": {
                     "$oid": "695a4c2a8baa56af3270689b"
                 }
             },
             {
-                "name": "Jane Smith",
+                "name": "Balasankar Raman",
+                "designation": "Principal Engineer, Cisco Systems",
                 "mobile": "9123456780",
                 "_id": {
                     "$oid": "695a4c2a8baa56af3270689c"
                 }
+            },
+            {
+                "name": "Shankar Gopalkrishnan",
+                "designation": "Principal Engineer, Cisco Systems",
+                "mobile": "9876543211",
+                "_id": {
+                    "$oid": "695a4c2a8baa56af3270689d"
+                }
             }
         ],
         "maxCount": 50,
-        "description": "A comprehensive workshop covering the basics of Machine Learning, including supervised and unsupervised learning, neural networks, and practical implementations using Python.",
+        "description": "A comprehensive workshop on AI Infrastructure featuring expert speakers from Cisco Systems. Learn about the infrastructure requirements for AI, including QoS, Load-Balancing, Security, and real-world AI implementations.",
         "agenda": [
             {
-                "time": "2:00 PM - 2:30 PM",
-                "description": "Introduction to ML concepts",
+                "time": "Topic 1",
+                "description": "What infra does AI need - The big picture!",
                 "_id": {
                     "$oid": "695a4c2a8baa56af3270689d"
                 }
             },
             {
-                "time": "2:30 PM - 3:30 PM",
-                "description": "Hands-on: Linear Regression",
+                "time": "Topic 2",
+                "description": "AI-Infra: Nuts and bolts - QoS, Load-Balancing, Security et al.",
                 "_id": {
                     "$oid": "695a4c2a8baa56af3270689e"
                 }
             },
             {
-                "time": "3:30 PM - 4:30 PM",
-                "description": "Neural Networks basics",
+                "time": "Topic 3",
+                "description": "Day by day with AI",
                 "_id": {
                     "$oid": "695a4c2a8baa56af3270689f"
-                }
-            },
-            {
-                "time": "4:30 PM - 5:00 PM",
-                "description": "Q&A and Closing",
-                "_id": {
-                    "$oid": "695a4c2a8baa56af327068a0"
                 }
             }
         ],
         "earlyBirdActive": true,
         "closed": false,
-        "prerequisites": "Basic Python knowledge, Laptop with Python 3.8+ installed",
+        "prerequisites": "Basic understanding of AI concepts, Laptop",
         "youtubeUrl": "https://youtube.com/watch?v=example",
         "createdAt": {
             "$date": "2026-01-04T11:16:58.576Z"

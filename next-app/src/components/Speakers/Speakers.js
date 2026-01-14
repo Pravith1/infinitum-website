@@ -17,6 +17,24 @@ const SPEAKERS_DATA = [
     //     name: "Elon Musk",
     //     type: "Keynote Speaker"
     // }
+    {
+        image: "/images/speakers/Balaraman.jpeg",
+        name: "Balasankar Raman",
+        designation: "Principal Engineer, Cisco Systems",
+        type: "Speakers"
+    },
+    {
+        image: "/images/speakers/shankar.jpg",
+        name: "Shankar Gopalkrishnan",
+        designation: "Principal Engineer, Cisco Systems",
+        type: "Speakers"
+    },
+    {
+        image: "/images/speakers/Supriya.jpeg",
+        name: "Supriya Rajamanickam",
+        designation: "Senior Technical Leader, Cisco Systems",
+        type: "Speakers"
+    }
 ];
 
 export default function Speakers() {
@@ -61,7 +79,10 @@ export default function Speakers() {
                                         </div>
                                         <div className={styles.info}>
                                             <h4 className={styles.name}>{speaker.name}</h4>
-                                            <span className={styles.type}>{speaker.type}</span>
+                                            {speaker.designation && (
+                                                <p className={styles.designation}>{speaker.designation}</p>
+                                            )}
+                                            {/* <span className={styles.type}>{speaker.type}</span> */}
                                         </div>
                                     </div>
                                 ))}

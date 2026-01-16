@@ -640,6 +640,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             <div className={`${styles.eventImage} ${isTransitioning ? styles.fadeOut : styles.fadeIn} `} onClick={openModal} style={{ cursor: 'pointer' }}>
                                 {currentEvent.image && (
                                     <Image
+                                        key={currentEvent.eventId || currentEvent.workshopId || currentEvent.paperId}
                                         src={currentEvent.image}
                                         alt={currentEvent.eventName}
                                         width={400}

@@ -1,4 +1,4 @@
-import { rgba } from 'polished';
+import { rgba, lighten } from 'polished';
 
 export const styles = theme => ({
   root: {
@@ -372,9 +372,12 @@ export const styles = theme => ({
     '&:hover': { boxShadow: '0 0 25px rgba(0, 229, 255, 0.6)' }
   },
   technical: {
-    background: 'linear-gradient(135deg, #e85d99 0%, #c43e7e 100%)', // Lighter Pink
-    boxShadow: '0 0 15px rgba(232, 93, 153, 0.4)',
-    '&:hover': { boxShadow: '0 0 25px rgba(232, 93, 153, 0.6)' }
+    background: `linear-gradient(135deg, ${lighten(0.15, theme.color.secondary.main)} 0%, ${lighten(0.15, theme.color.secondary.dark)} 100%)`, // Simulating hover brightness
+    boxShadow: `0 0 15px ${rgba(theme.color.secondary.main, 0.4)}`,
+    '&:hover': {
+      boxShadow: `0 0 25px ${rgba(theme.color.secondary.main, 0.6)}`,
+      filter: 'brightness(1.0)' // Reset filter as we are already bright
+    }
   },
   nontechnical: {
     background: 'linear-gradient(135deg, #00d4ff 0%, #00a0c0 100%)', // Cyan (aligns with bento grid)

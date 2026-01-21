@@ -484,7 +484,12 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             e.stopPropagation();
                             console.log('🖱️ Dropdown item clicked:', cat);
                             if (sounds?.click) sounds.click.play();
-                            setCategory(cat);
+
+                            // Always navigate to the clean category URL
+                            // This ensures we leave specific event pages (like /events/ID) 
+                            // and go to the list view of the new category
+                            router.push(`/events?category=${cat}`);
+
                             setIsDropdownOpen(false);
                         }}
                     >
@@ -543,13 +548,13 @@ export default function EventShowcase({ sounds, initialEventId }) {
                     <span className={`${styles.corner} ${styles.cornerBottomLeft}`}></span>
                     <span className={`${styles.corner} ${styles.cornerBottomRight}`}></span>
 
-                    <h1 className={`${styles.eventName} ${isTransitioning ? styles.fadeOut : styles.fadeIn} `}>
+                    <h1 className={`${styles.eventName} ${isTransitioning ? styles.fadeOut : ''} `}>
                         {currentEvent.eventName}
                     </h1>
                 </div>
 
                 {/* Tagline */}
-                <p className={`${styles.tagline} ${isTransitioning ? styles.fadeOut : styles.fadeIn} `}>
+                <p className={`${styles.tagline} ${isTransitioning ? styles.fadeOut : ''} `}>
                     {currentEvent.oneLineDescription}
                 </p>
             </div>
@@ -638,7 +643,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                         )}
 
                         <CometCard className={styles.eventImageCard}>
-                            <div className={`${styles.eventImage} ${isTransitioning ? styles.fadeOut : styles.fadeIn} `} onClick={openModal} style={{ cursor: 'pointer' }}>
+                            <div className={`${styles.eventImage} ${isTransitioning ? styles.fadeOut : ''} `} onClick={openModal} style={{ cursor: 'pointer' }}>
                                 {currentEvent.image && (
                                     <Image
                                         key={currentEvent.eventId || currentEvent.workshopId || currentEvent.paperId}

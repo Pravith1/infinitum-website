@@ -354,17 +354,10 @@
     overflow: hidden;
     border-radius: 12px;
     border: 2px solid rgba(199, 32, 113, 0.5);
+    width: fit-content;
 }
 
-.poster {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-}
-
-.cardWrapper:hover .poster {
+.cardWrapper:hover .posterFrame img {
     transform: scale(1.05);
 }
 
@@ -819,6 +812,85 @@
     font-family: var(--font-electrolize), sans-serif;
 }
 
+/* Schedule Section - Multi-day */
+.scheduleSection {
+    margin-top: 10px;
+}
+
+.scheduleGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.scheduleDay {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(199, 32, 113, 0.25);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dayHeader {
+    background: linear-gradient(135deg, #c72071, #8b164f);
+    color: #fff;
+    font-family: var(--font-orbitron), sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 10px 14px;
+    text-align: center;
+}
+
+.dayDetails {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scheduleItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(238, 238, 238, 0.85);
+    font-family: var(--font-electrolize), sans-serif;
+}
+
+.scheduleItem i {
+    color: #c72071;
+    font-size: 16px;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+/* Info Note */
+.infoNote {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(199, 32, 113, 0.1);
+    border: 1px solid rgba(199, 32, 113, 0.3);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.infoNote i {
+    color: #c72071;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.infoNote span {
+    font-size: 13px;
+    color: rgba(238, 238, 238, 0.85);
+    line-height: 1.6;
+    font-family: var(--font-electrolize), sans-serif;
+}
+
 /* Contacts Section */
 .contactsSection {
     margin-top: 10px;
@@ -958,7 +1030,7 @@
 
     .poster {
         width: 200px;
-        height: 200px;
+        height: auto;
     }
 
     .title {
@@ -977,6 +1049,10 @@
         grid-template-columns: 1fr;
     }
 
+    .scheduleGrid {
+        grid-template-columns: 1fr;
+    }
+
     /* Disable 3D tilt on mobile */
     .card {
         transform: none !important;
@@ -986,7 +1062,7 @@
 @media (max-width: 480px) {
     .poster {
         width: 160px;
-        height: 160px;
+        height: auto;
     }
 
     .label {

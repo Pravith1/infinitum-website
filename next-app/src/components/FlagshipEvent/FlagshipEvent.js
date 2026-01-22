@@ -10,20 +10,62 @@ import { useAuth } from '@/context/AuthContext';
 import { usePreRegistration } from '@/context/PreRegistrationContext';
 import { isPreRegistrationEnabled, preRegistrationConfig } from '@/settings/featureFlags';
 
-// Static event data
+// Hardcoded event data for Thooral Hackathon
 const EVENT_DATA = {
-    title: 'Thooral Hackathon',
-    shortDescription: 'The ultimate hackathon challenge awaits. Test your skills and compete with the best minds in an intense 24-hour coding marathon.',
-    fullDescription: 'Prepare yourself for the most anticipated event of Infinitum! Thooral Hackathon brings together the brightest minds to compete in an intense coding marathon. Showcase your problem-solving skills, algorithmic thinking, and creativity as you tackle challenging problems designed to push your limits. Whether you\'re a seasoned coder or an enthusiastic beginner, this event offers something for everyone. Join us for an unforgettable experience filled with learning, competition, and amazing prizes!',
+    eventId: "EVNT07",
+    eventName: "Thooral Hackathon",
+    category: "Technical",
+    oneLineDescription: "From idea to impact—design, document, build, and present innovative solutions.",
+    description: "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle. Participants ideate solutions, create structured documentation, develop working prototypes, and present their solutions across domains such as Full Stack Development, Machine Learning, and Blockchain. The event emphasizes innovation, teamwork, and industry-relevant development practices.",
     posterSrc: 'images/Thooral.png',
+    rounds: [
+        {
+            title: "Ideation & Pitching",
+            description: "Teams analyze the problem statement and present innovative solutions through a structured PPT pitch.",
+            _id: "695a3d878baa56af3270688c"
+        },
+        {
+            title: "Documentation & System Design",
+            description: "Participants prepare essential software artifacts including SRS documents and UML diagrams.",
+            _id: "695a3d878baa56af3270688d"
+        },
+        {
+            title: "Implementation Phase",
+            description: "Teams develop working prototypes or applications based on their proposed solutions.",
+            _id: "695a3d878baa56af3270688e"
+        },
+        {
+            title: "Final Presentation",
+            description: "Teams demonstrate their solution, explain design decisions, and present impact and scalability before judges.",
+            _id: "695a3d878baa56af3270688f"
+        }
+    ],
+    contacts: [
+        { name: "Ishwarya S", mobile: "9342868277" },
+        { name: "Akash S", mobile: "9943803882" },
+        { name: "Shree Raghavan", mobile: "6385786223" }
+    ],
+    teamSize: 4,
+    closed: false,
+    date: {
+        "Day 1": "FEB 13",
+        "Day 2": "FEB 14"
+    },
+    timing: {
+        "Day 1": "10:00 AM - 4:30 PM",
+        "Day 2": "9:00 AM - 3:00 PM"
+    },
+    hall: {
+        "Day 1": { date: "FEB 13", lab: "3AI and AIR Labs" },
+        "Day 2": { date: "FEB 14", lab: "GRD Lab and Programming Lab- I" }
+    },
+    clubName: "CSEA"
 };
 
 export default function FlagshipEvent() {
     const [isOverlayOpen, setIsOverlayOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [flagship, setFlagship] = useState({});
-    const [thooral, setThooral] = useState({});
     const [isRegistered, setIsRegistered] = useState(false);
     const [notification, setNotification] = useState({
         isOpen: false,
@@ -44,76 +86,23 @@ export default function FlagshipEvent() {
     const expandSoundRef = useRef(null);
     const hoverSoundRef = useRef(null);
 
-    // Fetch flagship event data
+    // Use hardcoded event data and check registration status
     useEffect(() => {
-        const fetchFlagshipEvent = async () => {
-            try {
-                // Step 1: Fetch all events
-                const data = await eventService.getAllEvents({ limit: 50 });
-
-                // Handle different response formats
-                let events = [];
-                if (Array.isArray(data)) {
-                    events = data;
-                } else if (data.events && Array.isArray(data.events)) {
-                    events = data.events;
-                } else if (data.data && Array.isArray(data.data)) {
-                    events = data.data;
+        const checkRegistration = async () => {
+            // Check if user is already registered
+            if (isAuthenticated && EVENT_DATA.eventId) {
+                try {
+                    const userEvents = await eventService.getUserEvents();
+                    const list = Array.isArray(userEvents) ? userEvents : (userEvents.events || userEvents.data || []);
+                    const registeredIds = list.map(e => e.eventId);
+                    setIsRegistered(registeredIds.includes(EVENT_DATA.eventId));
+                } catch (err) {
+                    console.error('Error checking registration status:', err);
                 }
-
-                // Step 2: Find Thooral Hackathon
-                const thooral_hackathon = events.find(event =>
-                    event.eventName === "Thooral Hackathon"
-                );
-
-                if (thooral_hackathon) {
-                    // Set basic flagship data
-                    setFlagship({
-                        eventId: thooral_hackathon.eventId,
-                        eventName: thooral_hackathon.eventName,
-                        category: thooral_hackathon.category,
-                        oneLineDescription: thooral_hackathon.oneLineDescription,
-                        clubName: thooral_hackathon.clubName,
-                    });
-
-                    // Step 3: Fetch detailed event data
-                    const detailData = await eventService.getEventById(thooral_hackathon.eventId);
-
-                    let eventDetails = null;
-                    if (detailData.event && Array.isArray(detailData.event)) {
-                        eventDetails = detailData.event[0];
-                    } else if (detailData.event) {
-                        eventDetails = detailData.event;
-                    } else if (detailData.data && Array.isArray(detailData.data)) {
-                        eventDetails = detailData.data[0];
-                    } else if (detailData.data) {
-                        eventDetails = detailData.data;
-                    } else if (Array.isArray(detailData)) {
-                        eventDetails = detailData[0];
-                    } else {
-                        eventDetails = detailData;
-                    }
-
-                    setThooral(eventDetails);
-
-                    // Check if user is already registered
-                    if (isAuthenticated && thooral_hackathon.eventId) {
-                        try {
-                            const userEvents = await eventService.getUserEvents();
-                            const list = Array.isArray(userEvents) ? userEvents : (userEvents.events || userEvents.data || []);
-                            const registeredIds = list.map(e => e.eventId);
-                            setIsRegistered(registeredIds.includes(thooral_hackathon.eventId));
-                        } catch (err) {
-                            console.error('Error checking registration status:', err);
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching flagship event:', err);
             }
         };
 
-        fetchFlagshipEvent();
+        checkRegistration();
     }, [isAuthenticated]);
 
     // Initialize audio on mount
@@ -245,7 +234,7 @@ export default function FlagshipEvent() {
             isOpen: true,
             type: 'confirm',
             title: 'Confirm Registration',
-            message: `Are you sure you want to register for ${thooral?.eventName || 'Thooral Hackathon'}?`,
+            message: `Are you sure you want to register for ${EVENT_DATA.eventName}?`,
             onConfirm: () => performRegistration()
         });
     };
@@ -254,7 +243,7 @@ export default function FlagshipEvent() {
         closeNotification();
 
         try {
-            const res = await eventService.registerEvent(flagship.eventId);
+            const res = await eventService.registerEvent(EVENT_DATA.eventId);
 
             if (res && res.success) {
                 setNotification({
@@ -313,7 +302,7 @@ export default function FlagshipEvent() {
     const glareX = mousePosition.x * 100;
     const glareY = mousePosition.y * 100;
 
-    const { title, shortDescription, fullDescription, posterSrc } = EVENT_DATA;
+    const { eventName, oneLineDescription, description, posterSrc, rounds, contacts, teamSize, date, timing, hall, clubName, eventRules } = EVENT_DATA;
 
     return (
         <>
@@ -357,10 +346,9 @@ export default function FlagshipEvent() {
                             <div className={styles.posterFrame}>
                                 <Image
                                     src={posterSrc}
-                                    alt={title}
+                                    alt={eventName}
                                     width={200}
                                     height={200}
-                                    className={styles.poster}
                                     priority
                                     unoptimized
                                 />
@@ -369,8 +357,8 @@ export default function FlagshipEvent() {
 
                         {/* Info */}
                         <div className={styles.info}>
-                            <h2 className={styles.title} data-text={title}>{flagship.eventName}</h2>
-                            <p className={styles.description}>{flagship.oneLineDescription}</p>
+                            <h2 className={styles.title} data-text={eventName}>{eventName}</h2>
+                            <p className={styles.description}>{oneLineDescription}</p>
                             <button className={styles.ctaButton}>
                                 <span>Learn More</span>
                                 <i className="ri-arrow-right-line"></i>
@@ -393,7 +381,7 @@ export default function FlagshipEvent() {
                             <div className={styles.modalPosterWrapper}>
                                 <Image
                                     src={posterSrc}
-                                    alt={thooral?.eventName || title}
+                                    alt={eventName}
                                     width={320}
                                     height={320}
                                     className={styles.modalPoster}
@@ -407,46 +395,54 @@ export default function FlagshipEvent() {
                                 <div className={styles.category}>FLAGSHIP EVENT</div>
 
                                 {/* Title */}
-                                <h1 className={styles.modalTitle}>{thooral?.eventName || title}</h1>
+                                <h1 className={styles.modalTitle}>{eventName}</h1>
 
                                 {/* One-liner */}
-                                {thooral?.oneLineDescription && (
-                                    <p className={styles.oneLiner}>{thooral.oneLineDescription}</p>
-                                )}
+                                <p className={styles.oneLiner}>{oneLineDescription}</p>
 
                                 {/* Description */}
-                                <p className={styles.modalDesc}>{thooral?.description || fullDescription}</p>
+                                <p className={styles.modalDesc}>{description}</p>
 
-                                {/* Info Grid - 2x2 */}
+                                {/* Info Grid - Multi-day Schedule */}
+                                <div className={styles.scheduleSection}>
+                                    <h3 className={styles.sectionTitle}>Schedule</h3>
+                                    <div className={styles.scheduleGrid}>
+                                        {Object.keys(date).map((day) => (
+                                            <div key={day} className={styles.scheduleDay}>
+                                                <div className={styles.dayHeader}>{day}</div>
+                                                <div className={styles.dayDetails}>
+                                                    <div className={styles.scheduleItem}>
+                                                        <i className="ri-calendar-line"></i>
+                                                        <span>{date[day]}</span>
+                                                    </div>
+                                                    <div className={styles.scheduleItem}>
+                                                        <i className="ri-time-line"></i>
+                                                        <span>{timing[day]}</span>
+                                                    </div>
+                                                    <div className={styles.scheduleItem}>
+                                                        <i className="ri-map-pin-line"></i>
+                                                        <span>{hall[day]?.lab}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Team Size */}
                                 <div className={styles.infoGrid}>
                                     <div className={styles.infoItem}>
-                                        <div className={styles.infoLabel}>Date</div>
-                                        <div className={styles.infoValue}>
-                                            {thooral?.date
-                                                ? new Date(thooral.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
-                                                : 'TBA'}
-                                        </div>
-                                    </div>
-                                    <div className={styles.infoItem}>
-                                        <div className={styles.infoLabel}>Timing</div>
-                                        <div className={styles.infoValue}>{thooral?.timing || 'TBA'}</div>
-                                    </div>
-                                    <div className={styles.infoItem}>
-                                        <div className={styles.infoLabel}>Venue</div>
-                                        <div className={styles.infoValue}>{thooral?.hall || 'TBA'}</div>
-                                    </div>
-                                    <div className={styles.infoItem}>
                                         <div className={styles.infoLabel}>Team Size</div>
-                                        <div className={styles.infoValue}>{thooral?.teamSize || 1} Members</div>
+                                        <div className={styles.infoValue}>{teamSize} Members</div>
                                     </div>
                                 </div>
 
                                 {/* Rounds Section */}
-                                {thooral?.rounds && thooral.rounds.length > 0 && (
+                                {rounds && rounds.length > 0 && (
                                     <div className={styles.roundsSection}>
                                         <h3 className={styles.roundsTitle}>ROUNDS</h3>
                                         <div className={styles.roundsList}>
-                                            {thooral.rounds.map((round, index) => (
+                                            {rounds.map((round, index) => (
                                                 <div key={round._id || index} className={styles.roundItem}>
                                                     <div className={styles.roundNumber}>{index + 1}</div>
                                                     <div className={styles.roundContent}>
@@ -463,13 +459,19 @@ export default function FlagshipEvent() {
                                     </div>
                                 )}
 
+                                {/* Info Note */}
+                                <div className={styles.infoNote}>
+                                    <i className="ri-information-line"></i>
+                                    <span>Participants can also participate in other events during their free time while in the hackathon.</span>
+                                </div>
+
                                 {/* Contacts */}
-                                {thooral?.contacts && thooral.contacts.length > 0 && (
+                                {contacts && contacts.length > 0 && (
                                     <div className={styles.contactsSection}>
                                         <h3 className={styles.sectionTitle}>Event Coordinators</h3>
                                         <div className={styles.contactsList}>
-                                            {thooral.contacts.map((contact, index) => (
-                                                <div key={contact._id || index} className={styles.contactItem}>
+                                            {contacts.map((contact, index) => (
+                                                <div key={index} className={styles.contactItem}>
                                                     <span className={styles.contactName}>{contact.name}</span>
                                                     <a href={`tel:${contact.mobile}`} className={styles.contactPhone}>
                                                         {contact.mobile}
@@ -478,11 +480,6 @@ export default function FlagshipEvent() {
                                             ))}
                                         </div>
                                     </div>
-                                )}
-
-                                {/* Club Name */}
-                                {thooral?.clubName && (
-                                    <p className={styles.clubName}>Organized by {thooral.clubName}</p>
                                 )}
 
                                 {/* Register Button - Hidden when pre-registration is enabled */}

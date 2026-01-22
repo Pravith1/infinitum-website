@@ -26,7 +26,7 @@ export const eventsData = [
             { "name": "Neelesh Padmanabh", "mobile": "8148401083", "_id": { "$oid": "694ce9c4297836cde7682482" } },
             { "name": "Atul Vasanthakrishnan", "mobile": "9345722948", "_id": { "$oid": "694ce9c4297836cde7682483" } }
         ],
-        "hall": "Q block Classrooms",
+        "hall": "Classrooms",
         "eventRules": "Participants must follow organiser instructions and maintain sportsmanship throughout the event.",
         "teamSize": 4,
         "prizePool": "₹5,000",
@@ -63,7 +63,7 @@ export const eventsData = [
             { "name": "Karthick J S", "mobile": "9042480747", "_id": { "$oid": "694ce9d2297836cde768248a" } },
             { "name": "Pravith", "mobile": "9843243610", "_id": { "$oid": "694ce9d2297836cde768248b" } }
         ],
-        "hall": "3AI and CSP Labs",
+        "hall": "3AI and Cloud Computing Labs",
         "eventRules": "Time limit is 2 hours. Participants must follow organiser instructions. Any cheating leads to disqualification. Points are awarded based on accuracy, creativity, and timely completion. Organisers' decisions are final.",
         "teamSize": 3,
         "prizePool": "₹3,000",
@@ -106,7 +106,7 @@ export const eventsData = [
             { "name": "Srimathikalpana T", "mobile": "8122966128", "_id": { "$oid": "694cec9c297836cde7682493" } },
             { "name": "Suryaprakash B", "mobile": "7339143171", "_id": { "$oid": "694cec9c297836cde7682494" } }
         ],
-        "hall": "G block Classrooms",
+        "hall": "Classrooms",
         "eventRules": "Teams must follow organiser instructions. Judging is based on accuracy, time, creativity, team synergy, and effective use of advantages. Organisers' decisions are final.",
         "teamSize": 3,
         "prizePool": "₹4,000",
@@ -149,13 +149,13 @@ export const eventsData = [
             { "name": "Dhaarun Abhimanyu S", "mobile": "9790313358", "_id": { "$oid": "694ceca6297836cde768249c" } },
             { "name": "A T Abbilaash", "mobile": "8667093591", "_id": { "$oid": "694ceca6297836cde768249d" } }
         ],
-        "hall": "3AI and AIR Labs",
+        "hall": "Computer Center",
         "eventRules": "Cheating is prohibited. Points are awarded for successful hacks and reduced for failed hacks or broken defenses. Final scores are calculated using aggregate performance across both rounds. Organisers' decisions are final.",
         "teamSize": 1,
         "prizePool": "₹10,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
-        "dateAndTime": "Feb 13, 10:00 AM – 12:30 PM",
+        "dateAndTime": "Feb 13, 1:30 PM – 4:00 PM",
         "scheduleStart": "10:00",
         "scheduleEnd": "12:30",
         "scheduleDay": "day1",
@@ -205,7 +205,7 @@ export const eventsData = [
         "teamSize": 3,
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
-        "dateAndTime": "Feb 13, 1:30 PM – 4:00 PM",
+        "dateAndTime": "Feb 13, 10:00 AM – 12:30 PM",
 
         "image": "/images/events/infinitumopenquiz.png"
     },
@@ -248,7 +248,7 @@ export const eventsData = [
                 }
             }
         ],
-        "hall": "GRD Lab and Programming Lab - I",
+        "hall": "Computer Center",
         "eventRules": "Individual participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
@@ -322,7 +322,7 @@ export const workshopsData = [
         "club_id": {
             "$oid": "69495a6a719d1b3bd5a9e7cd"
         },
-        "workshopName": "AI Infrastructure: From Big Picture to Everyday Reality",
+        "workshopName": "AI Infrastructure\u2060: From Big Picture to Everyday Reality",
         "date": {
             "$date": "2026-02-13T09:00:00.000Z"
         },
@@ -416,7 +416,8 @@ export const workshopsData = [
             }
         ],
         "contacts": [
-            { "name": "Coordinator 1", "mobile": "9876543210", "_id": { "$oid": "dummy_oid_1" } }
+            { "name": "Saran M", "mobile": "8148599787", "_id": { "$oid": "dummy_oid_1" } },
+            { "name": "Rohish Raj", "mobile": "8220990444", "_id": { "$oid": "dummy_oid_1b" } }
         ],
         "maxCount": 50,
         "description": "A comprehensive workshop on Product Prototyping for Industry Applications.",
@@ -448,7 +449,8 @@ export const workshopsData = [
             }
         ],
         "contacts": [
-            { "name": "Coordinator 1", "mobile": "9876543210", "_id": { "$oid": "dummy_oid_2" } }
+            { "name": "Surya Narayanan NT", "mobile": "7448757584", "_id": { "$oid": "dummy_oid_1" } },
+            { "name": "Dileepan", "mobile": "9344220239", "_id": { "$oid": "dummy_oid_1b" } }
         ],
         "maxCount": 50,
         "description": "Learn about threat detection modelling and cybersecurity defense strategies.",
@@ -471,15 +473,15 @@ export const papersData = [
         "eventName": "AI and Emerging Trends",
         "contacts": [
             {
-                "name": "Dr. John Smith",
-                "mobile": "9876543210",
+                "name": "Saumiyaa Sri V L",
+                "mobile": "8056567914",
                 "_id": {
                     "$oid": "695a5069f567faee30248bfe"
                 }
             },
             {
-                "name": "Dr. Sarah Johnson",
-                "mobile": "9876543211",
+                "name": "Anbuchandiran K",
+                "mobile": "7871243787",
                 "_id": {
                     "$oid": "695a5069f567faee30248bff"
                 }
@@ -512,7 +514,7 @@ export const papersData = [
             "$date": "2026-01-04T11:35:05.079Z"
         },
         "__v": 0,
-        "image": "/images/events/paper_presentation.png"
+        "image": "/images/events/pp.png"
     }
 ];
 

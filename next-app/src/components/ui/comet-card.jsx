@@ -166,7 +166,7 @@ export const CometCard = ({
         className="relative rounded-2xl"
       >
         {/* Content container */}
-        <div className="relative rounded-2xl overflow-hidden" style={{ zIndex: 2 }}>
+        <div className="relative rounded-2xl" style={{ zIndex: 2 }}>
           {children}
         </div>
       </motion.div>

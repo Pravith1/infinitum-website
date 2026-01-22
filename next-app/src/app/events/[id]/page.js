@@ -30,12 +30,20 @@ const styles = theme => ({
     }
 });
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 const EventIdPage = ({ classes, sounds }) => {
     const params = useParams();
+    const router = useRouter();
     const id = params?.id;
     const contentElement = React.useRef(null);
+
+    // Redirect to query param version to avoid header re-animation on navigation
+    React.useEffect(() => {
+        if (id) {
+            router.replace(`/events?id=${id}`);
+        }
+    }, [id, router]);
 
     React.useEffect(() => {
         const onRouteChange = () => {

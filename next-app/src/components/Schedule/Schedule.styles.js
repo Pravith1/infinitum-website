@@ -1,4 +1,4 @@
-import { rgba } from 'polished';
+import { rgba, lighten } from 'polished';
 
 export const styles = theme => ({
   root: {
@@ -372,19 +372,22 @@ export const styles = theme => ({
     '&:hover': { boxShadow: '0 0 25px rgba(0, 229, 255, 0.6)' }
   },
   technical: {
-    background: 'linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%)', // Cyan (Same as old competition)
-    boxShadow: '0 0 15px rgba(0, 229, 255, 0.4)',
-    '&:hover': { boxShadow: '0 0 25px rgba(0, 229, 255, 0.6)' }
+    background: `linear-gradient(135deg, ${lighten(0.15, theme.color.secondary.main)} 0%, ${lighten(0.15, theme.color.secondary.dark)} 100%)`, // Simulating hover brightness
+    boxShadow: `0 0 15px ${rgba(theme.color.secondary.main, 0.4)}`,
+    '&:hover': {
+      boxShadow: `0 0 25px ${rgba(theme.color.secondary.main, 0.6)}`,
+      filter: 'brightness(1.0)' // Reset filter as we are already bright
+    }
   },
   nontechnical: {
-    background: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)', // Brand Pink
-    boxShadow: '0 0 15px rgba(233, 30, 99, 0.4)',
-    '&:hover': { boxShadow: '0 0 25px rgba(233, 30, 99, 0.6)' }
+    background: 'linear-gradient(135deg, #00d4ff 0%, #00a0c0 100%)', // Cyan (aligns with bento grid)
+    boxShadow: '0 0 15px rgba(0, 212, 255, 0.4)',
+    '&:hover': { boxShadow: '0 0 25px rgba(0, 212, 255, 0.6)' }
   },
   workshop: {
-    background: 'linear-gradient(135deg, #FFD600 0%, #FFC107 100%)', // Slightly Darker/Richer Yellow
-    boxShadow: '0 0 15px rgba(255, 214, 0, 0.4)',
-    '&:hover': { boxShadow: '0 0 25px rgba(255, 214, 0, 0.6)' }
+    background: 'linear-gradient(135deg, #00ff88 0%, #00cc6a 100%)', // Green (aligns with bento grid)
+    boxShadow: '0 0 15px rgba(0, 255, 136, 0.4)',
+    '&:hover': { boxShadow: '0 0 25px rgba(0, 255, 136, 0.6)' }
   },
   talk: {
     background: 'linear-gradient(135deg, #D500F9 0%, #AA00FF 100%)', // Neon Purple
@@ -392,14 +395,14 @@ export const styles = theme => ({
     '&:hover': { boxShadow: '0 0 25px rgba(213, 0, 249, 0.6)' }
   },
   quiz: {
-    background: 'linear-gradient(135deg, #FF3D00 0%, #DD2C00 100%)', // Neon Orange
-    boxShadow: '0 0 15px rgba(255, 61, 0, 0.4)',
-    '&:hover': { boxShadow: '0 0 25px rgba(255, 61, 0, 0.6)' }
+    background: 'linear-gradient(135deg, #ffd700 0%, #daa520 100%)', // Gold (aligns with bento grid)
+    boxShadow: '0 0 15px rgba(255, 215, 0, 0.4)',
+    '&:hover': { boxShadow: '0 0 25px rgba(255, 215, 0, 0.6)' }
   },
   presentation: {
-    background: 'linear-gradient(135deg, #00E676 0%, #00C853 100%)', // Neon Green
-    boxShadow: '0 0 15px rgba(0, 230, 118, 0.4)',
-    '&:hover': { boxShadow: '0 0 25px rgba(0, 230, 118, 0.6)' }
+    background: 'linear-gradient(135deg, #ff6b35 0%, #e55a2a 100%)', // Orange (aligns with bento grid)
+    boxShadow: '0 0 15px rgba(255, 107, 53, 0.4)',
+    '&:hover': { boxShadow: '0 0 25px rgba(255, 107, 53, 0.6)' }
   },
   awards: {
     background: 'linear-gradient(135deg, #FFD700 0%, #FFA000 100%)', // Gold

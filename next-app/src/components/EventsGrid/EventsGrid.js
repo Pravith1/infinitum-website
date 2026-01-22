@@ -106,7 +106,8 @@ export default function EventsGrid() {
     const handleCardClick = (eventId) => {
         playSound(clickSoundRef);
         if (eventId && !eventId.startsWith('MOCK')) {
-            router.push(`/events/${eventId}`);
+            // Directly navigate to query param URL to avoid redirect
+            router.push(`/events?id=${eventId}`);
         } else {
             router.push('/events');
         }

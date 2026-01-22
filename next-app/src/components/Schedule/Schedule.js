@@ -6,7 +6,7 @@ import cx from 'classnames';
 import { withStyles } from '@/tools/withStyles';
 import { withSounds } from '@/tools/withSounds';
 import { styles } from './Schedule.styles';
-import { eventsData } from '@/data/eventsData';
+import { eventsData, workshopsData, papersData } from '@/data/eventsData';
 import { useAuth } from '@/context/AuthContext';
 import { eventService } from '@/services/eventservice';
 
@@ -18,18 +18,18 @@ const DAYS = [
 const RAW_EVENTS = [
     // Day 1
     { title: 'Inauguration', start: '09:00', end: '10:00', category: 'general', day: 'day1', venue: 'D Block Conference Hall' },
-    { title: 'Thooral Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1', venue: 'Computer Center' },
-    { title: 'Force Coders', start: '10:00', end: '12:30', category: 'technical', type: 'tech', day: 'day1', venue: '3AI and AIR Labs' },
-    { title: 'Quest X', start: '10:00', end: '15:00', category: 'nontechnical', type: 'nontech', day: 'day1', venue: 'Q block Classrooms' },
+    { title: 'Thooral Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1', venue: '3AI and AIR Labs' },
+    { title: 'Force Coders', start: '13:30', end: '16:00', category: 'technical', type: 'tech', day: 'day1', venue: 'Computer Center' },
+    { title: 'Quest X', start: '10:00', end: '15:00', category: 'nontechnical', type: 'nontech', day: 'day1', venue: 'Classrooms' },
     { title: 'AI Infrastructure', start: '10:00', end: '16:00', category: 'workshop', day: 'day1', venue: 'SCPS Lab' },
-    { title: 'Open Quiz', start: '13:30', end: '16:00', category: 'quiz', day: 'day1', venue: 'D Block Conference Hall' },
+    { title: 'Open Quiz', start: '10:00', end: '12:30', category: 'quiz', day: 'day1', venue: 'D Block Conference Hall' },
     { title: 'Award Ceremony - I', start: '16:30', end: '17:15', category: 'awards', day: 'day1', venue: 'F203' },
 
     // Day 2
-    { title: 'Thooral Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2', venue: 'Computer Center' },
-    { title: 'Code Mania', start: '09:00', end: '15:00', category: 'technical', type: 'tech', day: 'day2', venue: 'GRD Lab and Programming Lab - I' },
-    { title: 'Nexus', start: '09:00', end: '12:30', category: 'technical', type: 'tech', day: 'day2', venue: '3AI and CSP Labs' },
-    { title: 'Git Wars', start: '09:00', end: '12:30', category: 'nontechnical', type: 'nontech', day: 'day2', venue: 'G block Classrooms' },
+    { title: 'Thooral Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2', venue: 'GRD Lab and Programming-I Labs' },
+    { title: 'Code Mania', start: '09:00', end: '15:00', category: 'technical', type: 'tech', day: 'day2', venue: 'Computer Center' },
+    { title: 'Nexus', start: '09:00', end: '12:30', category: 'technical', type: 'tech', day: 'day2', venue: '3AI and Cloud Computing Labs' },
+    { title: 'Git Wars', start: '09:00', end: '12:30', category: 'nontechnical', type: 'nontech', day: 'day2', venue: 'Classrooms' },
     { title: 'AI and Emerging Trends', start: '10:00', end: '12:30', category: 'presentation', day: 'day2', venue: 'Department Seminar Hall - CSE' },
     { title: 'Product Prototyping for Industry Applications', start: '09:00', end: '15:00', category: 'workshop', day: 'day2', venue: 'AIR Lab' },
     { title: 'Threat Detection Modelling', start: '09:00', end: '15:00', category: 'workshop', day: 'day2', venue: 'SCPS Lab' },
@@ -218,17 +218,39 @@ const Schedule = ({ classes, sounds }) => {
         timeMarkers.push(h);
     }
 
-    // Helper to find event ID
-    const getEventId = (title) => {
+    // Helper to find event ID and type (event, workshop, or paper)
+    const getEventInfo = (title) => {
         // Normalize title for matching (remove special chars, lower case)
         const normalizedTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '');
 
+        // Check in regular events
         const event = eventsData.find(e => {
             const normalizedEventName = e.eventName.toLowerCase().replace(/[^a-z0-9]/g, '');
             return normalizedEventName.includes(normalizedTitle) || normalizedTitle.includes(normalizedEventName);
         });
+        if (event) return { id: event.eventId, type: 'event' };
 
-        return event ? event.eventId : null;
+        // Check in workshops
+        const workshop = workshopsData.find(w => {
+            const normalizedWorkshopName = w.workshopName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return normalizedWorkshopName.includes(normalizedTitle) || normalizedTitle.includes(normalizedWorkshopName);
+        });
+        if (workshop) return { id: workshop.workshopId, type: 'workshop' };
+
+        // Check in papers
+        const paper = papersData.find(p => {
+            const normalizedPaperName = p.eventName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            return normalizedPaperName.includes(normalizedTitle) || normalizedTitle.includes(normalizedPaperName);
+        });
+        if (paper) return { id: paper.paperId, type: 'paper' };
+
+        return null;
+    };
+
+    // Helper to find event ID (for backward compatibility)
+    const getEventId = (title) => {
+        const info = getEventInfo(title);
+        return info ? info.id : null;
     };
 
     // Helper to check if event is registered
@@ -244,9 +266,11 @@ const Schedule = ({ classes, sounds }) => {
     };
 
     const handleEventClick = (title) => {
-        const eventId = getEventId(title);
-        if (eventId) {
-            router.push(`/events/${eventId}`);
+        const eventInfo = getEventInfo(title);
+        if (eventInfo) {
+            // Navigate to appropriate route based on type
+            // Directly navigate to query param URL to avoid redirect chain
+            router.push(`/events?id=${eventInfo.id}`);
             if (sounds?.click) sounds.click.play();
         }
     };

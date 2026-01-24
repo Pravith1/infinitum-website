@@ -6,10 +6,10 @@ import styles from './Sponsors.module.css';
 // Mock data schema as requested: [{logo: image_url, type: string}]
 // Leaving empty initially to show "To be announced" or can be populated.
 const SPONSORS_DATA = [
-    // { logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", type: "Title Sponsor" },
-    // { logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg", type: "Associate Sponsor" },
-    // { logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg", type: "Associate Sponsor" },
-    // { logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg", type: "Power Sponsor" },
+    {logo: "/images/sponsors/psiog_logo.jpg", type: "Title Sponsor", link: "https://psiog.com/"},
+    {text: "BE CSE 2002 Batch Alumnus", type: "Event Sponsor"},
+    {logo: "/images/sponsors/dossier.nexus.png", type: "Tech Partner", link: "https://www.dossier.nexus/"},
+    {logo: "/images/sponsors/revline.png", type: "Other Sponsor", link: "https://rev-line-gamma.vercel.app/"}
 ];
 
 export default function Sponsors() {
@@ -45,11 +45,21 @@ export default function Sponsors() {
                             <div className={styles.row}>
                                 {sponsors.map((sponsor, idx) => (
                                     <div key={idx} className={styles.sponsorCard}>
-                                        <img
-                                            src={sponsor.logo}
-                                            alt={`${type} - Sponsor`}
-                                            className={styles.logo}
-                                        />
+                                        {sponsor.link ? (
+                                            <a href={sponsor.link} target="_blank" rel="noopener noreferrer">
+                                                {sponsor.logo ? (
+                                                    <img src={sponsor.logo} alt={`${type} - Sponsor`} className={styles.sponsorlogo} />
+                                                ) : (
+                                                    <span className={styles.sponsorText}>{sponsor.text}</span>
+                                                )}
+                                            </a>
+                                        ) : (
+                                            sponsor.logo ? (
+                                                <img src={sponsor.logo} alt={`${type} - Sponsor`} className={styles.logo} />
+                                            ) : (
+                                                <span className={styles.sponsorText}>{sponsor.text}</span>
+                                            )
+                                        )}
                                     </div>
                                 ))}
                             </div>

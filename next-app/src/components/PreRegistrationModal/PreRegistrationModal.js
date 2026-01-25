@@ -14,6 +14,7 @@ export default function PreRegistrationModal() {
         isLoading,
         error,
         resendCooldown,
+        isAlreadyVerified,
         closeModal,
         sendVerificationCode,
         verifyCode,
@@ -159,14 +160,16 @@ export default function PreRegistrationModal() {
                         </div>
                         <h2 className={styles.title}>
                             {currentStep === PRE_REG_STEPS.SUCCESS
-                                ? 'Pre-Registration Complete!'
+                                ? (isAlreadyVerified ? 'Already Pre-Registered!' : 'Pre-Registration Complete!')
                                 : currentStep === PRE_REG_STEPS.VERIFY
                                     ? 'Verify Your Email'
                                     : 'Pre-Register'}
                         </h2>
                         <p className={styles.subtitle}>
                             {currentStep === PRE_REG_STEPS.SUCCESS
-                                ? preRegistrationConfig.successMessage
+                                ? (isAlreadyVerified
+                                    ? 'Your email is already verified. You\'re all set for updates!'
+                                    : preRegistrationConfig.successMessage)
                                 : currentStep === PRE_REG_STEPS.VERIFY
                                     ? `Enter the verification code sent to ${email}`
                                     : preRegistrationConfig.message}

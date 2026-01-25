@@ -20,6 +20,7 @@ export function PreRegistrationProvider({ children }) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [resendCooldown, setResendCooldown] = useState(0);
+    const [isAlreadyVerified, setIsAlreadyVerified] = useState(false);
 
     // Cooldown timer effect
     useEffect(() => {
@@ -36,6 +37,7 @@ export function PreRegistrationProvider({ children }) {
         setVerificationCode('');
         setError('');
         setResendCooldown(0);
+        setIsAlreadyVerified(false);
     }, []);
 
     const closeModal = useCallback(() => {
@@ -46,6 +48,7 @@ export function PreRegistrationProvider({ children }) {
         setError('');
         setIsLoading(false);
         setResendCooldown(0);
+        setIsAlreadyVerified(false);
     }, []);
 
     const sendVerificationCode = useCallback(async (emailInput) => {
@@ -57,8 +60,10 @@ export function PreRegistrationProvider({ children }) {
 
             // Check if email is already verified (HTTP 200 with verified: true)
             if (response.verified) {
+                setIsAlreadyVerified(true);
                 setCurrentStep(PRE_REG_STEPS.SUCCESS);
             } else {
+                setIsAlreadyVerified(false);
                 setCurrentStep(PRE_REG_STEPS.VERIFY);
                 setResendCooldown(120); // Start cooldown after sending code
             }
@@ -106,6 +111,7 @@ export function PreRegistrationProvider({ children }) {
         setVerificationCode('');
         setError('');
         setResendCooldown(0);
+        setIsAlreadyVerified(false);
     }, []);
 
     const value = {
@@ -116,6 +122,7 @@ export function PreRegistrationProvider({ children }) {
         isLoading,
         error,
         resendCooldown,
+        isAlreadyVerified,
         openModal,
         closeModal,
         sendVerificationCode,

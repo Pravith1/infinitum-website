@@ -12,6 +12,7 @@ import { withStyles } from '@/tools/withStyles';
 import { Secuence as SecuenceComponent } from '@/components/Secuence';
 import { Button } from '@/components/Button';
 import colleges from '@/app/CollegeList';
+import { eventService } from '@/services/eventservice';
 
 // Accommodation Instructions
 const ACCOMMODATION_INSTRUCTIONS = [
@@ -1150,10 +1151,9 @@ class ProfilePage extends React.Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.checkMobile);
-        if (this.reminderTimer) {
-            clearTimeout(this.reminderTimer);
-        }
+        try {
+            window.removeEventListener('resize', this.checkMobile);
+        } catch (e) { }
     }
 
     checkAuth = async () => {
@@ -1167,7 +1167,7 @@ class ProfilePage extends React.Component {
 
             // Fetch registered events after successful auth
             if (response.user) {
-                this.fetchRegisteredEvents();
+                this.fetchRegisteredItems();
                 if (response.user.idCardUrl) {
                     // Construct the full URL for viewing the ID card
                     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -1179,28 +1179,42 @@ class ProfilePage extends React.Component {
         }
     };
 
-    fetchRegisteredEvents = async () => {
+    fetchRegisteredItems = async () => {
         try {
-            const response = await api.get('/api/events/registrations');
-            const data = response.data;
+            const [eventsRes, workshopsRes, papersRes] = await Promise.all([
+                eventService.getUserEvents(),
+                eventService.getUserWorkshops(),
+                eventService.getUserPapers()
+            ]);
 
-            let events = [];
-            if (Array.isArray(data)) {
-                events = data;
-            } else if (data.events && Array.isArray(data.events)) {
-                events = data.events;
-            } else if (data.data && Array.isArray(data.data)) {
-                events = data.data;
-            }
+            const safeExtract = (res, key) => {
+                if (!res) return [];
+                if (Array.isArray(res)) return res;
+                if (res[key] && Array.isArray(res[key])) return res[key];
+                if (res.data && Array.isArray(res.data)) return res.data;
+                return [];
+            };
 
-            this.setState({ registeredEvents: events });
+            const events = safeExtract(eventsRes, 'events');
+            const workshops = safeExtract(workshopsRes, 'workshops');
+            const papers = safeExtract(papersRes, 'papers');
+
+            const allItems = [
+                ...events.map(item => ({ ...item, itemType: 'event' })),
+                ...workshops.map(item => ({ ...item, itemType: 'workshop' })),
+                ...papers.map(item => ({ ...item, itemType: 'paper' }))
+            ];
+
+            this.setState({ registeredEvents: allItems });
         } catch (error) {
-            console.error("Failed to fetch registered events", error);
+            console.error("Failed to fetch registered items", error);
         }
     };
 
     // Accommodation Methods
     fetchAccommodation = async () => {
+        this.setState({ accommodationLoading: true });
+
         const { user } = this.state;
         if (!user?.uniqueId) return;
 
@@ -1512,6 +1526,7 @@ class ProfilePage extends React.Component {
             'Technical': '#c72071',
             'Non-Technical': '#00d4ff',
             'Workshops': '#00ff88',
+            'Paper-Presentations': '#ffbb00',
             'Other': '#888'
         };
 
@@ -1520,9 +1535,17 @@ class ProfilePage extends React.Component {
             // Normalize category names for grouping
             const category = (event.category || 'general').toLowerCase();
             let groupName = 'Other';
-            if (category.includes('non technical') || category.includes('non-technical')) groupName = 'Non-Technical';
-            else if (category.includes('technical')) groupName = 'Technical';
-            else if (category.includes('workshop')) groupName = 'Workshops';
+
+            if (event.itemType === 'workshop') {
+                groupName = 'Workshops';
+            } else if (event.itemType === 'paper') {
+                groupName = 'Paper-Presentations';
+            } else if (category.includes('non technical') || category.includes('non-technical')) {
+                groupName = 'Non-Technical';
+            } else if (category.includes('technical')) {
+                groupName = 'Technical';
+            }
+
 
             if (!acc[groupName]) {
                 acc[groupName] = [];
@@ -1531,7 +1554,10 @@ class ProfilePage extends React.Component {
             return acc;
         }, {});
 
-        const groupedEventCategories = Object.keys(groupedEvents);
+        const groupedEventCategories = Object.keys(groupedEvents).sort((a, b) => {
+            const order = ['Technical', 'Non-Technical', 'Workshops', 'Paper Presentations', 'Other'];
+            return order.indexOf(a) - order.indexOf(b);
+        });
 
         return (
             <SecuenceComponent>
@@ -1840,7 +1866,7 @@ class ProfilePage extends React.Component {
                                         </div>
                                         <div className={isMobile ? `${classes.accordionContent} ${openAccordion === 'events' ? classes.accordionContentOpen : ''}` : ''}>
                                             {registeredEvents && registeredEvents.length > 0 ? (
-                                                <div className={classes.dataGrid} style={{ paddingTop: isMobile ? 0 : 15, gridTemplateColumns: `repeat(${groupedEventCategories.length}, 1fr)` }}>
+                                                <div className={classes.dataGrid} style={{ paddingTop: isMobile ? 0 : 15, gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))` }}>
                                                     {groupedEventCategories.map(category => {
                                                         const categoryColor = categoryColors[category] || categoryColors['Other'];
                                                         return (
@@ -1856,16 +1882,13 @@ class ProfilePage extends React.Component {
                                                                 }}
                                                             >
                                                                 <label className={classes.fieldLabel} style={{ borderBottom: `1px solid ${categoryColor}40`, paddingBottom: 6, marginBottom: 4, color: categoryColor }}>{category}</label>
-                                                                {groupedEvents[category].map((event, index) => (
-                                                                    <div
-                                                                        key={index}
-                                                                        className={classes.fieldValue}
-                                                                        title={event.eventName || event.name}
-                                                                        style={{ fontSize: '0.8rem', whiteSpace: 'normal' }}
-                                                                    >
-                                                                        {event.eventName || event.name || 'Unnamed Event'}
-                                                                    </div>
-                                                                ))}
+                                                                <ul className={classes.eventList}>
+                                                                    {groupedEvents[category].map(event => (
+                                                                        <li key={event._id || event.eventId}>
+                                                                            {event.eventName || event.workshopName || 'Unnamed Event'}
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
                                                             </div>
                                                         );
                                                     })}

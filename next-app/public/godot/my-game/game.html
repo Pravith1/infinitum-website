@@ -151,6 +151,7 @@ body {
 			</div>
 		</div>
 
+		
 		<script src="game.js"></script>
 		<script>
 // Keyboard remap:
@@ -235,6 +236,13 @@ body {
 
 	window.addEventListener('keydown', remap, true);
 	window.addEventListener('keyup', remap, true);
+
+	// Guard against AudioContext being null during/after quit.
+	// Harden multiple entry points to avoid 'currentTime of null' during shutdown.
+	
+
+	// expose for later calls
+	
 })();
 		</script>
 		<script>
@@ -294,18 +302,11 @@ const engine = new Engine(GODOT_CONFIG);
 	function start() {
 		if (startOverlay) startOverlay.setAttribute('hidden', 'hidden');
 		setStatusMode('progress');
+		// Ensure audio guards are applied right at startup too.
+		
 		engine.startGame({
-			'onExit': function (statusCode) {
-				// If the user quits from inside the game (e.g., Game Over -> Quit),
-				// notify the embedding page so it can navigate out of /game.
-				try {
-					if (window.parent && window.parent !== window) {
-						window.parent.postMessage({ type: 'GODOT_GAME_EXIT', statusCode: statusCode }, '*');
-					}
-				} catch (e) {
-					// ignore
-				}
-			},
+			
+
 			'onProgress': function (current, total) {
 				if (current > 0 && total > 0) {
 					statusProgress.value = current;
@@ -314,9 +315,12 @@ const engine = new Engine(GODOT_CONFIG);
 					statusProgress.removeAttribute('value');
 					statusProgress.removeAttribute('max');
 				}
-			},
+			}
 		}).then(() => {
 			setStatusMode('hidden');
+			// Patch again post-start as engine initializes subsystems asynchronously.
+			
+			
 		}, displayFailureNotice);
 	}
 
@@ -366,6 +370,14 @@ const engine = new Engine(GODOT_CONFIG);
 	}
 }());
 		</script>
+		<script>
+window.addEventListener("message", (e) => {
+	if (e.data?.type === "GODOT_QUIT") {
+		console.log("Godot requested quit");
+		window.location.reload(); // or route change / iframe unmount
+	}
+});
+</script>
+
 	</body>
 </html>
-

@@ -1826,7 +1826,7 @@ class ProfilePage extends React.Component {
                                                         <div>
                                                             <h3 className={classes.panelHeader} style={{ marginBottom: isMobile ? 0 : 10 }}>Identity Verification</h3>
                                                             <div style={{ fontSize: '0.7rem', color: '#888' }}>Upload College ID (Max 10MB)</div>
-                                                            {user.profilePhoto && !idToUpload && (
+                                                            {user.idCardUrl && !idToUpload && (
                                                                 <div style={{ color: '#00ff64', fontSize: '0.7rem', marginTop: 2 }}>✓ ID Card Uploaded</div>
                                                             )}
                                                         </div>
@@ -1846,7 +1846,7 @@ class ProfilePage extends React.Component {
                                                                     onClick={this.handleIdCardClick}
                                                                     disabled={isUploadingId}
                                                                 >
-                                                                    {isUploadingId ? '...' : (user.profilePhoto ? 'Re-upload' : 'Upload')}
+                                                                    {isUploadingId ? '...' : (user.idCardUrl ? 'Re-upload' : 'Upload')}
                                                                 </button>
                                                             )}
                                                         </div>
@@ -2183,7 +2183,7 @@ class ProfilePage extends React.Component {
                             )}
 
                             {/* 2. ID Card Upload Reminder (If fee cleared/exempt but no ID uploaded) */}
-                            {((user.isPSGStudent || user.generalFeePaid) && !user.profilePhoto) && (
+                            {((user.isPSGStudent || user.generalFeePaid) && !user.idCardUrl) && (
                                 <div className={classes.idViewerOverlay} onClick={() => this.setState({ showFeeReminder: false })}>
                                     <div className={classes.successPopup} onClick={(e) => e.stopPropagation()} style={{ borderColor: '#00d4ff', boxShadow: '0 0 30px rgba(0, 212, 255, 0.2)' }}>
                                         <div className={classes.successIcon} style={{ background: 'rgba(0, 212, 255, 0.2)', color: '#00d4ff', border: '2px solid #00d4ff', fontSize: '1.2rem', fontWeight: 'bold' }}>ID</div>

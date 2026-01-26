@@ -1612,19 +1612,35 @@ class ProfilePage extends React.Component {
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                                                 <h3 className={classes.panelHeader} style={{ marginBottom: isMobile ? 0 : 10 }}>Profile Details</h3>
                                                 {!isMobile && !isEditing && (
-                                                    <button
-                                                        className={classes.actionBtn}
-                                                        onClick={this.handleEdit}
-                                                        style={{ padding: '4px 12px', fontSize: '0.7rem', marginLeft: 'auto' }}
-                                                    >
-                                                        Edit Profile
-                                                    </button>
+                                                    <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
+                                                        <button
+                                                            className={classes.actionBtn}
+                                                            onClick={() => window.location.href = '/fee-payment'}
+                                                            style={{ padding: '4px 12px', fontSize: '0.7rem', background: 'rgba(199, 32, 113, 0.2)', borderColor: '#c72071' }}
+                                                        >
+                                                            Payment
+                                                        </button>
+                                                        <button
+                                                            className={classes.actionBtn}
+                                                            onClick={this.handleEdit}
+                                                            style={{ padding: '4px 12px', fontSize: '0.7rem' }}
+                                                        >
+                                                            Edit Profile
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
                                         <div className={isMobile ? `${classes.accordionContent} ${openAccordion === 'profile' ? classes.accordionContentOpen : ''}` : ''}>
                                             {isMobile && !isEditing && (
-                                                <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 15 }}>
+                                                <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 15, gap: '10px' }}>
+                                                    <button
+                                                        className={classes.actionBtn}
+                                                        onClick={() => window.location.href = '/fee-payment'}
+                                                        style={{ padding: '6px 14px', fontSize: '0.75rem', background: 'rgba(199, 32, 113, 0.2)', borderColor: '#c72071' }}
+                                                    >
+                                                        Payment
+                                                    </button>
                                                     <button
                                                         className={classes.actionBtn}
                                                         onClick={this.handleEdit}
@@ -1738,6 +1754,14 @@ class ProfilePage extends React.Component {
                                                         )}
                                                     </div>
                                                 )}
+                                                <div className={classes.dataField}>
+                                                    <label className={classes.fieldLabel}>Workshop Fee</label>
+                                                    {user.workshopFeePaid ? (
+                                                        <span className={classes.statusPaid}><span>●</span> Paid</span>
+                                                    ) : (
+                                                        <span className={classes.statusPending}>Pending</span>
+                                                    )}
+                                                </div>
                                                 <div className={classes.dataField}>
                                                     <label className={classes.fieldLabel}>Student Type</label>
                                                     <div className={classes.fieldValue}>{user.isPSGStudent ? 'PSG Student' : 'External'}</div>

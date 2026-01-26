@@ -48,13 +48,13 @@ export const eventService = {
 
     // Register for a workshop
     registerWorkshop: async (workshopId) => {
-        const response = await api.post(`/api/events/workshop/${workshopId}/register`);
+        const response = await api.post(`/api/events/workshops/${workshopId}/register`);
         return response.data;
     },
 
     // Get workshop utils (amount, closed, etc.)
     getWorkshopUtils: async (workshopId) => {
-        const response = await api.get(`/api/events/workshop/${workshopId}/amount`);
+        const response = await api.get(`/api/events/workshops/${workshopId}/amount`);
         return response.data;
     },
 

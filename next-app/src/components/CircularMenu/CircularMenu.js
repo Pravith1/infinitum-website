@@ -14,7 +14,8 @@ const MENU_ITEMS = [
     { label: 'Schedule', icon: 'ri-time-line', href: '/schedule', match: ['/schedule'] },
     { label: 'Workshops', icon: 'ri-tools-line', href: '/events?category=workshops', match: ['/events?category=workshops'] },
     { label: 'Papers', icon: 'ri-article-line', href: '/events?category=papers', match: ['/events?category=papers'] },
-    { label: 'About', icon: 'ri-information-line', href: '/about', match: ['/about'] }
+    { label: 'About', icon: 'ri-information-line', href: '/about', match: ['/about'] },
+    
 ];
 
 // Sound effects

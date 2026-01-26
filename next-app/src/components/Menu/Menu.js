@@ -33,6 +33,7 @@ class Component extends React.PureComponent {
     isAuthPage: PropTypes.bool,
     isProfilePage: PropTypes.bool,  // Used to hide logout on mobile for profile page
     isEventsPage: PropTypes.bool,  // Used to hide auth buttons on mobile for events page
+    isFeePaymentPage: PropTypes.bool,  // Used to hide logout on mobile for fee-payment page
     isMobile: PropTypes.bool,  // Mobile screen detection
     openPreRegModal: PropTypes.func,
     showPreRegButton: PropTypes.bool  // When false and pre-reg enabled, hide buttons entirely
@@ -178,6 +179,7 @@ class Component extends React.PureComponent {
       isAuthPage,
       isProfilePage,
       isEventsPage,
+      isFeePaymentPage,
       isMobile,
       openPreRegModal,
       showPreRegButton,
@@ -208,8 +210,8 @@ class Component extends React.PureComponent {
           {...etc}
         >
           {isAuthenticated ? (
-            // Hide logout button on mobile for events page and profile page
-            !(isMobile && (isEventsPage || isProfilePage)) && (
+            // Hide logout button on mobile for events page, profile page, and fee-payment page
+            !(isMobile && (isEventsPage || isProfilePage || isFeePaymentPage)) && (
               <button
                 className={cx(classes.item, classes.link)}
                 onMouseEnter={() => sounds.hover.play()}
@@ -275,6 +277,7 @@ const MenuWithAuth = React.forwardRef((props, ref) => {
   const isAuthPage = pathname?.startsWith('/auth');
   const isProfilePage = pathname?.startsWith('/portal/profile');
   const isEventsPage = pathname?.startsWith('/events');
+  const isFeePaymentPage = pathname?.startsWith('/fee-payment');
 
   // Mobile detection
   const [isMobile, setIsMobile] = useState(false);
@@ -286,7 +289,7 @@ const MenuWithAuth = React.forwardRef((props, ref) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  return <Component {...props} user={user} logout={logout} isAuthPage={isAuthPage} isProfilePage={isProfilePage} isEventsPage={isEventsPage} isMobile={isMobile} openPreRegModal={openModal} ref={ref} />;
+  return <Component {...props} user={user} logout={logout} isAuthPage={isAuthPage} isProfilePage={isProfilePage} isEventsPage={isEventsPage} isFeePaymentPage={isFeePaymentPage} isMobile={isMobile} openPreRegModal={openModal} ref={ref} />;
 });
 
 MenuWithAuth.displayName = 'Menu';

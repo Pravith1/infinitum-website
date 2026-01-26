@@ -86,12 +86,12 @@ const Template = (props) => {
         );
     };
 
-    const isURLContent = ['/news', '/music', '/charity', '/events', '/schedule', '/auth', '/portal', '/about'].find(path => {
+    const isURLContent = ['/news', '/music', '/charity', '/events', '/schedule', '/auth', '/portal', '/about', '/fee-payment'].find(path => {
         return pathname.startsWith(path);
     });
 
     // For events pages, show immediately to prevent header vanishing
-    const shouldShowImmediately = pathname.startsWith('/events') || pathname.startsWith('/schedule') || pathname.startsWith('/portal');
+    const shouldShowImmediately = pathname.startsWith('/events') || pathname.startsWith('/schedule') || pathname.startsWith('/portal') || pathname.startsWith('/fee-payment');
 
     const layoutProps = {};
     const backgroundProps = {};

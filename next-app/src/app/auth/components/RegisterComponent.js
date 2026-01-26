@@ -39,6 +39,8 @@ export default function RegisterComponent() {
     const [showEmailOverlay, setShowEmailOverlay] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [showInstructionsOverlay, setShowInstructionsOverlay] = useState(false);
+    const [instructionsAgreed, setInstructionsAgreed] = useState(false);
 
     useEffect(() => {
         const storedEmail = localStorage.getItem('registration_email');
@@ -98,12 +100,17 @@ export default function RegisterComponent() {
             return;
         }
 
+        // Open instructions overlay instead of submitting directly
+        setShowInstructionsOverlay(true);
+    };
+
+    const finalizeRegistration = async () => {
         setLoading(true);
 
         try {
             // Check localStorage for referral code (invisible referral tracking)
             const storedReferralCode = localStorage.getItem('club_referral_code');
-            
+
             const registrationData = {
                 email: formData.email,
                 name: formData.name,
@@ -455,6 +462,64 @@ export default function RegisterComponent() {
                             onClick={() => setShowEmailOverlay(false)}
                         >
                             Go Back
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Instructions Overlay */}
+            {showInstructionsOverlay && (
+                <div className="psg-email-overlay">
+                    <div className="psg-email-overlay-content" style={{ maxWidth: '500px' }}>
+                        <div className="psg-email-overlay-icon" style={{ color: '#fae127', borderColor: '#fae127' }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </div>
+                        <h2>Important Instructions</h2>
+                        <div style={{ textAlign: 'left', margin: '20px 0', fontSize: '0.9rem', color: '#ccc', lineHeight: '1.6' }}>
+                            <ul style={{ paddingLeft: '20px', listStyleType: 'disc' }}>
+                                <li style={{ marginBottom: '10px' }}>Bring a <strong>Bonafide Certificate</strong> from your respective college.</li>
+                                <li style={{ marginBottom: '10px' }}>Upload your <strong>College ID card</strong> on the portal and carry the same ID during the event.</li>
+                                <li style={{ marginBottom: '10px' }}>A participant can attend only <strong>one workshop</strong> – Fee: ₹350.</li>
+                                <li style={{ marginBottom: '10px' }}>By paying <strong>₹150</strong>, a participant can attend any number of events / paper presentations.</li>
+                                <li style={{ marginBottom: '10px' }}><strong>Accommodation</strong> will be provided on an FCFS basis for the first 100 students only.</li>
+                            </ul>
+                        </div>
+
+                        <div className="auth-checkbox-field" style={{ justifyContent: 'center', marginBottom: '20px' }}>
+                            <input
+                                type="checkbox"
+                                id="agreeInstructions"
+                                checked={instructionsAgreed}
+                                onChange={(e) => setInstructionsAgreed(e.target.checked)}
+                                style={{ width: 'auto', marginRight: '10px' }}
+                            />
+                            <label htmlFor="agreeInstructions" style={{ fontSize: '0.9rem' }}>I have read and understood the instructions</label>
+                        </div>
+
+                        <button
+                            className="auth-btn psg-overlay-btn"
+                            onClick={() => {
+                                if (instructionsAgreed) {
+                                    finalizeRegistration();
+                                } else {
+                                    alert('Please agree to the instructions to proceed.');
+                                }
+                            }}
+                            disabled={!instructionsAgreed || loading}
+                            style={{ opacity: instructionsAgreed ? 1 : 0.5, cursor: instructionsAgreed ? 'pointer' : 'not-allowed' }}
+                        >
+                            {loading ? 'Processing...' : 'Confirm & Register'}
+                        </button>
+                        <button
+                            className="auth-link psg-overlay-close"
+                            onClick={() => setShowInstructionsOverlay(false)}
+                            disabled={loading}
+                        >
+                            Review Details
                         </button>
                     </div>
                 </div>

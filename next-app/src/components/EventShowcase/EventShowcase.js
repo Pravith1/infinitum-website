@@ -365,7 +365,8 @@ export default function EventShowcase({ sounds, initialEventId }) {
         title: '',
         message: '',
         onConfirm: null,
-        showLoginButton: false
+        showLoginButton: false,
+        showPayNowButton: false
     });
 
     const closeNotification = () => {
@@ -396,11 +397,23 @@ export default function EventShowcase({ sounds, initialEventId }) {
             return;
         }
 
+        const confirmMessage = (
+            <>
+                Are you sure you want to register for <strong>{currentEvent.eventName}</strong>?
+                {category === 'workshops' && (
+                    <span style={{ display: 'block', marginTop: '15px', fontSize: '0.9em', color: '#fae127', border: '1px solid rgba(250, 225, 39, 0.3)', padding: '10px', borderRadius: '6px', background: 'rgba(250, 225, 39, 0.1)', textAlign: 'left' }}>
+                        <i className="ri-alert-line" style={{ marginRight: '8px', verticalAlign: 'middle', fontSize: '1.2em' }}></i>
+                        <strong>Important:</strong> You can register for only <u>ONE</u> workshop. This action is <strong>irreversible</strong> and cannot be changed later. Please confirm your choice carefully.
+                    </span>
+                )}
+            </>
+        );
+
         setNotification({
             isOpen: true,
             type: 'confirm',
             title: 'Confirm Registration',
-            message: `Are you sure you want to register for ${currentEvent.eventName} ? `,
+            message: confirmMessage,
             onConfirm: () => performRegistration()
         });
     };
@@ -466,7 +479,33 @@ export default function EventShowcase({ sounds, initialEventId }) {
                     type: 'error',
                     title: 'General Fee Required',
                     message: 'General fee payment is not done. Please complete the general fee payment to register for events.',
-                    onConfirm: () => closeNotification() // Optionally redirect to payment page
+                    onConfirm: () => closeNotification(),
+                    showPayNowButton: true
+                });
+            } else if ((error.response?.status === 400 && msg.toLowerCase().includes("workshop fee"))) {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'Workshop Fee Required',
+                    message: 'Workshop fee payment is not done. Please complete the workshop fee payment to register for this workshop.',
+                    onConfirm: () => closeNotification(),
+                    showPayNowButton: true
+                });
+            } else if ((error.response?.status === 400 && msg.toLowerCase().includes("already registered"))) {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'Already Registered',
+                    message: msg,
+                    onConfirm: () => closeNotification()
+                });
+            } else if ((error.response?.status === 400 && msg.toLowerCase().includes("closed"))) {
+                setNotification({
+                    isOpen: true,
+                    type: 'error',
+                    title: 'Registration Closed',
+                    message: 'Registration for this event is closed.',
+                    onConfirm: () => closeNotification()
                 });
             } else {
                 setNotification({
@@ -1010,6 +1049,31 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                     }}
                                 >
                                     Cancel
+                                </button>
+                            )}
+                            {notification.showPayNowButton && (
+                                <button
+                                    onClick={() => {
+                                        closeNotification();
+                                        router.push('/fee-payment');
+                                    }}
+                                    style={{
+                                        padding: '12px 24px',
+                                        background: 'linear-gradient(135deg, #fae127, #f0ca00)',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        color: '#000',
+                                        fontFamily: 'Orbitron, sans-serif',
+                                        fontSize: '0.9rem',
+                                        cursor: 'pointer',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em',
+                                        boxShadow: '0 4px 20px rgba(250, 225, 39, 0.4)',
+                                        transition: 'all 0.3s ease',
+                                        fontWeight: 700
+                                    }}
+                                >
+                                    Pay Now
                                 </button>
                             )}
                             {notification.showLoginButton && (

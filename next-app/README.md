@@ -16,6 +16,19 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Adding a Godot game
+
+This app can serve a Godot **Web (HTML5)** export from the Next.js `public/` folder.
+
+- Export your game from Godot: **Project → Export → Add… → Web**, then **Export Project**
+- Copy the exported files into: `public/godot/my-game/`
+	- You should end up with at least `public/godot/my-game/index.html` plus the `.wasm/.pck` files.
+- Visit: `http://localhost:3000/game`
+
+Notes:
+- The `/game` page embeds `/godot/my-game/index.html` in an `<iframe>`.
+- If your Godot export uses threads (SharedArrayBuffer), this repo enables cross‑origin isolation headers for `/godot/*` and `/game` in `next.config.mjs`.
+
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

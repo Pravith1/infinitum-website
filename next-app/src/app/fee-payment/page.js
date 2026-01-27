@@ -760,9 +760,7 @@ class FeePaymentPage extends React.Component {
             const response = await paymentService.uploadPaymentReceipt(file, this.state.selectedType);
 
             // Handle verification status in success message
-            const verificationMsg = response.verified
-                ? 'Receipt uploaded and automatically verified!'
-                : 'Receipt uploaded successfully! Verification pending.';
+            const verificationMsg =  'Receipt uploaded successfully! Verification pending.';
 
             this.setState({
                 uploadSuccess: true,
@@ -770,7 +768,8 @@ class FeePaymentPage extends React.Component {
                 uploadSuccessMessage: verificationMsg,
                 selectedFile: null,
                 previewUrl: null,
-                showPreview: false
+                showPreview: false,
+                showMessageOverlay: true
             });
 
             await this.fetchReceipts();
@@ -884,9 +883,7 @@ class FeePaymentPage extends React.Component {
         try {
             const response = await paymentService.uploadPaymentReceipt(selectedFile, selectedType);
 
-            const verificationMsg = response.verified
-                ? 'Receipt uploaded and automatically verified!'
-                : 'Receipt uploaded successfully! Verification pending.';
+            const verificationMsg = 'Receipt uploaded successfully! Verification pending.';
 
             this.setState({
                 uploadSuccess: true,
@@ -894,7 +891,8 @@ class FeePaymentPage extends React.Component {
                 uploadSuccessMessage: verificationMsg,
                 selectedFile: null,
                 previewUrl: null,
-                showPreview: false
+                showPreview: false,
+                showMessageOverlay: true
             });
 
             const fileInput = document.getElementById('receiptUpload');

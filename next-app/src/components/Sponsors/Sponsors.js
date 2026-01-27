@@ -1,10 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import React from 'react';
 import styles from './Sponsors.module.css';
 
 // Mock data schema as requested: [{logo: image_url, type: string}]
@@ -18,15 +14,7 @@ const SPONSORS_DATA = [
 
 export default function Sponsors() {
     const hasSponsors = SPONSORS_DATA.length > 0;
-    const [isMobile, setIsMobile] = useState(false);
 
-    // Mobile detection
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
 
     return (
         <section className={styles.container}>
@@ -36,51 +24,8 @@ export default function Sponsors() {
                 <div className={styles.toBeAnnounced}>
                     To Be Announced
                 </div>
-            ) : isMobile ? (
-                /* Mobile: Swiper Carousel */
-                <div className={styles.swiperContainer}>
-                    <Swiper
-                        modules={[Autoplay, Pagination]}
-                        spaceBetween={20}
-                        slidesPerView={1.2}
-                        centeredSlides={true}
-                        loop={true}
-                        autoplay={{
-                            delay: 3000,
-                            disableOnInteraction: false,
-                            pauseOnMouseEnter: true
-                        }}
-                        pagination={{ clickable: true }}
-                        className={styles.swiper}
-                    >
-                        {SPONSORS_DATA.map((sponsor, idx) => (
-                            <SwiperSlide key={idx}>
-                                <div className={styles.sponsorItem}>
-                                    <div className={styles.sponsorCard}>
-                                        {sponsor.link ? (
-                                            <a href={sponsor.link} target="_blank" rel="noopener noreferrer">
-                                                {sponsor.logo ? (
-                                                    <img src={sponsor.logo} alt={`${sponsor.type}`} className={styles.sponsorlogo} />
-                                                ) : (
-                                                    <span className={styles.sponsorText}>{sponsor.text}</span>
-                                                )}
-                                            </a>
-                                        ) : (
-                                            sponsor.logo ? (
-                                                <img src={sponsor.logo} alt={`${sponsor.type}`} className={styles.sponsorlogo} />
-                                            ) : (
-                                                <span className={styles.sponsorText}>{sponsor.text}</span>
-                                            )
-                                        )}
-                                    </div>
-                                    <p className={styles.sponsorType}>{sponsor.type}</p>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                </div>
             ) : (
-                /* Desktop: Horizontal Layout */
+                /* Unified Layout - Horizontal on Desktop, Vertical on Mobile */
                 <div className={styles.sponsorsWrapper}>
                     <div className={styles.sponsorsScroll}>
                         {SPONSORS_DATA.map((sponsor, idx) => (

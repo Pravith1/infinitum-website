@@ -61,11 +61,11 @@ const MobileActions = ({ user, classes, onQrClick, onIdClick, onViewIdClick, isI
                         className={classes.actionBtn}
                         onClick={onIdClick}
                     >
-                        {user.profilePhoto ? 'Re-upload' : 'Upload'}
+                        {viewIdUrl ? 'Re-upload' : 'Upload'}
                     </button>
                 )}
             </div>
-            {user.profilePhoto && !idToUpload && (
+            {viewIdUrl && !idToUpload && (
                 <div style={{ color: '#00ff64', fontSize: '0.7rem', marginTop: 2 }}>✓ ID Uploaded</div>
             )}
         </div>
@@ -897,6 +897,8 @@ const styles = theme => {
         // Tab Navigation Styles
         tabNavigation: {
             display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             gap: 0,
             marginBottom: 20,
             borderBottom: '1px solid rgba(255,255,255,0.1)',
@@ -1610,17 +1612,34 @@ class ProfilePage extends React.Component {
 
                             {/* Tab Navigation */}
                             <div className={classes.tabNavigation}>
+                                <div style={{ display: 'flex', gap: 0 }}>
+                                    <button
+                                        className={`${classes.tab} ${activeTab === 'profile' ? classes.tabActive : ''}`}
+                                        onClick={() => this.handleTabChange('profile')}
+                                    >
+                                        Profile
+                                    </button>
+                                    <button
+                                        className={`${classes.tab} ${activeTab === 'accommodation' ? classes.tabActive : ''}`}
+                                        onClick={() => this.handleTabChange('accommodation')}
+                                    >
+                                        Accommodation
+                                    </button>
+                                </div>
+                                {/* Payment Button (Both Mobile & Desktop) */}
                                 <button
-                                    className={`${classes.tab} ${activeTab === 'profile' ? classes.tabActive : ''}`}
-                                    onClick={() => this.handleTabChange('profile')}
+                                    className={classes.actionBtn}
+                                    onClick={() => window.location.href = '/fee-payment'}
+                                    style={{
+                                        marginLeft: 'auto',
+                                        padding: isMobile ? '6px 12px' : '8px 16px',
+                                        fontSize: isMobile ? '0.65rem' : '0.75rem',
+                                        background: 'rgba(199, 32, 113, 0.2)',
+                                        borderColor: '#c72071',
+                                        alignSelf: 'center'
+                                    }}
                                 >
-                                    Profile
-                                </button>
-                                <button
-                                    className={`${classes.tab} ${activeTab === 'accommodation' ? classes.tabActive : ''}`}
-                                    onClick={() => this.handleTabChange('accommodation')}
-                                >
-                                    Accommodation
+                                    Payment
                                 </button>
                             </div>
 
@@ -1651,35 +1670,19 @@ class ProfilePage extends React.Component {
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                                                 <h3 className={classes.panelHeader} style={{ marginBottom: isMobile ? 0 : 10 }}>Profile Details</h3>
                                                 {!isMobile && !isEditing && (
-                                                    <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
-                                                        <button
-                                                            className={classes.actionBtn}
-                                                            onClick={() => window.location.href = '/fee-payment'}
-                                                            style={{ padding: '4px 12px', fontSize: '0.7rem', background: 'rgba(199, 32, 113, 0.2)', borderColor: '#c72071' }}
-                                                        >
-                                                            Payment
-                                                        </button>
-                                                        <button
-                                                            className={classes.actionBtn}
-                                                            onClick={this.handleEdit}
-                                                            style={{ padding: '4px 12px', fontSize: '0.7rem' }}
-                                                        >
-                                                            Edit Profile
-                                                        </button>
-                                                    </div>
+                                                    <button
+                                                        className={classes.actionBtn}
+                                                        onClick={this.handleEdit}
+                                                        style={{ padding: '4px 12px', fontSize: '0.7rem', marginLeft: 'auto' }}
+                                                    >
+                                                        Edit Profile
+                                                    </button>
                                                 )}
                                             </div>
                                         </div>
                                         <div className={isMobile ? `${classes.accordionContent} ${openAccordion === 'profile' ? classes.accordionContentOpen : ''}` : ''}>
                                             {isMobile && !isEditing && (
                                                 <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 15, gap: '10px' }}>
-                                                    <button
-                                                        className={classes.actionBtn}
-                                                        onClick={() => window.location.href = '/fee-payment'}
-                                                        style={{ padding: '6px 14px', fontSize: '0.75rem', background: 'rgba(199, 32, 113, 0.2)', borderColor: '#c72071' }}
-                                                    >
-                                                        Payment
-                                                    </button>
                                                     <button
                                                         className={classes.actionBtn}
                                                         onClick={this.handleEdit}

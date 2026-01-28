@@ -692,9 +692,13 @@ class FeePaymentPage extends React.Component {
             const response = await authService.getProfile();
             const user = response.user;
 
-            // Set default selectedType based on payment status
+            // Set default selectedType based on payment status and user type
             let defaultType = 'STUDENT';
-            if (user.generalFeePaid && !user.workshopFeePaid) {
+
+            // PSG students should default to WORKSHOP since they don't pay general fee
+            if (user.isPSGStudent) {
+                defaultType = 'WORKSHOP';
+            } else if (user.generalFeePaid && !user.workshopFeePaid) {
                 defaultType = 'WORKSHOP';
             } else if (!user.generalFeePaid) {
                 defaultType = 'STUDENT';
@@ -966,25 +970,27 @@ class FeePaymentPage extends React.Component {
                                     <div className={classes.formField}>
                                         <label className={classes.formLabel}>Receipt Type *</label>
                                         <div className={classes.radioGroup}>
-                                            <label className={`${classes.radioLabel} ${selectedType === 'STUDENT' ? classes.radioLabelActive : ''} ${(user?.generalFeePaid && user?.workshopFeePaid) || user?.generalFeePaid ? classes.radioLabelDisabled : ''}`}>
-                                                <input
-                                                    type="radio"
-                                                    name="receiptType"
-                                                    value="STUDENT"
-                                                    checked={selectedType === 'STUDENT'}
-                                                    onChange={(e) => this.setState({ selectedType: e.target.value })}
-                                                    className={classes.radioInput}
-                                                    disabled={user?.generalFeePaid && user?.workshopFeePaid || user?.generalFeePaid}
-                                                />
-                                                <span className={classes.radioText}>
-                                                    General Fee
-                                                    {user?.generalFeePaid && (
-                                                        <span style={{ marginLeft: 8, color: '#00ff64', fontSize: '0.85rem' }}>
-                                                            <i className="ri-check-line"></i> Paid
-                                                        </span>
-                                                    )}
-                                                </span>
-                                            </label>
+                                            {!user?.isPSGStudent && (
+                                                <label className={`${classes.radioLabel} ${selectedType === 'STUDENT' ? classes.radioLabelActive : ''} ${(user?.generalFeePaid && user?.workshopFeePaid) || user?.generalFeePaid ? classes.radioLabelDisabled : ''}`}>
+                                                    <input
+                                                        type="radio"
+                                                        name="receiptType"
+                                                        value="STUDENT"
+                                                        checked={selectedType === 'STUDENT'}
+                                                        onChange={(e) => this.setState({ selectedType: e.target.value })}
+                                                        className={classes.radioInput}
+                                                        disabled={user?.generalFeePaid && user?.workshopFeePaid || user?.generalFeePaid}
+                                                    />
+                                                    <span className={classes.radioText}>
+                                                        General Fee
+                                                        {user?.generalFeePaid && (
+                                                            <span style={{ marginLeft: 8, color: '#00ff64', fontSize: '0.85rem' }}>
+                                                                <i className="ri-check-line"></i> Paid
+                                                            </span>
+                                                        )}
+                                                    </span>
+                                                </label>
+                                            )}
                                             <label className={`${classes.radioLabel} ${selectedType === 'WORKSHOP' ? classes.radioLabelActive : ''} ${(user?.generalFeePaid && user?.workshopFeePaid) || user?.workshopFeePaid ? classes.radioLabelDisabled : ''}`}>
                                                 <input
                                                     type="radio"

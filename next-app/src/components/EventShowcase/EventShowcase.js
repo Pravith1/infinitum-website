@@ -893,7 +893,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                             {currentEvent.abstractDeadline && (
                                                 <div className={styles.modalRoundItem}>
                                                     <span className={styles.roundNumber}>1</span>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
                                                         <span>Abstract Submission</span>
                                                         <strong style={{ color: '#c72071' }}>Feb 6, 2026</strong>
                                                     </div>
@@ -902,7 +902,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                             {currentEvent.paperDeadline && (
                                                 <div className={styles.modalRoundItem}>
                                                     <span className={styles.roundNumber}>2</span>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
                                                         <span>Final Paper Submission</span>
                                                         <strong style={{ color: '#c72071' }}>Feb 11, 2026</strong>
                                                     </div>

@@ -378,6 +378,7 @@ const colleges = [
   `Sri Krishna Engineering College, Panappakkam, Padappai, Chennai 601301`,
   `Sri Krishna Institute of Technology, Panapakkam, Padappai, Chennai 601301`,
   `Sri Muthukumaran Institute of Technology, Near Mangadu, Chennai 600069`,
+  `Sri Manakula Vinayagar Engineering College, Puducherry 605107`,
   `Sri Nandhanam College of Engineering and Technology, Thiruppathur Dt 635601`,
   `SRM Valliammai Engineering College (Autonomous), Kattankulathur, Chennai 603203`,
   `SSM Institute of Engineering and Technology, Kuttathupatti Village, Sindalaigundu Post, Dindigul District 624002`,

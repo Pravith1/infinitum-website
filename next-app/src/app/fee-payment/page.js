@@ -654,6 +654,32 @@ const styles = theme => ({
     },
     '@keyframes spin': {
         to: { transform: 'rotate(360deg)' }
+    },
+    warningBox: {
+        background: 'rgba(250, 204, 21, 0.15)',
+        border: '1px solid rgba(250, 204, 21, 0.5)',
+        borderRadius: 8,
+        padding: [14, 18],
+        marginBottom: 20,
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 12,
+        '& i': {
+            color: '#facc15',
+            fontSize: '1.3rem',
+            flexShrink: 0,
+            marginTop: 2
+        }
+    },
+    warningText: {
+        color: '#fde047',
+        fontSize: '0.9rem',
+        lineHeight: 1.5,
+        fontFamily: theme.typography.secondary,
+        '& strong': {
+            color: '#facc15',
+            fontWeight: 600
+        }
     }
 });
 
@@ -746,9 +772,9 @@ class FeePaymentPage extends React.Component {
         const file = event.target.files[0];
         if (!file) return;
 
-        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        const validTypes = ['application/pdf'];
         if (!validTypes.includes(file.type)) {
-            this.setState({ uploadError: 'Invalid file format. Please upload a PDF, JPEG, PNG, or WebP file.' });
+            this.setState({ uploadError: 'Invalid file format. Please upload a PDF file only.' });
             return;
         }
 
@@ -764,8 +790,9 @@ class FeePaymentPage extends React.Component {
             const response = await paymentService.uploadPaymentReceipt(file, this.state.selectedType);
 
             // Handle verification status in success message
-            const verificationMsg = 'Receipt uploaded successfully! Verification pending. You will be notified via email when your payment is verified.';
-
+            const verificationMsg = response.verified
+                ? 'Receipt uploaded and automatically verified!'
+                : 'Receipt uploaded successfully! Verification pending.';
             this.setState({
                 uploadSuccess: true,
                 uploadError: null,
@@ -821,10 +848,10 @@ class FeePaymentPage extends React.Component {
             return;
         }
 
-        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        const validTypes = ['application/pdf'];
         if (!validTypes.includes(file.type)) {
             this.setState({
-                uploadError: 'Invalid file format. Please upload a PDF, JPEG, PNG, or WebP file.',
+                uploadError: 'Invalid file format. Please upload a PDF file only.',
                 selectedFile: null,
                 previewUrl: null
             });
@@ -887,7 +914,9 @@ class FeePaymentPage extends React.Component {
         try {
             const response = await paymentService.uploadPaymentReceipt(selectedFile, selectedType);
 
-            const verificationMsg = 'Receipt uploaded successfully! Verification pending. You will be notified via email when your payment is verified.';
+            const verificationMsg = response.verified
+                ? 'Receipt uploaded and automatically verified!'
+                : 'Receipt uploaded successfully! Verification pending.';
 
             this.setState({
                 uploadSuccess: true,
@@ -967,6 +996,14 @@ class FeePaymentPage extends React.Component {
                                 <div className={classes.section}>
                                     <Text className={classes.sectionTitle}>Already Paid? Upload Receipt</Text>
 
+                                    {/* Warning about payment reflection time */}
+                                    <div className={classes.warningBox}>
+                                        <i className="ri-alert-line"></i>
+                                        <div className={classes.warningText}>
+                                            <strong>Important:</strong> If you've already made a payment, please don't attempt to pay again. It may take a few hours for your payment status to be updated. Simply upload your receipt and wait for verification.
+                                        </div>
+                                    </div>
+
                                     <div className={classes.formField}>
                                         <label className={classes.formLabel}>Receipt Type *</label>
                                         <div className={classes.radioGroup}>
@@ -1014,7 +1051,7 @@ class FeePaymentPage extends React.Component {
                                     </div>
 
                                     <div className={classes.formField}>
-                                        <label className={classes.formLabel}>Upload Receipt (PDF, JPG, PNG, WebP - Max 10MB)</label>
+                                        <label className={classes.formLabel}>Upload Receipt (PDF Only - Max 10MB)</label>
                                         <label
                                             htmlFor="receiptUpload"
                                             className={classes.uploadButton}
@@ -1028,7 +1065,7 @@ class FeePaymentPage extends React.Component {
                                         <input
                                             id="receiptUpload"
                                             type="file"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp"
+                                            accept=".pdf"
                                             onChange={this.handleFileSelect}
                                             className={classes.fileInput}
                                             disabled={user?.generalFeePaid && user?.workshopFeePaid}
@@ -1102,6 +1139,14 @@ class FeePaymentPage extends React.Component {
                                 <li><strong>Receipt Upload:</strong> You must upload the payment receipt here to unlock event/workshop registrations.</li>
                                 <li><strong>PSG Students:</strong> Students from PSG Tech and PSG iTech are <strong>exempt</strong> from the General Fee.</li>
                             </ul>
+
+                            {/* Warning about duplicate payments */}
+                            <div className={classes.warningBox}>
+                                <i className="ri-alert-line"></i>
+                                <div className={classes.warningText}>
+                                    <strong>Already made a payment?</strong> Please don't attempt to pay again. It may take a few hours for your payment to reflect in our system. If you've already paid, simply upload your receipt below.
+                                </div>
+                            </div>
 
                             <div className={classes.checkboxContainer}>
                                 <input

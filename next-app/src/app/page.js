@@ -137,6 +137,67 @@ const styles = theme => {
       left: '50%',
       bottom: 0,
       transform: 'translateX(-50%)'
+    },
+    poweredby: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 40,
+      marginTop: 20,
+      marginBottom: 40,
+      flexWrap: 'wrap',
+      '@media (max-width: 768px)': {
+        gap: 20,
+        marginTop: 15,
+        marginBottom: 30
+      },
+      '@media (max-width: 480px)': {
+        gap: 15,
+        flexDirection: 'column'
+      },
+      '& a': {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'transform 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1.05)'
+        }
+      },
+      '& img': {
+        filter: `drop-shadow(0 0 10px ${theme.color.secondary.main})`,
+        transition: 'filter 0.3s ease',
+        '&:hover': {
+          filter: `drop-shadow(0 0 20px ${theme.color.secondary.light})`
+        }
+      }
+    },
+    sponsor: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px 30px',
+      '& p': {
+        fontFamily: theme.typography.primary,
+        fontSize: '1.2rem',
+        fontWeight: 700,
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        color: theme.color.heading.main,
+        textAlign: 'center',
+        margin: 5,
+        textShadow: `0 0 8px ${theme.color.secondary.main}`,
+        '@media (max-width: 768px)': {
+          fontSize: '1rem',
+          letterSpacing: '0.1em'
+        },
+        '@media (max-width: 480px)': {
+          fontSize: '0.85rem',
+          letterSpacing: '0.08em'
+        }
+      }
     }
   };
 };
@@ -163,7 +224,7 @@ class Component extends React.Component {
                 className={classes.brand}
                 onLinkStart={this.onLinkStart}
               />
-              
+
               <span className={classes.subtitle}>National level technical symposium</span>
               <span className={classes.dates}>FEB 13 & 14, 2026</span>
               {/* <Link
@@ -179,16 +240,24 @@ class Component extends React.Component {
                 scheme='expand'
                 onLinkStart={this.onLinkStart}
               />
-              <span className={classes.presenter} style={{marginTop: "20px"}}>powered by</span>
-              <a href='https://psiog.com/'>
-                <Image
-                  src='/images/sponsors/psiog_logo.png'
-                  height={220}
-                  width={220}
-                  alt='psiog digital logo'
-                  style={{margin: 0}}
-                />
-              </a>
+              <span className={classes.presenter} style={{ marginTop: "20px" }}>powered by</span>
+              <div className={classes.poweredby}>
+                <a href='https://psiog.com/'>
+                  <Image
+                    src='/images/sponsors/psiog_logo.png'
+                    height={220}
+                    width={220}
+                    alt='psiog digital logo'
+                    style={{ margin: 0 }}
+                  />
+                </a>
+                <a>
+                  <div className={classes.sponsor}>
+                    <p>BE CSE 2002 BATCH</p>
+                    <p>ALUMNUS</p>
+                  </div>
+                </a>
+              </div>
             </div>
             <PrizePool />
             <Collaboration />
@@ -217,12 +286,12 @@ function HomePage() {
 
   useEffect(() => {
     const ref = searchParams.get('ref');
-    
+
     if (ref) {
       // Save referral code to localStorage
       localStorage.setItem('club_referral_code', ref);
       //console.log('Referral code captured on homepage:', ref);
-      
+
       // Remove the 'ref' query parameter from URL without page reload
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('ref');

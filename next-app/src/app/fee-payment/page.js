@@ -1000,7 +1000,7 @@ class FeePaymentPage extends React.Component {
                                     <div className={classes.warningBox}>
                                         <i className="ri-alert-line"></i>
                                         <div className={classes.warningText}>
-                                            <strong>Important:</strong> If you've already made a payment, please don't attempt to pay again. It may take a few hours for your payment status to be updated. Simply upload your receipt and wait for verification.
+                                            <strong>Important:</strong> All payments are non-refundable. If you've already made a payment, please don't attempt to pay again. It may take a few hours for your payment status to be updated. Simply upload your receipt and wait for verification.
                                         </div>
                                     </div>
 
@@ -1144,7 +1144,7 @@ class FeePaymentPage extends React.Component {
                             <div className={classes.warningBox}>
                                 <i className="ri-alert-line"></i>
                                 <div className={classes.warningText}>
-                                    <strong>Already made a payment?</strong> Please don't attempt to pay again. It may take a few hours for your payment to reflect in our system. If you've already paid, simply upload your receipt below.
+                                    <strong>Important:</strong> All payments are non-refundable. If you've already made a payment, please don't attempt to pay again. It may take a few hours for your payment to reflect in our system. If you've already paid, simply upload your receipt below.
                                 </div>
                             </div>
 

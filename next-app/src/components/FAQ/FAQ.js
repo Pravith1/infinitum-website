@@ -30,7 +30,7 @@ const FAQ_DATA = [
     },
     {
         question: "Is there a registration fee?",
-        answer: <>Yes. For events (including technical events, flagship event, and paper presentations), non-PSG students pay a general registration fee of ₹150. Students from PSG College of Technology and PSG iTech are exempt from this fee. For workshops, the fee is ₹350 for all participants – no exemptions apply. <a href="/fee-payment" style={{ color: '#00d4ff', textDecoration: 'underline' }}>Click here to pay now</a>.</>
+        answer: <>Yes. For events (including technical events, flagship event, and paper presentations), non-PSG students pay a general registration fee of ₹150. Students from PSG College of Technology and PSG iTech are exempt from this fee. For workshops, the fee is ₹350 for all participants – no exemptions apply. <strong>Please note that registrations are non-refundable.</strong> <a href="/fee-payment" style={{ color: '#00d4ff', textDecoration: 'underline' }}>Click here to pay now</a>.</>
     },
     {
         question: "Can I participate in multiple events?",

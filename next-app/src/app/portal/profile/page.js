@@ -1437,10 +1437,10 @@ class ProfilePage extends React.Component {
             return;
         }
 
-        // Validate file size (max 10MB)
-        const maxSize = 10 * 1024 * 1024;
+        // Validate file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024;
         if (file.size > maxSize) {
-            alert('File size is too large. Max allowed size is 10MB.');
+            alert('File size is too large. Max allowed size is 5MB.');
             return;
         }
 

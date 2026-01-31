@@ -7,6 +7,7 @@ import { Secuence } from '@/components/Secuence';
 import { Text } from '@/components/Text';
 import { authService } from '@/services/authService';
 import { paymentService } from '@/services/paymentService';
+import GrievanceButton from '@/components/GrievanceButton';
 
 const styles = theme => ({
     root: {
@@ -654,6 +655,32 @@ const styles = theme => ({
     },
     '@keyframes spin': {
         to: { transform: 'rotate(360deg)' }
+    },
+    warningBox: {
+        background: 'rgba(250, 204, 21, 0.15)',
+        border: '1px solid rgba(250, 204, 21, 0.5)',
+        borderRadius: 8,
+        padding: [14, 18],
+        marginBottom: 20,
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 12,
+        '& i': {
+            color: '#facc15',
+            fontSize: '1.3rem',
+            flexShrink: 0,
+            marginTop: 2
+        }
+    },
+    warningText: {
+        color: '#fde047',
+        fontSize: '0.9rem',
+        lineHeight: 1.5,
+        fontFamily: theme.typography.secondary,
+        '& strong': {
+            color: '#facc15',
+            fontWeight: 600
+        }
     }
 });
 
@@ -970,6 +997,14 @@ class FeePaymentPage extends React.Component {
                                 <div className={classes.section}>
                                     <Text className={classes.sectionTitle}>Already Paid? Upload Receipt</Text>
 
+                                    {/* Warning about payment reflection time */}
+                                    <div className={classes.warningBox}>
+                                        <i className="ri-alert-line"></i>
+                                        <div className={classes.warningText}>
+                                            <strong>Important:</strong> All payments are non-refundable. If you've already made a payment, please don't attempt to pay again. It may take a few hours for your payment status to be updated. Simply upload your receipt and wait for verification.
+                                        </div>
+                                    </div>
+
                                     <div className={classes.formField}>
                                         <label className={classes.formLabel}>Receipt Type *</label>
                                         <div className={classes.radioGroup}>
@@ -1105,6 +1140,14 @@ class FeePaymentPage extends React.Component {
                                 <li><strong>Receipt Upload:</strong> You must upload the payment receipt here to unlock event/workshop registrations.</li>
                                 <li><strong>PSG Students:</strong> Students from PSG Tech and PSG iTech are <strong>exempt</strong> from the General Fee.</li>
                             </ul>
+
+                            {/* Warning about duplicate payments */}
+                            <div className={classes.warningBox}>
+                                <i className="ri-alert-line"></i>
+                                <div className={classes.warningText}>
+                                    <strong>Important:</strong> All payments are non-refundable. If you've already made a payment, please don't attempt to pay again. It may take a few hours for your payment to reflect in our system. If you've already paid, simply upload your receipt below.
+                                </div>
+                            </div>
 
                             <div className={classes.checkboxContainer}>
                                 <input
@@ -1249,6 +1292,7 @@ class FeePaymentPage extends React.Component {
                         </div>
                     </div>
                 )}
+                <GrievanceButton />
             </Main>
         );
     }

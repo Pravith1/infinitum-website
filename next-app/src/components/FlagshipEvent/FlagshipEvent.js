@@ -20,24 +20,14 @@ const EVENT_DATA = {
     posterSrc: 'images/Thooral.png',
     rounds: [
         {
-            title: "Ideation & Pitching",
-            description: "Teams analyze the problem statement and present innovative solutions through a structured PPT pitch.",
+            title: "Day 1",
+            description: "Problem statements are given and students work on their solutions. The day concludes with a feedback review session where teams receive guidance and insights on their progress.",
             _id: "695a3d878baa56af3270688c"
         },
         {
-            title: "Documentation & System Design",
-            description: "Participants prepare essential software artifacts including SRS documents and UML diagrams.",
+            title: "Day 2",
+            description: "Teams complete their projects and present their final solutions to the judges.",
             _id: "695a3d878baa56af3270688d"
-        },
-        {
-            title: "Implementation Phase",
-            description: "Teams develop working prototypes or applications based on their proposed solutions.",
-            _id: "695a3d878baa56af3270688e"
-        },
-        {
-            title: "Final Presentation",
-            description: "Teams demonstrate their solution, explain design decisions, and present impact and scalability before judges.",
-            _id: "695a3d878baa56af3270688f"
         }
     ],
     contacts: [
@@ -46,7 +36,7 @@ const EVENT_DATA = {
         { name: "Sreeraghavan", mobile: "6385786223" },
         { name: "Lohith S", mobile: "9488125100" }
     ],
-    teamSize: 4,
+    teamSize: "2 to 4",
     closed: false,
     date: {
         "Day 1": "FEB 13",
@@ -441,14 +431,14 @@ export default function FlagshipEvent() {
                                 {/* Rounds Section */}
                                 {rounds && rounds.length > 0 && (
                                     <div className={styles.roundsSection}>
-                                        <h3 className={styles.roundsTitle}>ROUNDS</h3>
+                                        <h3 className={styles.roundsTitle}>EVENT STRUCTURE</h3>
                                         <div className={styles.roundsList}>
                                             {rounds.map((round, index) => (
                                                 <div key={round._id || index} className={styles.roundItem}>
                                                     <div className={styles.roundNumber}>{index + 1}</div>
                                                     <div className={styles.roundContent}>
                                                         <div className={styles.roundTitle}>
-                                                            Round {index + 1} – {round.title}
+                                                            {round.title}
                                                         </div>
                                                         {round.description && (
                                                             <p className={styles.roundDescription}>{round.description}</p>

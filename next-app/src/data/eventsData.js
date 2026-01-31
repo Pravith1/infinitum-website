@@ -1,4 +1,3 @@
-// Hardcoded events data matching database structure
 export const eventsData = [
     {
         "_id": { "$oid": "694ce9c4297836cde768247f" },
@@ -32,7 +31,7 @@ export const eventsData = [
         "prizePool": "₹5,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
-        "dateAndTime": "Feb 13, 10:00 AM – 3:00 PM",
+        "dateAndTime": "Feb 13, 10:00 AM - 3:00 PM",
         "scheduleStart": "10:00",
         "scheduleEnd": "15:00",
         "scheduleDay": "day1",
@@ -43,7 +42,7 @@ export const eventsData = [
         "image": "/images/events/QuestX_website.png"
     },
 
-    {
+     {
         "_id": { "$oid": "694ce9d2297836cde7682488" },
         "eventId": "EVNT02",
         "eventName": "neXus",
@@ -79,7 +78,6 @@ export const eventsData = [
         "__v": 0,
         "image": "/images/events/nexus_website.png"
     },
-
     {
         "_id": { "$oid": "694cec9c297836cde7682490" },
         "eventId": "EVNT03",
@@ -91,7 +89,7 @@ export const eventsData = [
         "rounds": [
             {
                 "title": "Code Charades",
-                "tagline": "Act fast, decode signals, earn your advantage.",
+                "tagline": "Act fast, decode words, earn your advantage.",
                 "description": "Teams must enact and guess technical terms using only gestures and non-verbal cues. Speed is the key to victory, as points are awarded based on how quickly the team can identify the correct terms to climb the leaderboard.",
                 "_id": { "$oid": "694cec9c297836cde7682491" }
             },
@@ -136,6 +134,11 @@ export const eventsData = [
             "The difficulty of the contest will be around a typical Div 4 Codeforces contest"
         ],
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cf" },
+        "importantNotes": [
+            "There are no preliminary rounds",
+            "Participants must have a Codeforces account (create one if you don't have one)",
+            "The difficulty of the contest will be around a typical Div 4 Codeforces contest"
+        ],
         "rounds": [
             {
                 "title": "Coding Phase",
@@ -254,7 +257,7 @@ export const eventsData = [
             }
         ],
         "hall": "Computer Center",
-        "eventRules": "Individual participation only. Follow coding standards. Organisers' decisions are final.",
+        "eventRules": "Team participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "timing": "Feb 14, 9:00 AM – 3:00 PM",
@@ -262,7 +265,7 @@ export const eventsData = [
         "scheduleEnd": "15:00",
         "scheduleDay": "day2",
         "prizePool": "₹8,000",
-        "teamSize": 1,
+        "teamSize": 2,
         "image": "/images/events/codemania_website.png"
     },
 
@@ -303,6 +306,8 @@ export const eventsData = [
         "teamSize": 4,
         "image": "/images/events/paper_presentation.png"
     }
+
+
 ]
 
 
@@ -315,7 +320,7 @@ export const workshopsData = [
         "club_id": {
             "$oid": "69495a6a719d1b3bd5a9e7cd"
         },
-        "workshopName": "AI Infrastructure\u2060: From Big Picture to Everyday Reality",
+        "workshopName": "AI Infrastructure: From Big Picture to Everyday Reality",
         "date": {
             "$date": "2026-02-13T09:00:00.000Z"
         },
@@ -484,16 +489,31 @@ export const papersData = [
         "theme": "Artificial Intelligence",
         "tagline": "Explore the Future of AI and ML",
         "topic": "Recent advances in deep learning, neural networks, and AI applications in real-world scenarios",
-        "rules": "1. Each team must submit an abstract by the deadline\n2. Maximum team size is 3 members\n3. Presentation duration: 15 minutes\n4. Q&A session: 5 minutes",
+        "themes": [
+            "AI-Based Intelligent Decision Support Systems",
+            "Deep Learning Techniques for Pattern Recognition",
+            "AI in Healthcare Diagnosis and Prediction",
+            "Computer Vision Applications Using Deep Learning",
+            "Generative AI and Large Language Models",
+            "AI for Cybersecurity and Threat Detection",
+            "AI for Internet of Things (AIoT)"
+        ],
+        "rules": "Important: Every member of the team must register for the paper presentation in this website and form a team within the paper portal to submit the abstract.\nEach team can have a maximum of 4 members.\nPapers must be original and not previously published. The paper should strictly follow the IEEE format.\nMaximum 2 pages in IEEE format (including references).\nAbstract paper must be submitted in PDF format before the deadline. Selected papers will be intimated via email.\nPlagiarism should not exceed 15–20% (excluding references).\nEach team will be given 15 minutes to present their ideas, followed by a 5-minute question-and-answer session.\nPresentation must be in PPT / PDF format.\nParticipants must report at least 30 minutes before their scheduled time.\nSubmission of projects (implementation of ideas) will be considered as an added credit. A working prototype or demonstration is not mandatory, but if available, teams are encouraged to showcase it during the presentation to strengthen their work.\nThe judges' decision will be final, and no correspondence will be entertained.",
         "date": {
             "$date": "2026-02-14T09:00:00.000Z"
         },
         "time": "10:00 AM - 12:30 PM",
         "dateAndTime": "Feb 14, 10:00 AM - 12:30 PM",
-        "deadline": {
-            "$date": "2026-02-01T00:00:00.000Z"
+        "abstractDeadline": {
+            "$date": "2026-02-06T23:59:59.000Z"
         },
-        "teamSize": 3,
+        "paperDeadline": {
+            "$date": "2026-02-11T23:59:59.000Z"
+        },
+        "deadline": {
+            "$date": "2026-02-06T00:00:00.000Z"
+        },
+        "teamSize": "1 to 4",
         "hall": "Department Seminar Hall - CSE",
         "closed": false,
         "youtubeUrl": "https://www.youtube.com/watch?v=example",

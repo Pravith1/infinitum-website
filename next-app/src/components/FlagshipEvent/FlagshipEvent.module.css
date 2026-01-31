@@ -712,6 +712,7 @@
     font-size: 14px;
     line-height: 1.7;
     margin: 0;
+    white-space: pre-line; /* Preserves line breaks from \n in the text */
 }
 
 /* Info Grid - 2x2 */

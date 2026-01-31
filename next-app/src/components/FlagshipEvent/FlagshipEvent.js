@@ -16,7 +16,7 @@ const EVENT_DATA = {
     eventName: "Thooral Hackathon",
     category: "Technical",
     oneLineDescription: "From idea to impact—design, document, build, and present innovative solutions.",
-    description: "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle. Participants ideate solutions, create structured documentation, develop working prototypes, and present their solutions across domains such as Full Stack Development, Machine Learning, and Blockchain. The event emphasizes innovation, teamwork, and industry-relevant development practices.",
+    description: "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle. Participants ideate solutions, create structured documentation, develop working prototypes, and present their solutions across domains such as Full Stack Development, Machine Learning, and Blockchain. The event emphasizes innovation, teamwork, and industry-relevant development practices.\n\nImportant Notes:\n• Every participant must register individually—teams can be formed in-person on Day 1\n• Problem statements will be given on Day 1—no themes, just direct problem statements\n• There are no preliminary rounds\n• Lunch will not be provided\n• Flexible participation: Students can work on other events during the hackathon and are expected to attend only Day 1 Informal Review and Day 2 Final Judging",
     posterSrc: 'images/Thooral.png',
     rounds: [
         {

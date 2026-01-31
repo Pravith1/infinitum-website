@@ -183,6 +183,11 @@
   "category": "Technical",
   "oneLineDescription": "Code like Tourist. Hack like a Grandmaster.",
   "description": "ForceCoders is a high-intensity competitive coding event focused on core computer science fundamentals such as data structures, algorithms, and system logic. The event follows a progressive two-round format that tests implementation speed, algorithmic depth, debugging ability, and adversarial thinking.",
+  "importantNotes": [
+    "There are no preliminary rounds",
+    "Participants must have a Codeforces account (create one if you don't have one)",
+    "The difficulty of the contest will be around a typical Div 4 Codeforces contest"
+  ],
   "club_id": {
     "$oid": "69495a6a719d1b3bd5a9e7cf"
   },

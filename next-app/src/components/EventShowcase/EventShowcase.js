@@ -632,6 +632,15 @@ export default function EventShowcase({ sounds, initialEventId }) {
                 <p className={`${styles.tagline} ${isTransitioning ? styles.fadeOut : ''} `}>
                     {currentEvent.oneLineDescription}
                 </p>
+
+                {/* Important Notes Badge - Visible before clicking Learn More */}
+                {currentEvent.importantNotes && currentEvent.importantNotes.length > 0 && (
+                    <div className={styles.importantBadge} onClick={openModal}>
+                        <i className="ri-error-warning-fill"></i>
+                        <span>Important Notes Available</span>
+                        <i className="ri-arrow-right-s-line"></i>
+                    </div>
+                )}
             </div>
 
             {/* Main Content Area */}
@@ -852,6 +861,23 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                     <p className={styles.modalOneLiner}>{currentEvent.oneLineDescription}</p>
                                 )}
                                 <p className={styles.modalDesc}>{currentEvent.description}</p>
+
+                                {/* Important Notes Section */}
+                                {currentEvent.importantNotes && currentEvent.importantNotes.length > 0 && (
+                                    <div className={styles.importantNotesBox}>
+                                        <div className={styles.importantNotesHeader}>
+                                            <i className="ri-error-warning-line"></i>
+                                            <span>Important Notes</span>
+                                        </div>
+                                        <ul className={styles.importantNotesList}>
+                                            {currentEvent.importantNotes.map((note, idx) => (
+                                                <li key={idx} className={styles.importantNoteItem}>
+                                                    {note}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
 
                                 {/* Event Info Grid */}
                                 <div className={styles.modalInfoGrid}>

@@ -130,6 +130,11 @@ export const eventsData = [
         "category": "Technical",
         "oneLineDescription": "Code like Tourist. Hack like a Grandmaster.",
         "description": "ForceCoders is a high-intensity competitive coding event focused on core computer science fundamentals such as data structures, algorithms, and system logic. The event follows a progressive two-round format that tests implementation speed, algorithmic depth, debugging ability, and adversarial thinking.",
+        "importantNotes": [
+            "There are no preliminary rounds",
+            "Participants must have a Codeforces account (create one if you don't have one)",
+            "The difficulty of the contest will be around a typical Div 4 Codeforces contest"
+        ],
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cf" },
         "rounds": [
             {
@@ -267,32 +272,20 @@ export const eventsData = [
         "eventName": "Thooral Hackathon",
         "category": "Technical",
         "oneLineDescription": "From idea to impact—design, document, build, and present innovative solutions.",
-        "description": "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle.",
+        "description": "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle. Participants ideate solutions, create structured documentation, develop working prototypes, and present their solutions across domains such as Full Stack Development, Machine Learning, and Blockchain. The event emphasizes innovation, teamwork, and industry-relevant development practices.\n\nImportant Notes:\n• Every participant must register individually—teams can be formed in-person on Day 1\n• Problem statements will be given on Day 1—no themes, just direct problem statements\n• There are no preliminary rounds\n• Lunch will not be provided\n• Flexible participation: Students can work on other events during the hackathon and may attend only Day 1 review and Day 2 judging if preferred",
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cd" },
         "rounds": [
             {
-                "title": "Ideation & Pitching",
-                "tagline": "Strong ideas set the foundation.",
-                "description": "Teams analyze the problem statement and present innovative solutions through a structured PPT pitch.",
+                "title": "Day 1 - Problem Statement & Review",
+                "tagline": "Get the problem, start building, get feedback.",
+                "description": "Problem statements (not themes) are given to all participants. Students work on their solutions throughout the day. The day concludes with a feedback review session where teams receive guidance and insights on their progress.",
                 "_id": { "$oid": "695a3d878baa56af3270688c" }
             },
             {
-                "title": "Documentation & System Design",
-                "tagline": "Plan it well before you build it.",
-                "description": "Participants prepare essential software artifacts including SRS documents and UML diagrams.",
+                "title": "Day 2 - Completion & Judging",
+                "tagline": "Finish strong and present to judges.",
+                "description": "Teams complete their projects and present their final solutions to the judges.",
                 "_id": { "$oid": "695a3d878baa56af3270688d" }
-            },
-            {
-                "title": "Implementation Phase",
-                "tagline": "Transform ideas into working systems.",
-                "description": "Teams develop working prototypes or applications.",
-                "_id": { "$oid": "695a3d878baa56af3270688e" }
-            },
-            {
-                "title": "Final Presentation",
-                "tagline": "Present impact, innovation, and execution.",
-                "description": "Teams demonstrate their solution and present before judges.",
-                "_id": { "$oid": "695a3d878baa56af3270688f" }
             }
         ],
         "contacts": [

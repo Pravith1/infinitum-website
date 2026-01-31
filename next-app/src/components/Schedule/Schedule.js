@@ -112,20 +112,54 @@ const Schedule = ({ classes, sounds }) => {
     const { isAuthenticated } = useAuth();
     const [activeDay, setActiveDay] = useState('day1');
     const [registeredEventTitles, setRegisteredEventTitles] = useState(new Set());
+    const [isAuthenticatedLocal, setIsAuthenticatedLocal] = useState(false); // Fix potential hydration mismatch if needed, but sticking to existing pattern for now
+    const [registeredEventIds, setRegisteredEventIds] = useState(new Set());
+
     const rootRef = useRef(null);
     const playHover = () => sounds.hover && sounds.hover.play();
-    const playClick = () => sounds.click && sounds.click.play();
+    const playClick = () => sounds.click && sounds.click.play();;
+
+    // ... (useEffect for fetch is above) ...
+
+    // Helper to check if event is registered
+    const isEventRegisteredDeprecated = (title) => {
+        if (!title) return false;
+
+        // 1. Check by ID if available (Strong Match)
+        const id = getEventId(title);
+        if (id && registeredEventIds.has(id)) {
+            return true;
+        }
+
+        // 2. Fallback to Name Check (Soft Match)
+        // Normalize the schedule title: remove non-alphanumeric, lowercase
+        const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normalizedScheduleTitle = normalize(title);
+
+        for (let registeredTitle of registeredEventTitles) {
+            // registeredTitle is already lowercase and trimmed from the fetch
+            const normalizedRegistered = normalize(registeredTitle);
+
+            // Check for inclusion in either direction
+            if (normalizedRegistered.includes(normalizedScheduleTitle) || normalizedScheduleTitle.includes(normalizedRegistered)) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     // Fetch user's registered events
     useEffect(() => {
         const fetchRegisteredEvents = async () => {
             if (!isAuthenticated) {
                 setRegisteredEventTitles(new Set());
+                setRegisteredEventIds(new Set()); // Reset IDs
                 return;
             }
 
             try {
                 const registeredTitles = new Set();
+                const registeredIds = new Set();
 
                 // Fetch registered events
                 try {
@@ -134,6 +168,9 @@ const Schedule = ({ classes, sounds }) => {
                     eventsList.forEach(event => {
                         if (event.eventName) {
                             registeredTitles.add(event.eventName.toLowerCase().trim());
+                        }
+                        if (event.eventId) {
+                            registeredIds.add(event.eventId);
                         }
                     });
                 } catch (err) {
@@ -148,12 +185,32 @@ const Schedule = ({ classes, sounds }) => {
                         if (workshop.workshopName) {
                             registeredTitles.add(workshop.workshopName.toLowerCase().trim());
                         }
+                        if (workshop.workshopId) {
+                            registeredIds.add(workshop.workshopId);
+                        }
                     });
                 } catch (err) {
                     console.error('Error fetching user workshops:', err);
                 }
 
+                // Fetch registered papers
+                try {
+                    const userPapers = await eventService.getUserPapers();
+                    const papersList = Array.isArray(userPapers) ? userPapers : (userPapers.papers || userPapers.data || []);
+                    papersList.forEach(paper => {
+                        if (paper.eventName) {
+                            registeredTitles.add(paper.eventName.toLowerCase().trim());
+                        }
+                        // Paper API might return paperId or eventId, check both or standardized field
+                        if (paper.paperId) registeredIds.add(paper.paperId);
+                        else if (paper.eventId) registeredIds.add(paper.eventId);
+                    });
+                } catch (err) {
+                    console.error('Error fetching user papers:', err);
+                }
+
                 setRegisteredEventTitles(registeredTitles);
+                setRegisteredEventIds(registeredIds);
             } catch (error) {
                 console.error('Error fetching registered events:', error);
             }
@@ -254,11 +311,27 @@ const Schedule = ({ classes, sounds }) => {
     };
 
     // Helper to check if event is registered
+    // Helper to check if event is registered
     const isEventRegistered = (title) => {
-        const normalizedTitle = title.toLowerCase().trim();
-        // Check exact match or partial match
+        if (!title) return false;
+
+        // 1. Check by ID if available (Strong Match)
+        const id = getEventId(title);
+        if (id && registeredEventIds.has(id)) {
+            return true;
+        }
+
+        // 2. Fallback to Name Check (Soft Match)
+        // Normalize the schedule title: remove non-alphanumeric, lowercase
+        const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normalizedScheduleTitle = normalize(title);
+
         for (let registeredTitle of registeredEventTitles) {
-            if (registeredTitle.includes(normalizedTitle) || normalizedTitle.includes(registeredTitle)) {
+            // registeredTitle is already lowercase and trimmed from the fetch
+            const normalizedRegistered = normalize(registeredTitle);
+
+            // Check for inclusion in either direction
+            if (normalizedRegistered.includes(normalizedScheduleTitle) || normalizedScheduleTitle.includes(normalizedRegistered)) {
                 return true;
             }
         }

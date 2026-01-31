@@ -375,31 +375,17 @@
   },
   "rounds": [
     {
-      "title": "Ideation & Pitching",
-      "description": "Teams analyze the problem statement and present innovative solutions through a structured PPT pitch.",
+      "title": "Day 1",
+      "description": "Problem statements are given and students work on their solutions. The day concludes with a feedback review session where teams receive guidance and insights on their progress.",
       "_id": {
         "$oid": "695a3d878baa56af3270688c"
       }
     },
     {
-      "title": "Documentation & System Design",
-      "description": "Participants prepare essential software artifacts including SRS documents and UML diagrams.",
+      "title": "Day 2",
+      "description": "Teams complete their projects and present their final solutions to the judges.",
       "_id": {
         "$oid": "695a3d878baa56af3270688d"
-      }
-    },
-    {
-      "title": "Implementation Phase",
-      "description": "Teams develop working prototypes or applications based on their proposed solutions.",
-      "_id": {
-        "$oid": "695a3d878baa56af3270688e"
-      }
-    },
-    {
-      "title": "Final Presentation",
-      "description": "Teams demonstrate their solution, explain design decisions, and present impact and scalability before judges.",
-      "_id": {
-        "$oid": "695a3d878baa56af3270688f"
       }
     }
   ],
@@ -421,7 +407,7 @@
   ],
   "hall": "To be decided by CSEA",
   "eventRules": "1. Team participation as per hackathon guidelines\n2. Participants must follow all hackathon phases strictly\n3. Original work only; plagiarism leads to disqualification\n4. Judging based on ideation, documentation, implementation, innovation, and presentation\n5. Judges’ decision will be final",
-  "teamSize": 4,
+  "teamSize": "2 to 4",
   "date": null,
   "closed": false,
   "timing": "2 Days (Exact schedule to be announced)",

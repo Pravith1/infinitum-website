@@ -31,6 +31,12 @@ export function AuthProvider({ children }) {
         return response;
     };
 
+    const googleLogin = async (data) => {
+        const response = await authService.loginGoogle(data);
+        setUser(response.user);
+        return response;
+    };
+
     const logout = async () => {
         try {
             await authService.logout();
@@ -51,6 +57,7 @@ export function AuthProvider({ children }) {
         loading,
         isAuthenticated: !!user,
         login,
+        googleLogin,
         logout,
         refreshUser,
     };

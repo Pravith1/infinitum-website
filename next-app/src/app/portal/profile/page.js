@@ -12,6 +12,7 @@ import { withStyles } from '@/tools/withStyles';
 import { Secuence as SecuenceComponent } from '@/components/Secuence';
 import { Button } from '@/components/Button';
 import colleges from '@/app/CollegeList';
+import { eventService } from '@/services/eventservice';
 
 // Accommodation Instructions
 const ACCOMMODATION_INSTRUCTIONS = [
@@ -60,11 +61,11 @@ const MobileActions = ({ user, classes, onQrClick, onIdClick, onViewIdClick, isI
                         className={classes.actionBtn}
                         onClick={onIdClick}
                     >
-                        {user.idCardUploaded ? 'Re-upload' : 'Upload'}
+                        {viewIdUrl ? 'Re-upload' : 'Upload'}
                     </button>
                 )}
             </div>
-            {user.idCardUploaded && !idToUpload && (
+            {viewIdUrl && !idToUpload && (
                 <div style={{ color: '#00ff64', fontSize: '0.7rem', marginTop: 2 }}>✓ ID Uploaded</div>
             )}
         </div>
@@ -896,6 +897,8 @@ const styles = theme => {
         // Tab Navigation Styles
         tabNavigation: {
             display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             gap: 0,
             marginBottom: 20,
             borderBottom: '1px solid rgba(255,255,255,0.1)',
@@ -1119,6 +1122,7 @@ class ProfilePage extends React.Component {
             accommodationSubmitting: false,
             accommodationError: null,
             accommodationSuccess: false, // Success popup state
+            showFeeReminder: false, // Reminder state (initially hidden)
         };
         this.fileInputRef = React.createRef();
     }
@@ -1128,19 +1132,30 @@ class ProfilePage extends React.Component {
         this.setState(prev => ({ isQRExpanded: !prev.isQRExpanded }));
     }
 
+    checkMobile = () => {
+        this.setState({ isMobile: window.innerWidth <= 960 });
+    };
+
     componentDidMount() {
         // Set initial tab from URL query param (passed via props)
         if (this.props.initialTab) {
             this.setState({ activeTab: this.props.initialTab });
         }
         this.checkAuth();
-        const checkMobile = () => this.setState({ isMobile: window.innerWidth <= 960 });
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
+
+        this.checkMobile();
+        window.addEventListener('resize', this.checkMobile);
+
+        // Show reminder after 3 seconds
+        this.reminderTimer = setTimeout(() => {
+            this.setState({ showFeeReminder: true });
+        }, 3000);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.checkMobile);
+        try {
+            window.removeEventListener('resize', this.checkMobile);
+        } catch (e) { }
     }
 
     checkAuth = async () => {
@@ -1154,7 +1169,7 @@ class ProfilePage extends React.Component {
 
             // Fetch registered events after successful auth
             if (response.user) {
-                this.fetchRegisteredEvents();
+                this.fetchRegisteredItems();
                 if (response.user.idCardUrl) {
                     // Construct the full URL for viewing the ID card
                     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -1166,34 +1181,48 @@ class ProfilePage extends React.Component {
         }
     };
 
-    fetchRegisteredEvents = async () => {
+    fetchRegisteredItems = async () => {
         try {
-            const response = await api.get('/api/events/registrations');
-            const data = response.data;
+            const [eventsRes, workshopsRes, papersRes] = await Promise.all([
+                eventService.getUserEvents(),
+                eventService.getUserWorkshops(),
+                eventService.getUserPapers()
+            ]);
 
-            let events = [];
-            if (Array.isArray(data)) {
-                events = data;
-            } else if (data.events && Array.isArray(data.events)) {
-                events = data.events;
-            } else if (data.data && Array.isArray(data.data)) {
-                events = data.data;
-            }
+            const safeExtract = (res, key) => {
+                if (!res) return [];
+                if (Array.isArray(res)) return res;
+                if (res[key] && Array.isArray(res[key])) return res[key];
+                if (res.data && Array.isArray(res.data)) return res.data;
+                return [];
+            };
 
-            this.setState({ registeredEvents: events });
+            const events = safeExtract(eventsRes, 'events');
+            const workshops = safeExtract(workshopsRes, 'workshops');
+            const papers = safeExtract(papersRes, 'papers');
+
+            const allItems = [
+                ...events.map(item => ({ ...item, itemType: 'event' })),
+                ...workshops.map(item => ({ ...item, itemType: 'workshop' })),
+                ...papers.map(item => ({ ...item, itemType: 'paper' }))
+            ];
+
+            this.setState({ registeredEvents: allItems });
         } catch (error) {
-            console.error("Failed to fetch registered events", error);
+            console.error("Failed to fetch registered items", error);
         }
     };
 
     // Accommodation Methods
     fetchAccommodation = async () => {
+        this.setState({ accommodationLoading: true });
+
         const { user } = this.state;
         if (!user?.uniqueId) return;
 
         try {
             const response = await api.get(`/api/acc/accommodation/uniqueId/${user.uniqueId}`);
-            console.log(response);
+            //console.log(response);
             if (response.data.success && response.data.data?.accommodation) {
                 this.setState({
                     accommodationData: response.data.data.accommodation,
@@ -1408,10 +1437,10 @@ class ProfilePage extends React.Component {
             return;
         }
 
-        // Validate file size (max 10MB)
-        const maxSize = 10 * 1024 * 1024;
+        // Validate file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024;
         if (file.size > maxSize) {
-            alert('File size is too large. Max allowed size is 10MB.');
+            alert('File size is too large. Max allowed size is 5MB.');
             return;
         }
 
@@ -1499,6 +1528,7 @@ class ProfilePage extends React.Component {
             'Technical': '#c72071',
             'Non-Technical': '#00d4ff',
             'Workshops': '#00ff88',
+            'Paper-Presentations': '#ffbb00',
             'Other': '#888'
         };
 
@@ -1507,9 +1537,17 @@ class ProfilePage extends React.Component {
             // Normalize category names for grouping
             const category = (event.category || 'general').toLowerCase();
             let groupName = 'Other';
-            if (category.includes('non technical') || category.includes('non-technical')) groupName = 'Non-Technical';
-            else if (category.includes('technical')) groupName = 'Technical';
-            else if (category.includes('workshop')) groupName = 'Workshops';
+
+            if (event.itemType === 'workshop') {
+                groupName = 'Workshops';
+            } else if (event.itemType === 'paper') {
+                groupName = 'Paper-Presentations';
+            } else if (category.includes('non technical') || category.includes('non-technical')) {
+                groupName = 'Non-Technical';
+            } else if (category.includes('technical')) {
+                groupName = 'Technical';
+            }
+
 
             if (!acc[groupName]) {
                 acc[groupName] = [];
@@ -1518,7 +1556,10 @@ class ProfilePage extends React.Component {
             return acc;
         }, {});
 
-        const groupedEventCategories = Object.keys(groupedEvents);
+        const groupedEventCategories = Object.keys(groupedEvents).sort((a, b) => {
+            const order = ['Technical', 'Non-Technical', 'Workshops', 'Paper Presentations', 'Other'];
+            return order.indexOf(a) - order.indexOf(b);
+        });
 
         return (
             <SecuenceComponent>
@@ -1571,17 +1612,34 @@ class ProfilePage extends React.Component {
 
                             {/* Tab Navigation */}
                             <div className={classes.tabNavigation}>
+                                <div style={{ display: 'flex', gap: 0 }}>
+                                    <button
+                                        className={`${classes.tab} ${activeTab === 'profile' ? classes.tabActive : ''}`}
+                                        onClick={() => this.handleTabChange('profile')}
+                                    >
+                                        Profile
+                                    </button>
+                                    <button
+                                        className={`${classes.tab} ${activeTab === 'accommodation' ? classes.tabActive : ''}`}
+                                        onClick={() => this.handleTabChange('accommodation')}
+                                    >
+                                        Accommodation
+                                    </button>
+                                </div>
+                                {/* Payment Button (Both Mobile & Desktop) */}
                                 <button
-                                    className={`${classes.tab} ${activeTab === 'profile' ? classes.tabActive : ''}`}
-                                    onClick={() => this.handleTabChange('profile')}
+                                    className={classes.actionBtn}
+                                    onClick={() => window.location.href = '/fee-payment'}
+                                    style={{
+                                        marginLeft: 'auto',
+                                        padding: isMobile ? '6px 12px' : '8px 16px',
+                                        fontSize: isMobile ? '0.65rem' : '0.75rem',
+                                        background: 'rgba(199, 32, 113, 0.2)',
+                                        borderColor: '#c72071',
+                                        alignSelf: 'center'
+                                    }}
                                 >
-                                    Profile
-                                </button>
-                                <button
-                                    className={`${classes.tab} ${activeTab === 'accommodation' ? classes.tabActive : ''}`}
-                                    onClick={() => this.handleTabChange('accommodation')}
-                                >
-                                    Accommodation
+                                    Payment
                                 </button>
                             </div>
 
@@ -1612,35 +1670,19 @@ class ProfilePage extends React.Component {
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                                                 <h3 className={classes.panelHeader} style={{ marginBottom: isMobile ? 0 : 10 }}>Profile Details</h3>
                                                 {!isMobile && !isEditing && (
-                                                    <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
-                                                        <button
-                                                            className={classes.actionBtn}
-                                                            onClick={() => window.location.href = '/fee-payment'}
-                                                            style={{ padding: '4px 12px', fontSize: '0.7rem', background: 'rgba(199, 32, 113, 0.2)', borderColor: '#c72071' }}
-                                                        >
-                                                            Payment
-                                                        </button>
-                                                        <button
-                                                            className={classes.actionBtn}
-                                                            onClick={this.handleEdit}
-                                                            style={{ padding: '4px 12px', fontSize: '0.7rem' }}
-                                                        >
-                                                            Edit Profile
-                                                        </button>
-                                                    </div>
+                                                    <button
+                                                        className={classes.actionBtn}
+                                                        onClick={this.handleEdit}
+                                                        style={{ padding: '4px 12px', fontSize: '0.7rem', marginLeft: 'auto' }}
+                                                    >
+                                                        Edit Profile
+                                                    </button>
                                                 )}
                                             </div>
                                         </div>
                                         <div className={isMobile ? `${classes.accordionContent} ${openAccordion === 'profile' ? classes.accordionContentOpen : ''}` : ''}>
                                             {isMobile && !isEditing && (
                                                 <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 15, gap: '10px' }}>
-                                                    <button
-                                                        className={classes.actionBtn}
-                                                        onClick={() => window.location.href = '/fee-payment'}
-                                                        style={{ padding: '6px 14px', fontSize: '0.75rem', background: 'rgba(199, 32, 113, 0.2)', borderColor: '#c72071' }}
-                                                    >
-                                                        Payment
-                                                    </button>
                                                     <button
                                                         className={classes.actionBtn}
                                                         onClick={this.handleEdit}
@@ -1655,6 +1697,14 @@ class ProfilePage extends React.Component {
                                                 {/* Info Side */}
                                                 <div style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: 12 }}>
                                                     <div className={classes.dataGrid}>
+                                                        <div className={classes.dataField}>
+                                                            <label className={classes.fieldLabel}>Full Name</label>
+                                                            {isEditing ? (
+                                                                <input type="text" name="name" value={formData.name} onChange={this.handleFormChange} className={classes.editInput} />
+                                                            ) : (
+                                                                <div className={classes.fieldValue}>{user.name}</div>
+                                                            )}
+                                                        </div>
                                                         <div className={classes.dataField}>
                                                             <label className={classes.fieldLabel}>Phone</label>
                                                             {isEditing ? (
@@ -1779,7 +1829,7 @@ class ProfilePage extends React.Component {
                                                         <div>
                                                             <h3 className={classes.panelHeader} style={{ marginBottom: isMobile ? 0 : 10 }}>Identity Verification</h3>
                                                             <div style={{ fontSize: '0.7rem', color: '#888' }}>Upload College ID (Max 10MB)</div>
-                                                            {user.idCardUploaded && !idToUpload && (
+                                                            {user.idCardUrl && !idToUpload && (
                                                                 <div style={{ color: '#00ff64', fontSize: '0.7rem', marginTop: 2 }}>✓ ID Card Uploaded</div>
                                                             )}
                                                         </div>
@@ -1799,7 +1849,7 @@ class ProfilePage extends React.Component {
                                                                     onClick={this.handleIdCardClick}
                                                                     disabled={isUploadingId}
                                                                 >
-                                                                    {isUploadingId ? '...' : (user.idCardUploaded ? 'Re-upload' : 'Upload')}
+                                                                    {isUploadingId ? '...' : (user.idCardUrl ? 'Re-upload' : 'Upload')}
                                                                 </button>
                                                             )}
                                                         </div>
@@ -1819,7 +1869,7 @@ class ProfilePage extends React.Component {
                                         </div>
                                         <div className={isMobile ? `${classes.accordionContent} ${openAccordion === 'events' ? classes.accordionContentOpen : ''}` : ''}>
                                             {registeredEvents && registeredEvents.length > 0 ? (
-                                                <div className={classes.dataGrid} style={{ paddingTop: isMobile ? 0 : 15, gridTemplateColumns: `repeat(${groupedEventCategories.length}, 1fr)` }}>
+                                                <div className={classes.dataGrid} style={{ paddingTop: isMobile ? 0 : 15, gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))` }}>
                                                     {groupedEventCategories.map(category => {
                                                         const categoryColor = categoryColors[category] || categoryColors['Other'];
                                                         return (
@@ -1835,16 +1885,13 @@ class ProfilePage extends React.Component {
                                                                 }}
                                                             >
                                                                 <label className={classes.fieldLabel} style={{ borderBottom: `1px solid ${categoryColor}40`, paddingBottom: 6, marginBottom: 4, color: categoryColor }}>{category}</label>
-                                                                {groupedEvents[category].map((event, index) => (
-                                                                    <div
-                                                                        key={index}
-                                                                        className={classes.fieldValue}
-                                                                        title={event.eventName || event.name}
-                                                                        style={{ fontSize: '0.8rem', whiteSpace: 'normal' }}
-                                                                    >
-                                                                        {event.eventName || event.name || 'Unnamed Event'}
-                                                                    </div>
-                                                                ))}
+                                                                <ul className={classes.eventList}>
+                                                                    {groupedEvents[category].map(event => (
+                                                                        <li key={event._id || event.eventId}>
+                                                                            {event.eventName || event.workshopName || 'Unnamed Event'}
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
                                                             </div>
                                                         );
                                                     })}
@@ -2104,6 +2151,72 @@ class ProfilePage extends React.Component {
                                 </button>
                             </div>
                         </div>
+                    )}
+
+                    {/* REMINDERS (Fee & ID Card) */}
+                    {!loading && user && this.state.showFeeReminder && activeTab === 'profile' && (
+                        <>
+                            {/* 1. General Fee Reminder (Priority for non-PSG students) */}
+                            {!user.isPSGStudent && !user.generalFeePaid && (
+                                <div className={classes.idViewerOverlay} onClick={() => this.setState({ showFeeReminder: false })}>
+                                    <div className={classes.successPopup} onClick={(e) => e.stopPropagation()} style={{ borderColor: '#fae127', boxShadow: '0 0 30px rgba(250, 225, 39, 0.2)' }}>
+                                        <div className={classes.successIcon} style={{ background: 'rgba(250, 225, 39, 0.2)', color: '#fae127', border: '2px solid #fae127' }}>!</div>
+                                        <div className={classes.successTitle} style={{ color: '#fff' }}>General Fee Pending</div>
+                                        <div className={classes.successMessage} style={{ marginBottom: '20px' }}>
+                                            Please complete the general fee payment to register for events and paper presentations.
+                                        </div>
+                                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                                            <button
+                                                className={classes.successBtn}
+                                                onClick={() => window.location.href = '/fee-payment'}
+                                                style={{ background: 'linear-gradient(135deg, #fae127, #f0ca00)', color: '#000', fontWeight: 'bold' }}
+                                            >
+                                                Pay Now
+                                            </button>
+                                            <button
+                                                className={classes.successBtn}
+                                                onClick={() => this.setState({ showFeeReminder: false })}
+                                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: '#fff' }}
+                                            >
+                                                Later
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* 2. ID Card Upload Reminder (If fee cleared/exempt but no ID uploaded) */}
+                            {((user.isPSGStudent || user.generalFeePaid) && !user.idCardUrl) && (
+                                <div className={classes.idViewerOverlay} onClick={() => this.setState({ showFeeReminder: false })}>
+                                    <div className={classes.successPopup} onClick={(e) => e.stopPropagation()} style={{ borderColor: '#00d4ff', boxShadow: '0 0 30px rgba(0, 212, 255, 0.2)' }}>
+                                        <div className={classes.successIcon} style={{ background: 'rgba(0, 212, 255, 0.2)', color: '#00d4ff', border: '2px solid #00d4ff', fontSize: '1.2rem', fontWeight: 'bold' }}>ID</div>
+                                        <div className={classes.successTitle} style={{ color: '#fff' }}>Upload ID Card</div>
+                                        <div className={classes.successMessage} style={{ marginBottom: '20px' }}>
+                                            Please upload your college ID card to complete your profile verification.
+                                        </div>
+                                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                                            <button
+                                                className={classes.successBtn}
+                                                onClick={() => {
+                                                    this.setState({ showFeeReminder: false });
+                                                    this.handleIdCardClick();
+                                                }}
+                                                style={{ background: 'linear-gradient(135deg, #00d4ff, #0088ff)', color: '#fff', fontWeight: 'bold' }}
+                                            >
+                                                Upload Now
+                                            </button>
+                                            <button
+                                                className={classes.successBtn}
+                                                onClick={() => this.setState({ showFeeReminder: false })}
+                                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: '#fff' }}
+                                            >
+                                                Later
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </SecuenceComponent>

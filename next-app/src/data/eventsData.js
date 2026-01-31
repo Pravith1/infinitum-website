@@ -491,16 +491,31 @@ export const papersData = [
         "theme": "Artificial Intelligence",
         "tagline": "Explore the Future of AI and ML",
         "topic": "Recent advances in deep learning, neural networks, and AI applications in real-world scenarios",
-        "rules": "1. Each team must submit an abstract by the deadline\n2. Maximum team size is 3 members\n3. Presentation duration: 15 minutes\n4. Q&A session: 5 minutes",
+        "themes": [
+            "AI-Based Intelligent Decision Support Systems",
+            "Deep Learning Techniques for Pattern Recognition",
+            "AI in Healthcare Diagnosis and Prediction",
+            "Computer Vision Applications Using Deep Learning",
+            "Generative AI and Large Language Models",
+            "AI for Cybersecurity and Threat Detection",
+            "AI for Internet of Things (AIoT)"
+        ],
+        "rules": "Important: Every member of the team must register for the paper presentation in this website and form a team within the paper portal to submit the abstract.\nEach team can have a maximum of 4 members.\nPapers must be original and not previously published. The paper should strictly follow the IEEE format.\nMaximum 2 pages in IEEE format (including references).\nAbstract paper must be submitted in PDF format before the deadline. Selected papers will be intimated via email.\nPlagiarism should not exceed 15–20% (excluding references).\nEach team will be given 15 minutes to present their ideas, followed by a 5-minute question-and-answer session.\nPresentation must be in PPT / PDF format.\nParticipants must report at least 30 minutes before their scheduled time.\nSubmission of projects (implementation of ideas) will be considered as an added credit. A working prototype or demonstration is not mandatory, but if available, teams are encouraged to showcase it during the presentation to strengthen their work.\nThe judges' decision will be final, and no correspondence will be entertained.",
         "date": {
             "$date": "2026-02-14T09:00:00.000Z"
         },
         "time": "10:00 AM - 12:30 PM",
         "dateAndTime": "Feb 14, 10:00 AM - 12:30 PM",
-        "deadline": {
-            "$date": "2026-02-01T00:00:00.000Z"
+        "abstractDeadline": {
+            "$date": "2026-02-06T23:59:59.000Z"
         },
-        "teamSize": 3,
+        "paperDeadline": {
+            "$date": "2026-02-11T23:59:59.000Z"
+        },
+        "deadline": {
+            "$date": "2026-02-06T00:00:00.000Z"
+        },
+        "teamSize": "1 to 4",
         "hall": "Department Seminar Hall - CSE",
         "closed": false,
         "youtubeUrl": "https://www.youtube.com/watch?v=example",

@@ -217,26 +217,18 @@
     }
 }
 
-/* Mobile - Swiper Carousel */
+/* Mobile - Vertical Stack */
 @media (max-width: 768px) {
     .heading {
         font-size: 1.8rem;
         letter-spacing: 2px;
     }
 
-    .swiperContainer {
-        width: 100%;
-        padding: 20px 0 50px;
-    }
-
-    .swiper {
-        width: 100%;
-        padding-bottom: 40px !important;
-    }
-
-    /* Hide desktop wrapper on mobile */
-    .sponsorsWrapper {
-        display: none;
+    /* Stack cards vertically on mobile */
+    .sponsorsScroll {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
     }
 
     .sponsorItem {
@@ -244,33 +236,23 @@
         flex-direction: column;
         align-items: center;
         gap: 16px;
+        width: 100%;
     }
 
     .sponsorCard {
         width: 100%;
-        max-width: 280px;
-        height: 160px;
+        max-width: 320px;
+        height: 180px;
     }
 
     .sponsorText {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         padding: 15px;
         letter-spacing: 0.05em;
     }
 
     .sponsorType {
         font-size: 0.85rem;
-    }
-
-    /* Swiper pagination dots */
-    .swiper :global(.swiper-pagination-bullet) {
-        background: rgba(199, 32, 113, 0.5);
-        opacity: 0.5;
-    }
-
-    .swiper :global(.swiper-pagination-bullet-active) {
-        background: #c72071;
-        opacity: 1;
     }
 }
 

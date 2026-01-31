@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { authService } from '@/services/authService';
+import { useAuth } from '@/context/AuthContext';
 import '../auth.css';
 
 export default function CallbackComponent() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { googleLogin } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -35,7 +36,7 @@ export default function CallbackComponent() {
                 }
 
                 if (existingUser) {
-                    await authService.loginGoogle({ email, googleId, existing_user: true });
+                    await googleLogin({ email, googleId, existing_user: true });
                     router.push('/portal/profile');
                 } else {
                     localStorage.setItem('registration_email', email);

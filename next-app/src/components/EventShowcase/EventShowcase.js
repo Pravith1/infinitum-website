@@ -473,7 +473,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                     onConfirm: () => closeNotification(),
                     showLoginButton: true
                 });
-            } else if ((error.response?.status === 400 && msg.toLowerCase().includes("general fee"))) {
+            } else if ((error.response?.status === 400 || error.response?.status === 403) && msg.toLowerCase().includes("general fee")) {
                 setNotification({
                     isOpen: true,
                     type: 'error',
@@ -607,7 +607,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                         <span>
                             {currentEvent.isRegistered
                                 ? 'Registered'
-                                : (category === 'papers' ? 'Submit' : 'Register Now')
+                                : 'Register Now'
                             }
                         </span>
                     </button>
@@ -755,17 +755,40 @@ export default function EventShowcase({ sounds, initialEventId }) {
                     )}
                 </div>
 
-                {/* Right Stats Panel with Rounds and Contacts */}
+                {/* Right Stats Panel with Rounds/Themes */}
                 <div className={styles.statsPanel}>
-                    {/* Rounds Details */}
-                    {currentEvent.rounds && currentEvent.rounds.length > 0 && (
+                    {/* Themes - Only for Papers - All in one box */}
+                    {category === 'papers' && currentEvent.themes && currentEvent.themes.length > 0 && (
+                        <div className={styles.roundsContainer} style={{ maxHeight: 'none', overflow: 'visible' }}>
+                            <div className={styles.roundsHeader}>
+                                <div className={styles.statLabel}>Themes</div>
+                                <div className={styles.roundCount}>{currentEvent.themes.length} Themes</div>
+                            </div>
+                            <div className={styles.roundItem} style={{ flexDirection: 'column', gap: '0', padding: '12px 16px' }}>
+                                {currentEvent.themes.map((theme, index) => (
+                                    <div key={index} style={{
+                                        display: 'flex',
+                                        alignItems: 'flex-start',
+                                        gap: '10px',
+                                        padding: '8px 0',
+                                        borderBottom: index < currentEvent.themes.length - 1 ? '1px solid rgba(199, 32, 113, 0.15)' : 'none'
+                                    }}>
+                                        <span className={styles.roundBadge} style={{ width: '24px', height: '24px', fontSize: '0.75rem' }}>{index + 1}</span>
+                                        <span className={styles.roundItemTitle} style={{ fontSize: '0.9rem' }}>{theme}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {/* Rounds Details - For Events and Workshops */}
+                    {category !== 'papers' && currentEvent.rounds && currentEvent.rounds.length > 0 && (
                         <div className={styles.roundsContainer}>
                             <div className={styles.roundsHeader}>
                                 <div className={styles.statLabel}>
-                                    {category === 'workshops' ? 'Agenda' : category === 'papers' ? 'Rules' : 'Rounds'}
+                                    {category === 'workshops' ? 'Agenda' : 'Rounds'}
                                 </div>
                                 <div className={styles.roundCount}>{currentEvent.rounds.length} {
-                                    category === 'workshops' ? 'Items' : category === 'papers' ? 'Rules' : 'Rounds'
+                                    category === 'workshops' ? 'Items' : 'Rounds'
                                 }</div>
                             </div>
                             {currentEvent.rounds.map((round, index) => (
@@ -862,6 +885,33 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                     )}
                                 </div>
 
+                                {/* Deadlines - Only for Papers */}
+                                {category === 'papers' && (currentEvent.abstractDeadline || currentEvent.paperDeadline) && (
+                                    <div className={styles.modalRounds}>
+                                        <h4 className={styles.modalSectionTitle}>Important Deadlines</h4>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '12px' }}>
+                                            {currentEvent.abstractDeadline && (
+                                                <div className={styles.modalRoundItem}>
+                                                    <span className={styles.roundNumber}>1</span>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                                                        <span>Abstract Submission</span>
+                                                        <strong style={{ color: '#c72071' }}>Feb 6, 2026</strong>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {currentEvent.paperDeadline && (
+                                                <div className={styles.modalRoundItem}>
+                                                    <span className={styles.roundNumber}>2</span>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                                                        <span>Final Paper Submission</span>
+                                                        <strong style={{ color: '#c72071' }}>Feb 11, 2026</strong>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Rounds */}
                                 {currentEvent.rounds && currentEvent.rounds.length > 0 && (
                                     <div className={styles.modalRounds}>
@@ -926,7 +976,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                         <span>
                                             {currentEvent.isRegistered
                                                 ? 'Registered'
-                                                : (category === 'papers' ? 'Submit' : 'Register Now')
+                                                : 'Register Now'
                                             }
                                         </span>
                                     </button>

@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button } from '../../components/Button';
 
 export default function GameClient() {
   const router = useRouter();
@@ -144,49 +144,18 @@ export default function GameClient() {
           top: 12,
           right: 12,
           display: 'flex',
-          gap: 8,
+          gap: 12,
           alignItems: 'center',
           pointerEvents: 'auto',
+          zIndex: 10,
         }}
       >
-        <Link
-          href="/"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            height: 36,
-            padding: '0 12px',
-            borderRadius: 10,
-            border: '1px solid rgba(255,255,255,0.18)',
-            background: 'rgba(0,0,0,0.35)',
-            color: 'white',
-            textDecoration: 'none',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            fontSize: 14,
-          }}
-        >
+        <Button onClick={exitGame} aria-label="Back to home">
           Back
-        </Link>
-
-        <button
-          type="button"
-          onClick={requestFullscreen}
-          style={{
-            height: 36,
-            padding: '0 12px',
-            borderRadius: 10,
-            border: '1px solid rgba(255,255,255,0.18)',
-            background: 'rgba(0,0,0,0.35)',
-            color: 'white',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            cursor: 'pointer',
-            fontSize: 14,
-          }}
-        >
-          {isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
-        </button>
+        </Button>
+        <Button onClick={requestFullscreen} aria-label="Toggle fullscreen">
+          {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+        </Button>
       </div>
 
       {!loaded && showHelp ? (

@@ -48,14 +48,14 @@ export const eventsData = [
         "eventId": "EVNT02",
         "eventName": "neXus",
         "category": "Technical",
-        "oneLineDescription": "Marvel-themed beginner-friendly cybersecurity CTF with mission-based challenges",
-        "description": "neXus is a Marvel-themed Capture The Flag (CTF) event consisting of six mission-based cybersecurity challenges designed to build foundational technical skills, teamwork, and confidence through hands-on learning.",
+        "oneLineDescription": "S.H.I.E.L.D. Recover six Infinity Stone Access Keys from a compromised data archive",
+        "description": "neXus is a high-intensity, 2-hour cybersecurity infiltration designed to evaluate your fundamental enumeration and observation skills—the \"eyes-on-glass\" expertise of a S.H.I.E.L.D. Level 7 operative.\n\nThis isn't a practice run. You are being dropped into a Story-Based Exploration Model as a digital forensic specialist. Your objective is to navigate a simulated \"offline\" web environment and recover high-priority assets before the connection is severed for good.\n\nThe Objective: The Infinity Archive\nThe challenge centers on a massive, encrypted S.H.I.E.L.D. Data Archive left behind after a Hydra infiltration. Hidden within its layers are six decrypted Access Keys, each coded to represent a specific Infinity Stone: Space (Blue), Mind (Yellow), Reality (Red), Power (Purple), Time (Green), and Soul (Orange).\n\nMission Parameters: The \"Crime Scene\"\nTreat the archive like a digital crime scene left behind by Hydra operatives. To recover the Stones and prevent them from falling into enemy hands, you must:\n\nInspect Source Code: Hunt for hidden directives left in the comments by Stark Industries engineers or obscured by Hydra agents using obfuscation techniques.\n\nAnalyze Metadata: Sift through the digital \"DNA\" of files to find timestamps, authorship footprints, and hidden data embedded by Nick Fury's response team.\n\nManipulate Frontend Scripts: Bypass Jarvis's legacy security protocols to reveal hidden directories and restricted sectors that contain classified intel.\n\nTraverse Broken Links: Navigate the ruins of the internal S.H.I.E.L.D. network to find dead drops, orphaned files, and emergency backup systems established during the Avengers Initiative.\n\nYour mission, should you choose to accept it: Extract all six Infinity Stone Access Keys before the archive self-destructs. The fate of the digital universe rests in your hands, Agent.",
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cb" },
         "rounds": [
             {
                 "title": "Infinity Stone Missions",
-                "tagline": "Capture the flags and restore balance to the system.",
-                "description": "Six beginner-friendly cybersecurity challenges covering cryptography, DNS lookup, log analysis, steganography, timestamp conversion, and web inspection. Participants capture flags and document solutions with screenshots.",
+                "tagline": "Recover the Stones. Prevent Thanos. Save the universe.",
+                "description": "Six high-stakes S.H.I.E.L.D. reconnaissance missions designed to test your digital forensic capabilities. Each Infinity Stone Access Key is protected by a unique security layer: decrypt Hydra's encrypted communications , trace compromised network routes, analyze breach logs from the Helicarrier incident , extract hidden intel from Stark's encrypted images, decode temporal anomalies in system timestamps, and infiltrate legacy web archives for classified data. Agents must capture each flag and document their infiltration methods with photographic evidence for S.H.I.E.L.D. archives.",
                 "_id": { "$oid": "694ce9d2297836cde7682489" }
             }
         ],
@@ -91,7 +91,7 @@ export const eventsData = [
         "rounds": [
             {
                 "title": "Code Charades",
-                "tagline": "Act fast, decode words, earn your advantage.",
+                "tagline": "Act fast, decode signals, earn your advantage.",
                 "description": "Teams must enact and guess technical terms using only gestures and non-verbal cues. Speed is the key to victory, as points are awarded based on how quickly the team can identify the correct terms to climb the leaderboard.",
                 "_id": { "$oid": "694cec9c297836cde7682491" }
             },
@@ -249,7 +249,7 @@ export const eventsData = [
             }
         ],
         "hall": "Computer Center",
-        "eventRules": "Team participation only. Follow coding standards. Organisers' decisions are final.",
+        "eventRules": "Individual participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "timing": "Feb 14, 9:00 AM – 3:00 PM",
@@ -257,11 +257,59 @@ export const eventsData = [
         "scheduleEnd": "15:00",
         "scheduleDay": "day2",
         "prizePool": "₹8,000",
-        "teamSize": 2,
+        "teamSize": 1,
         "image": "/images/events/codemania_website.png"
+    },
+
+    {
+        "_id": { "$oid": "695a3d878baa56af3270688b" },
+        "eventId": "EVNT07",
+        "eventName": "Thooral Hackathon",
+        "category": "Technical",
+        "oneLineDescription": "From idea to impact—design, document, build, and present innovative solutions.",
+        "description": "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle.",
+        "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cd" },
+        "rounds": [
+            {
+                "title": "Ideation & Pitching",
+                "tagline": "Strong ideas set the foundation.",
+                "description": "Teams analyze the problem statement and present innovative solutions through a structured PPT pitch.",
+                "_id": { "$oid": "695a3d878baa56af3270688c" }
+            },
+            {
+                "title": "Documentation & System Design",
+                "tagline": "Plan it well before you build it.",
+                "description": "Participants prepare essential software artifacts including SRS documents and UML diagrams.",
+                "_id": { "$oid": "695a3d878baa56af3270688d" }
+            },
+            {
+                "title": "Implementation Phase",
+                "tagline": "Transform ideas into working systems.",
+                "description": "Teams develop working prototypes or applications.",
+                "_id": { "$oid": "695a3d878baa56af3270688e" }
+            },
+            {
+                "title": "Final Presentation",
+                "tagline": "Present impact, innovation, and execution.",
+                "description": "Teams demonstrate their solution and present before judges.",
+                "_id": { "$oid": "695a3d878baa56af3270688f" }
+            }
+        ],
+        "contacts": [
+            { "name": "Hackathon Organizer", "mobile": "9876543212", "_id": { "$oid": "695a3d878baa56af32706890" } }
+        ],
+        "hall": "Computer Center",
+        "eventRules": "Follow all guidelines. Plagiarism leads to disqualification. Organisers' decisions are final.",
+        "date": { "$date": "2026-02-01T09:00:00.000Z" },
+        "closed": false,
+        "dateAndTime": "Feb 13, 10:00 AM – 4:30 PM | Feb 14, 9:00 AM – 3:00 PM",
+        "scheduleStart": "10:00",
+        "scheduleEnd": "16:30",
+        "scheduleDay": "day1",
+        "prizePool": "₹25,000",
+        "teamSize": 4,
+        "image": "/images/events/paper_presentation.png"
     }
-
-
 ]
 
 
@@ -274,7 +322,7 @@ export const workshopsData = [
         "club_id": {
             "$oid": "69495a6a719d1b3bd5a9e7cd"
         },
-        "workshopName": "AI Infrastructure: From Big Picture to Everyday Reality",
+        "workshopName": "AI Infrastructure\u2060: From Big Picture to Everyday Reality",
         "date": {
             "$date": "2026-02-13T09:00:00.000Z"
         },
@@ -443,31 +491,16 @@ export const papersData = [
         "theme": "Artificial Intelligence",
         "tagline": "Explore the Future of AI and ML",
         "topic": "Recent advances in deep learning, neural networks, and AI applications in real-world scenarios",
-        "themes": [
-            "AI-Based Intelligent Decision Support Systems",
-            "Deep Learning Techniques for Pattern Recognition",
-            "AI in Healthcare Diagnosis and Prediction",
-            "Computer Vision Applications Using Deep Learning",
-            "Generative AI and Large Language Models",
-            "AI for Cybersecurity and Threat Detection",
-            "AI for Internet of Things (AIoT)"
-        ],
-        "rules": "Each team can have a maximum of 4 members.\nPapers must be original and not previously published. The paper should strictly follow the IEEE format.\nMaximum 2 pages in IEEE format (including references).\nAbstract paper must be submitted in PDF format before the deadline. Selected papers will be intimated via email.\nPlagiarism should not exceed 15–20% (excluding references).\nEach team will be given 15 minutes to present their ideas, followed by a 5-minute question-and-answer session.\nPresentation must be in PPT / PDF format.\nParticipants must report at least 30 minutes before their scheduled time.\nSubmission of projects (implementation of ideas) will be considered as an added credit. A working prototype or demonstration is not mandatory, but if available, teams are encouraged to showcase it during the presentation to strengthen their work.\nThe judges' decision will be final, and no correspondence will be entertained.",
+        "rules": "1. Each team must submit an abstract by the deadline\n2. Maximum team size is 3 members\n3. Presentation duration: 15 minutes\n4. Q&A session: 5 minutes",
         "date": {
             "$date": "2026-02-14T09:00:00.000Z"
         },
         "time": "10:00 AM - 12:30 PM",
         "dateAndTime": "Feb 14, 10:00 AM - 12:30 PM",
-        "abstractDeadline": {
-            "$date": "2026-02-06T23:59:59.000Z"
-        },
-        "paperDeadline": {
-            "$date": "2026-02-11T23:59:59.000Z"
-        },
         "deadline": {
-            "$date": "2026-02-06T00:00:00.000Z"
+            "$date": "2026-02-01T00:00:00.000Z"
         },
-        "teamSize": "1 to 4",
+        "teamSize": 3,
         "hall": "Department Seminar Hall - CSE",
         "closed": false,
         "youtubeUrl": "https://www.youtube.com/watch?v=example",

@@ -48,6 +48,7 @@ import { ShutterProvider } from "@/context/ShutterContext";
 import { PopupProvider } from "@/context/PopupContext";
 import CircularMenu from "@/components/CircularMenu/CircularMenu";
 import SoundMuteButton from "@/components/SoundMuteButton/SoundMuteButton";
+import GrievanceButton from "@/components/GrievanceButton/GrievanceButton";
 import CircularMenuWrapper from "@/components/CircularMenu/CircularMenuWrapper";
 import { PreRegistrationProvider } from "@/context/PreRegistrationContext";
 import PreRegistrationModal from "@/components/PreRegistrationModal";
@@ -75,6 +76,7 @@ export default function RootLayout({ children }) {
                     </ClientTemplate>
                     <CircularMenuWrapper />
                     <SoundMuteButton />
+                    <GrievanceButton />
                     <PreRegistrationModal />
                   </ShutterProvider>
                 </PreRegistrationProvider>

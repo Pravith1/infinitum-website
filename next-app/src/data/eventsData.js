@@ -128,6 +128,11 @@ export const eventsData = [
         "category": "Technical",
         "oneLineDescription": "Code like Tourist. Hack like a Grandmaster.",
         "description": "ForceCoders is a high-intensity competitive coding event focused on core computer science fundamentals such as data structures, algorithms, and system logic. The event follows a progressive two-round format that tests implementation speed, algorithmic depth, debugging ability, and adversarial thinking.",
+        "importantNotes": [
+            "There are no preliminary rounds",
+            "Participants must have a Codeforces account (create one if you don't have one)",
+            "The difficulty of the contest will be around a typical Div 4 Codeforces contest"
+        ],
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cf" },
         "importantNotes": [
             "There are no preliminary rounds",
@@ -262,6 +267,44 @@ export const eventsData = [
         "prizePool": "₹8,000",
         "teamSize": 2,
         "image": "/images/events/codemania_website.png"
+    },
+
+    {
+        "_id": { "$oid": "695a3d878baa56af3270688b" },
+        "eventId": "EVNT07",
+        "eventName": "Thooral Hackathon",
+        "category": "Technical",
+        "oneLineDescription": "From idea to impact—design, document, build, and present innovative solutions.",
+        "description": "Thooral Hackathon is a 2-day technical event designed to simulate a real-world software engineering lifecycle. Participants ideate solutions, create structured documentation, develop working prototypes, and present their solutions across domains such as Full Stack Development, Machine Learning, and Blockchain. The event emphasizes innovation, teamwork, and industry-relevant development practices.\n\nImportant Notes:\n• Every participant must register individually—teams can be formed in-person on Day 1\n• Problem statements will be given on Day 1—no themes, just direct problem statements\n• There are no preliminary rounds\n• Lunch will not be provided\n• Flexible participation: Students can work on other events during the hackathon and may attend only Day 1 review and Day 2 judging if preferred",
+        "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cd" },
+        "rounds": [
+            {
+                "title": "Day 1 - Problem Statement & Review",
+                "tagline": "Get the problem, start building, get feedback.",
+                "description": "Problem statements (not themes) are given to all participants. Students work on their solutions throughout the day. The day concludes with a feedback review session where teams receive guidance and insights on their progress.",
+                "_id": { "$oid": "695a3d878baa56af3270688c" }
+            },
+            {
+                "title": "Day 2 - Completion & Judging",
+                "tagline": "Finish strong and present to judges.",
+                "description": "Teams complete their projects and present their final solutions to the judges.",
+                "_id": { "$oid": "695a3d878baa56af3270688d" }
+            }
+        ],
+        "contacts": [
+            { "name": "Hackathon Organizer", "mobile": "9876543212", "_id": { "$oid": "695a3d878baa56af32706890" } }
+        ],
+        "hall": "Computer Center",
+        "eventRules": "Follow all guidelines. Plagiarism leads to disqualification. Organisers' decisions are final.",
+        "date": { "$date": "2026-02-01T09:00:00.000Z" },
+        "closed": false,
+        "dateAndTime": "Feb 13, 10:00 AM – 4:30 PM | Feb 14, 9:00 AM – 3:00 PM",
+        "scheduleStart": "10:00",
+        "scheduleEnd": "16:30",
+        "scheduleDay": "day1",
+        "prizePool": "₹25,000",
+        "teamSize": 4,
+        "image": "/images/events/paper_presentation.png"
     }
 
 

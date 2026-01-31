@@ -101,6 +101,12 @@ const SPEAKERS_DATA = [
         type: "Speakers"
     },
     {
+        image: "/images/speakers/mahesh.jpg",
+        name: "Magesh S",
+        designation: "Scrum Lead , Visteon India",
+        type: "Speakers"
+    },
+    {
         image: "/images/speakers/radhakrishnan.jpg",
         name: "Radhakrishnan Ramasamy",
         designation: "Senior Engineering Manager, Walmart",

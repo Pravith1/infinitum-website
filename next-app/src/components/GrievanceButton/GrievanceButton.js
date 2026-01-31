@@ -1,64 +1,84 @@
 'use client';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@/tools/withStyles';
 
-const styles = theme => ({
-    root: {
-        position: 'fixed',
-        bottom: 20,
-        left: 20,
-        zIndex: 1000,
-        padding: '8px 12px',
-        backgroundColor: 'transparent',
-        clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)',
-        border: `2px solid ${theme.color.secondary.main}`,
-        color: theme.color.text.main,
-        fontSize: '0.45rem',
-        lineHeight: 1.2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        textDecoration: 'none',
-        fontFamily: theme.typography.primary,
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-        transition: 'all 0.3s ease',
-        backdropFilter: 'blur(5px)',
-        minWidth: '100px',
-        '&:hover': {
-            backgroundColor: theme.color.secondary.main,
-            boxShadow: `0 0 10px ${theme.color.secondary.main}`,
-            color: '#fff'
-        },
-        '@media (max-width: 480px)': {
-            bottom: 15,
-            left: 15,
-            padding: '6px 10px',
-            fontSize: '0.55rem',
-            minWidth: '80px'
+import React, { useState, useEffect } from 'react';
+import './GrievanceButton.css';
+
+// Replace this with your actual Google Form URL
+const GRIEVANCE_FORM_URL = 'https://vercel-umami-roan.vercel.app/q/tpMVCQWGP';
+
+export default function GrievanceButton() {
+    const [showHint, setShowHint] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        
+        // Check if user has seen the grievance hint before
+        const hasSeenHint = localStorage.getItem('grievance_hint_seen');
+        
+        if (!hasSeenHint) {
+            // Show hint after a short delay to not overwhelm on page load
+            const showTimer = setTimeout(() => {
+                setShowHint(true);
+            }, 2000);
+            
+            // Auto-hide hint after 6 seconds (2s delay + 6s visible = 8s total)
+            const hideTimer = setTimeout(() => {
+                setShowHint(false);
+                localStorage.setItem('grievance_hint_seen', 'true');
+            }, 8000);
+            
+            return () => {
+                clearTimeout(showTimer);
+                clearTimeout(hideTimer);
+            };
         }
-    }
-});
+    }, []);
 
-const GrievanceButton = ({ classes }) => {
+    const handleClick = () => {
+        // Dismiss hint when button is clicked
+        if (showHint) {
+            setShowHint(false);
+            localStorage.setItem('grievance_hint_seen', 'true');
+        }
+        window.open(GRIEVANCE_FORM_URL, '_blank', 'noopener,noreferrer');
+    };
+
+    const dismissHint = () => {
+        setShowHint(false);
+        localStorage.setItem('grievance_hint_seen', 'true');
+    };
+
     return (
-        <a
-            href={process.env.NEXT_PUBLIC_GRIEVANCE_FORM_URL || "https://forms.gle/placeholder"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.root}
-        >
-            <span>Issues /</span>
-            <span>Grievance</span>
-        </a>
+        <>
+            {/* The button */}
+            <div className="grievance-container">
+                <button
+                    className={`grievance-button ${showHint ? 'pulsing' : ''}`}
+                    onClick={handleClick}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    aria-label="Submit a grievance"
+                >
+                    <i className="ri-feedback-line"></i>
+                </button>
+
+                {/* Hover tooltip */}
+                {isHovered && !showHint && (
+                    <div className="grievance-tooltip">
+                        <span>Report a Grievance</span>
+                    </div>
+                )}
+            </div>
+
+            {/* First-time user hint - rendered as fixed element outside container */}
+            {isMounted && showHint && (
+                <div className="grievance-hint" onClick={dismissHint}>
+                    <span>Have a concern? Report it here</span>
+                    <div className="grievance-hint-arrow"></div>
+                </div>
+            )}
+        </>
     );
-};
-
-GrievanceButton.propTypes = {
-    classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(GrievanceButton);
+}

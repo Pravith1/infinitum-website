@@ -67,6 +67,7 @@ jobs:
             NEXT_PUBLIC_NODE_ENV=${{ secrets.NEXT_PUBLIC_NODE_ENV }}
             NEXT_PUBLIC_PRE_REGISTRATION_ENABLED=${{ secrets.NEXT_PUBLIC_PRE_REGISTRATION_ENABLED }}
             NEXT_PUBLIC_PAYMENT_URL=${{ secrets.NEXT_PUBLIC_PAYMENT_URL }}
+            NEXT_PUBLIC_GRIEVANCE_FORM_URL=${{ secrets.NEXT_PUBLIC_GRIEVANCE_FORM_URL }}
 
       - name: Image digest
         run: echo ${{ steps.meta.outputs.digest }}

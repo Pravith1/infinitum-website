@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import './GrievanceButton.css';
 
 // Replace this with your actual Google Form URL
-const GRIEVANCE_FORM_URL = 'https://forms.google.com/your-form-url';
+const GRIEVANCE_FORM_URL = 'https://vercel-umami-roan.vercel.app/q/tpMVCQWGP';
 
 export default function GrievanceButton() {
     const [showHint, setShowHint] = useState(false);

@@ -48,14 +48,14 @@ export const eventsData = [
         "eventId": "EVNT02",
         "eventName": "neXus",
         "category": "Technical",
-        "oneLineDescription": "S.H.I.E.L.D. Level 7 cybersecurity infiltration: Recover six Infinity Stone Access Keys from a compromised data archive",
+        "oneLineDescription": "S.H.I.E.L.D. Recover six Infinity Stone Access Keys from a compromised data archive",
         "description": "neXus is a high-intensity, 2-hour cybersecurity infiltration designed to evaluate your fundamental enumeration and observation skills—the \"eyes-on-glass\" expertise of a S.H.I.E.L.D. Level 7 operative.\n\nThis isn't a practice run. You are being dropped into a Story-Based Exploration Model as a digital forensic specialist. Your objective is to navigate a simulated \"offline\" web environment and recover high-priority assets before the connection is severed for good.\n\nThe Objective: The Infinity Archive\nThe challenge centers on a massive, encrypted S.H.I.E.L.D. Data Archive left behind after a Hydra infiltration. Hidden within its layers are six decrypted Access Keys, each coded to represent a specific Infinity Stone: Space (Blue), Mind (Yellow), Reality (Red), Power (Purple), Time (Green), and Soul (Orange).\n\nMission Parameters: The \"Crime Scene\"\nTreat the archive like a digital crime scene left behind by Hydra operatives. To recover the Stones and prevent them from falling into enemy hands, you must:\n\nInspect Source Code: Hunt for hidden directives left in the comments by Stark Industries engineers or obscured by Hydra agents using obfuscation techniques.\n\nAnalyze Metadata: Sift through the digital \"DNA\" of files to find timestamps, authorship footprints, and hidden data embedded by Nick Fury's response team.\n\nManipulate Frontend Scripts: Bypass Jarvis's legacy security protocols to reveal hidden directories and restricted sectors that contain classified intel.\n\nTraverse Broken Links: Navigate the ruins of the internal S.H.I.E.L.D. network to find dead drops, orphaned files, and emergency backup systems established during the Avengers Initiative.\n\nYour mission, should you choose to accept it: Extract all six Infinity Stone Access Keys before the archive self-destructs. The fate of the digital universe rests in your hands, Agent.",
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cb" },
         "rounds": [
             {
                 "title": "Infinity Stone Missions",
-                "tagline": "Capture the flags and restore balance to the system.",
-                "description": "Six beginner-friendly cybersecurity challenges covering cryptography, DNS lookup, log analysis, steganography, timestamp conversion, and web inspection. Participants capture flags and document solutions with screenshots.",
+                "tagline": "Recover the Stones. Prevent Thanos. Save the universe.",
+                "description": "Six high-stakes S.H.I.E.L.D. reconnaissance missions designed to test your digital forensic capabilities. Each Infinity Stone Access Key is protected by a unique security layer: decrypt Hydra's encrypted communications , trace compromised network routes, analyze breach logs from the Helicarrier incident , extract hidden intel from Stark's encrypted images, decode temporal anomalies in system timestamps, and infiltrate legacy web archives for classified data. Agents must capture each flag and document their infiltration methods with photographic evidence for S.H.I.E.L.D. archives.",
                 "_id": { "$oid": "694ce9d2297836cde7682489" }
             }
         ],
@@ -491,31 +491,16 @@ export const papersData = [
         "theme": "Artificial Intelligence",
         "tagline": "Explore the Future of AI and ML",
         "topic": "Recent advances in deep learning, neural networks, and AI applications in real-world scenarios",
-        "themes": [
-            "AI-Based Intelligent Decision Support Systems",
-            "Deep Learning Techniques for Pattern Recognition",
-            "AI in Healthcare Diagnosis and Prediction",
-            "Computer Vision Applications Using Deep Learning",
-            "Generative AI and Large Language Models",
-            "AI for Cybersecurity and Threat Detection",
-            "AI for Internet of Things (AIoT)"
-        ],
-        "rules": "Important: Every member of the team must register for the paper presentation in this website and form a team within the paper portal to submit the abstract.\nEach team can have a maximum of 4 members.\nPapers must be original and not previously published. The paper should strictly follow the IEEE format.\nMaximum 2 pages in IEEE format (including references).\nAbstract paper must be submitted in PDF format before the deadline. Selected papers will be intimated via email.\nPlagiarism should not exceed 15–20% (excluding references).\nEach team will be given 15 minutes to present their ideas, followed by a 5-minute question-and-answer session.\nPresentation must be in PPT / PDF format.\nParticipants must report at least 30 minutes before their scheduled time.\nSubmission of projects (implementation of ideas) will be considered as an added credit. A working prototype or demonstration is not mandatory, but if available, teams are encouraged to showcase it during the presentation to strengthen their work.\nThe judges' decision will be final, and no correspondence will be entertained.",
+        "rules": "1. Each team must submit an abstract by the deadline\n2. Maximum team size is 3 members\n3. Presentation duration: 15 minutes\n4. Q&A session: 5 minutes",
         "date": {
             "$date": "2026-02-14T09:00:00.000Z"
         },
         "time": "10:00 AM - 12:30 PM",
         "dateAndTime": "Feb 14, 10:00 AM - 12:30 PM",
-        "abstractDeadline": {
-            "$date": "2026-02-06T23:59:59.000Z"
-        },
-        "paperDeadline": {
-            "$date": "2026-02-11T23:59:59.000Z"
-        },
         "deadline": {
-            "$date": "2026-02-06T00:00:00.000Z"
+            "$date": "2026-02-01T00:00:00.000Z"
         },
-        "teamSize": "1 to 4",
+        "teamSize": 3,
         "hall": "Department Seminar Hall - CSE",
         "closed": false,
         "youtubeUrl": "https://www.youtube.com/watch?v=example",

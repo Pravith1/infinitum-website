@@ -1,7 +1,11 @@
-.grievance-button {
+.grievance-container {
     position: fixed;
     bottom: 20px;
     left: 20px;
+    z-index: 9999;
+}
+
+.grievance-button {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -13,7 +17,6 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    z-index: 9999;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
@@ -34,16 +37,138 @@
     font-size: 20px;
 }
 
+/* Pulsing animation for first-time users */
+.grievance-button.pulsing {
+    animation: grievancePulse 2s ease-in-out infinite;
+}
+
+@keyframes grievancePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(199, 32, 113, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 12px rgba(199, 32, 113, 0);
+    }
+}
+
+/* Hover tooltip */
+.grievance-tooltip {
+    position: absolute;
+    left: 50px;
+    bottom: 50%;
+    transform: translateY(50%);
+    background: linear-gradient(135deg, rgba(30, 30, 35, 0.95), rgba(20, 20, 25, 0.98));
+    border: 1px solid rgba(199, 32, 113, 0.6);
+    border-radius: 6px;
+    padding: 8px 12px;
+    white-space: nowrap;
+    animation: tooltipFadeIn 0.2s ease-out;
+}
+
+.grievance-tooltip span {
+    color: #eeeeee;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50%) translateX(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(50%) translateX(0);
+    }
+}
+
+/* First-time user hint - fixed position outside container */
+.grievance-hint {
+    position: fixed;
+    left: 70px;
+    bottom: 18px;
+    background: linear-gradient(135deg, rgba(30, 30, 35, 0.98), rgba(20, 20, 25, 1));
+    border: 2px solid #c72071;
+    border-radius: 8px;
+    padding: 10px 16px;
+    white-space: nowrap;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 4px 20px rgba(199, 32, 113, 0.4);
+    animation: hintFadeIn 0.5s ease-out, hintBounce 2s ease-in-out infinite 0.5s;
+}
+
+.grievance-hint span {
+    color: #eeeeee;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.grievance-hint-arrow {
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #c72071;
+}
+
+@keyframes hintFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes hintBounce {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+}
+
 /* Smaller size on mobile */
 @media (max-width: 768px) {
-    .grievance-button {
-        width: 36px;
-        height: 36px;
+    .grievance-container {
         bottom: 15px;
         left: 15px;
     }
 
+    .grievance-button {
+        width: 36px;
+        height: 36px;
+    }
+
     .grievance-button i {
         font-size: 18px;
+    }
+
+    .grievance-hint {
+        left: 60px;
+        bottom: 13px;
+        padding: 8px 12px;
+    }
+
+    .grievance-hint span {
+        font-size: 11px;
+    }
+
+    .grievance-tooltip {
+        left: 45px;
+    }
+
+    .grievance-tooltip span {
+        font-size: 11px;
     }
 }

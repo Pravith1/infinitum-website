@@ -7,6 +7,7 @@ import { Secuence } from '@/components/Secuence';
 import { Text } from '@/components/Text';
 import { authService } from '@/services/authService';
 import { paymentService } from '@/services/paymentService';
+import GrievanceButton from '@/components/GrievanceButton';
 
 const styles = theme => ({
     root: {
@@ -1291,6 +1292,7 @@ class FeePaymentPage extends React.Component {
                         </div>
                     </div>
                 )}
+                <GrievanceButton />
             </Main>
         );
     }

@@ -17,6 +17,7 @@ import Speakers from '@/components/Speakers';
 import Collaboration from '@/components/Collaboration';
 import { HomeFooter } from '@/components/HomeFooter';
 import FAQ from '@/components/FAQ';
+import GrievanceButton from '@/components/GrievanceButton';
 
 // Original had: import { Secuence } from '../components/Secuence';
 // Note: I need to ensure import paths are correct. @/ is src/
@@ -267,6 +268,7 @@ class Component extends React.Component {
             <Sponsors />
             <FAQ />
             <HomeFooter />
+            <GrievanceButton />
           </div>
         </SecuenceComponent>
       </>

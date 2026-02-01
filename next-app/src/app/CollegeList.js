@@ -611,6 +611,7 @@ const colleges = [
   `Birla Institute of Technology, Ranchi (BIT Ranchi)`,
   `Birla Institute of Technology, South Extension (BIT,SE)`,
   `PSGR Krishnammal College for Women, Coimbatore`,
+  `Kalasalingam academy of research and education, Srivilliputhur`,
 ];
 
 colleges.sort();

@@ -9,8 +9,8 @@ const SPONSORS_DATA = [
     { logo: "/images/sponsors/psiog_logo.png", type: "Title Sponsor", link: "https://psiog.com/" },
     { text: "BE CSE 2002 Batch Alumnus", type: "Event Sponsor" },
     { logo: "/images/sponsors/dossier.nexus.png", type: "Tech Partner", link: "https://www.dossier.nexus/" },
-    { logo: "/images/sponsors/revline.png", type: "Other Sponsor", link: "https://rev-line-gamma.vercel.app/" },
-    { logo: "/images/sponsors/Eventopia-Logo-07.png", type: "Media Partner" }
+    { logo: "/images/sponsors/Eventopia-Logo-07.png", type: "Media Partner" },
+    { logo: "/images/sponsors/revline.png", type: "Other Sponsor", link: "https://rev-line-gamma.vercel.app/" }
 ];
 
 export default function Sponsors() {

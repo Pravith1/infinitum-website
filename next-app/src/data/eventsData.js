@@ -42,7 +42,7 @@ export const eventsData = [
         "image": "/images/events/QuestX_website.png"
     },
 
-     {
+    {
         "_id": { "$oid": "694ce9d2297836cde7682488" },
         "eventId": "EVNT02",
         "eventName": "neXus",
@@ -83,20 +83,20 @@ export const eventsData = [
         "eventId": "EVNT03",
         "eventName": "Git Wars",
         "category": "Non Technical",
-        "oneLineDescription": "Clone. Commit. Conquer",
+        "oneLineDescription": "Act Charades, Identify Logos, Solve Puzzles, Ace Rapid Fire & Choose Mystery Cup!",
         "description": "Git Wars is a two-round interactive event that blends creativity, communication, strategy, and basic technical thinking. With a Star Wars theme, participants compete as teams in progressive rounds where early performance directly impacts later advantages, fostering teamwork, improvisation, and decision-making in a fun and competitive environment.",
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cf" },
         "rounds": [
             {
                 "title": "Code Charades",
-                "tagline": "Act fast, decode words, earn your advantage.",
-                "description": "Teams must enact and guess technical terms using only gestures and non-verbal cues. Speed is the key to victory, as points are awarded based on how quickly the team can identify the correct terms to climb the leaderboard.",
+                "tagline": "Act fast, find words, earn your advantage.",
+                "description": "A team member needs to act out technical terms using only gestures and non-verbal cues. Speed is the key to victory, as points are awarded based on how quickly the team can identify the correct terms to climb the leaderboard.",
                 "_id": { "$oid": "694cec9c297836cde7682491" }
             },
             {
                 "title": "Flash Memory",
-                "tagline": "Choose wisely or crash into uncertainty.",
-                "description": "Teams answer questions to earn the right to choose a mystery cup containing hidden points. The twist is that the cup values flash on the screen for mere seconds. This round combines quick thinking with sharp observation to maximize the final score.",
+                "tagline": "Think Fast. Look Sharp. Choose Wisely.",
+                "description": "This round challenges teams across three levels: Identify the Correct Logo, Rebus Puzzle (Decode visual clues), and Rapid Fire (Answer a bunch of questions within a time limit). Performance in these levels earns teams the right to choose a 'Mystery Cup' containing hidden points. The twist? Cup values flash on screen for mere seconds, requiring sharp observation to maximize the final score.",
                 "_id": { "$oid": "694cec9c297836cde7682492" }
             }
         ],

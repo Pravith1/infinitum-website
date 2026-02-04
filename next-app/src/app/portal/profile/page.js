@@ -2016,12 +2016,13 @@ class ProfilePage extends React.Component {
                                                         >
                                                             <option value="">Select gender</option>
                                                             <option value="male">Male</option>
-                                                            <option value="female" disabled>Female (Unavailable)</option>
+                                                            {/* <option value="female" disabled>Female (Unavailable)</option> */}
+                                                            <option value="female">Female</option>
                                                             <option value="other">Other</option>
                                                         </select>
-                                                        <div style={{ color: '#ffcc00', fontSize: '0.75rem', marginTop: '5px', lineHeight: '1.2' }}>
+                                                        {/* <div style={{ color: '#ffcc00', fontSize: '0.75rem', marginTop: '5px', lineHeight: '1.2' }}>
                                                             Accommodation for women are no longer available, for any queries contact the accommodation team
-                                                        </div>
+                                                        </div> */}
                                                     </div>
 
                                                 </div>

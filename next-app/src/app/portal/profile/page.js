@@ -1619,12 +1619,12 @@ class ProfilePage extends React.Component {
                                     >
                                         Profile
                                     </button>
-                                    <button
+                                    {/* <button
                                         className={`${classes.tab} ${activeTab === 'accommodation' ? classes.tabActive : ''}`}
                                         onClick={() => this.handleTabChange('accommodation')}
                                     >
                                         Accommodation
-                                    </button>
+                                    </button> */}
                                 </div>
                                 {/* Payment Button (Both Mobile & Desktop) */}
                                 <button
@@ -1911,10 +1911,10 @@ class ProfilePage extends React.Component {
                                 </>
                             )}
 
-                            {/* Accommodation Tab Content */}
+                            {/* Accommodation Tab Content - COMMENTED OUT
                             {activeTab === 'accommodation' && (
                                 <>
-                                    {/* Instructions Panel */}
+                                    {/* Instructions Panel * /}
                                     <div className={classes.accommodationPanel}>
                                         <h3 className={classes.panelHeader}>Accommodation Guidelines</h3>
                                         <ul className={classes.instructionsList}>
@@ -1924,7 +1924,7 @@ class ProfilePage extends React.Component {
                                         </ul>
                                     </div>
 
-                                    {/* Registration Panel */}
+                                    {/* Registration Panel * /}
                                     <div className={classes.accommodationPanel}>
                                         <h3 className={classes.panelHeader}>
                                             {accommodationRegistered ? 'Registration Details' : 'Register for Accommodation'}
@@ -1935,7 +1935,7 @@ class ProfilePage extends React.Component {
                                                 Loading accommodation status...
                                             </div>
                                         ) : accommodationRegistered ? (
-                                            /* Registered View */
+                                            /* Registered View * /
                                             <div>
                                                 <div className={classes.registeredBadge}>
                                                     <span>✓</span> Registered for Accommodation
@@ -1973,7 +1973,7 @@ class ProfilePage extends React.Component {
                                                 </div>
                                             </div>
                                         ) : (
-                                            /* Registration Form */
+                                            /* Registration Form * /
                                             <div className={classes.accommodationForm}>
                                                 {accommodationError && (
                                                     <div style={{ padding: '10px', background: 'rgba(255,0,0,0.1)', border: '1px solid #ff4444', borderRadius: 8, color: '#ff6666', fontSize: '0.85rem' }}>
@@ -2049,6 +2049,7 @@ class ProfilePage extends React.Component {
                                     </div>
                                 </>
                             )}
+                            */}
 
                             {/* Mobile-only Logout Button */}
                             <div className={classes.mobileLogoutContainer}>

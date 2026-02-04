@@ -25,7 +25,7 @@ const colleges = [
   `Angel College of Engineering and Technology, P.K.Palayam, Ugayanur Village, Tirupur District 641 665`,
   `Anjalai Ammal-Mahalingam Engineering College, Kovilvenni, Thiruvarur District 614403`,
   `Anna University Regional Campus - Coimbatore, Maruthamalai Main Road, Navavoor Bharathiyar University Post, Somayampalayam,
- Coimbatore District 641046`,
+ Coimbatore District 641046`,`SRM TRP engineering college ,Trichy`,
   `Anna University Regional Campus - Madurai, Kanyakumari National Highway, Keelakuilkudi, Madurai District 625019`,
   `Anna University Regional Campus - Tirunelveli, Trivandrum Road, Palayamkottai, Tirunelveli District 627007`,
   `Annai College of Engineering and Technology, Kovilacheri, Kumbakonam, Thanjavur District 612503`,

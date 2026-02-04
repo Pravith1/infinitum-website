@@ -37,7 +37,7 @@ const EVENT_DATA = {
         { name: "Lohith S", mobile: "9488125100" }
     ],
     teamSize: "2 to 4",
-    closed: false,
+    closed: true,
     date: {
         "Day 1": "FEB 13",
         "Day 2": "FEB 14"
@@ -473,21 +473,51 @@ export default function FlagshipEvent() {
                                     </div>
                                 )}
 
-                                {/* Register Button - Hidden when pre-registration is enabled */}
+                                {/* Register Button / Status - Hidden when pre-registration is enabled */}
                                 {!isPreRegistrationEnabled && (
-                                    <button
-                                        className={styles.registerBtn}
-                                        onClick={isRegistered ? undefined : handleRegisterClick}
-                                        style={{
-                                            cursor: isRegistered ? 'default' : 'pointer',
-                                            background: isRegistered ? 'transparent' : undefined,
-                                            borderColor: isRegistered ? '#00E676' : undefined,
-                                            color: isRegistered ? '#00E676' : undefined,
-                                            boxShadow: isRegistered ? 'none' : undefined,
-                                        }}
-                                    >
-                                        {isRegistered ? 'Registered' : 'Register Now'}
-                                    </button>
+                                    EVENT_DATA.closed && !isRegistered ? (
+                                        <div
+                                            style={{
+                                                marginTop: '1rem',
+                                                padding: '14px 18px',
+                                                borderRadius: '999px',
+                                                border: '1px solid rgba(255, 100, 100, 0.6)',
+                                                background: 'rgba(255, 100, 100, 0.08)',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: '10px',
+                                                color: '#ff7777',
+                                                fontSize: '0.9rem'
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    width: 8,
+                                                    height: 8,
+                                                    borderRadius: '50%',
+                                                    background: '#ff7777',
+                                                    boxShadow: '0 0 8px rgba(255, 119, 119, 0.8)'
+                                                }}
+                                            />
+                                            <span>
+                                                Registrations for Thooral Hackathon are now <strong>full</strong>. New registrations are closed.
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            className={styles.registerBtn}
+                                            onClick={isRegistered ? undefined : handleRegisterClick}
+                                            style={{
+                                                cursor: isRegistered ? 'default' : 'pointer',
+                                                background: isRegistered ? 'transparent' : undefined,
+                                                borderColor: isRegistered ? '#00E676' : undefined,
+                                                color: isRegistered ? '#00E676' : undefined,
+                                                boxShadow: isRegistered ? 'none' : undefined,
+                                            }}
+                                        >
+                                            {isRegistered ? 'Registered' : 'Register Now'}
+                                        </button>
+                                    )
                                 )}
                             </div>
                         </div>

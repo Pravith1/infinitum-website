@@ -377,6 +377,18 @@ export default function EventShowcase({ sounds, initialEventId }) {
     const handleRegisterClick = () => {
         if (sounds?.click) sounds.click.play();
 
+        // Check if event is closed
+        if (currentEvent.closed) {
+            setNotification({
+                isOpen: true,
+                type: 'error',
+                title: 'Registration Closed',
+                message: `Registrations for ${currentEvent.eventName} are now full. New registrations are closed.`,
+                onConfirm: () => closeNotification()
+            });
+            return;
+        }
+
         // If pre-registration mode is enabled, open the pre-registration modal
         if (isPreRegistrationEnabled) {
             openPreRegModal();
@@ -984,28 +996,58 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                     </div>
                                 )}
 
-                                {/* Register Button in modal - Hidden when pre-registration is enabled */}
+                                {/* Register Button / Status - Hidden when pre-registration is enabled */}
                                 {!isPreRegistrationEnabled && (
-                                    <button
-                                        className={styles.registerBtn}
-                                        onClick={!currentEvent.isRegistered ? handleRegisterClick : undefined}
-                                        style={{
-                                            opacity: currentEvent.isRegistered ? 1 : 1,
-                                            cursor: currentEvent.isRegistered ? 'default' : 'pointer',
-                                            background: currentEvent.isRegistered ? 'transparent' : undefined,
-                                            borderColor: currentEvent.isRegistered ? '#9E9E9E' : undefined,
-                                            color: currentEvent.isRegistered ? '#B0B0B0' : undefined,
-                                            boxShadow: currentEvent.isRegistered ? '0 0 15px rgba(176, 176, 176, 0.3)' : undefined,
-                                            boxShadow: currentEvent.isRegistered ? 'none' : undefined,
-                                        }}
-                                    >
-                                        <span>
-                                            {currentEvent.isRegistered
-                                                ? 'Registered'
-                                                : 'Register Now'
-                                            }
-                                        </span>
-                                    </button>
+                                    currentEvent.closed && !currentEvent.isRegistered ? (
+                                        <div
+                                            style={{
+                                                marginTop: '1rem',
+                                                padding: '14px 18px',
+                                                borderRadius: '999px',
+                                                border: '1px solid rgba(255, 100, 100, 0.6)',
+                                                background: 'rgba(255, 100, 100, 0.08)',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: '10px',
+                                                color: '#ff7777',
+                                                fontSize: '0.9rem'
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    width: 8,
+                                                    height: 8,
+                                                    borderRadius: '50%',
+                                                    background: '#ff7777',
+                                                    boxShadow: '0 0 8px rgba(255, 119, 119, 0.8)'
+                                                }}
+                                            />
+                                            <span>
+                                                Registrations for {currentEvent.eventName} are now <strong>full</strong>. New registrations are closed.
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            className={styles.registerBtn}
+                                            onClick={!currentEvent.isRegistered ? handleRegisterClick : undefined}
+                                            style={{
+                                                opacity: currentEvent.isRegistered ? 1 : 1,
+                                                cursor: currentEvent.isRegistered ? 'default' : 'pointer',
+                                                background: currentEvent.isRegistered ? 'transparent' : undefined,
+                                                borderColor: currentEvent.isRegistered ? '#9E9E9E' : undefined,
+                                                color: currentEvent.isRegistered ? '#B0B0B0' : undefined,
+                                                boxShadow: currentEvent.isRegistered ? '0 0 15px rgba(176, 176, 176, 0.3)' : undefined,
+                                                boxShadow: currentEvent.isRegistered ? 'none' : undefined,
+                                            }}
+                                        >
+                                            <span>
+                                                {currentEvent.isRegistered
+                                                    ? 'Registered'
+                                                    : 'Register Now'
+                                                }
+                                            </span>
+                                        </button>
+                                    )
                                 )}
                             </div>
                         </div>

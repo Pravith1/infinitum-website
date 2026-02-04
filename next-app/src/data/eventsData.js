@@ -212,7 +212,7 @@ export const eventsData = [
         "eventRules": "Participants must follow organiser instructions at all times. Fair play and integrity are mandatory. Organisers’ decisions are final.",
         "teamSize": 3,
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
-        "closed": false,
+        "closed": true,
         "dateAndTime": "Feb 13, 10:00 AM – 12:30 PM",
 
         "image": "/images/events/infinitumopenquiz.png"

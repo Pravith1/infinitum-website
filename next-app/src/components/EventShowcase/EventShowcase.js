@@ -139,11 +139,23 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             const registeredCount = cap != null && typeof counts[ev.eventId] === 'number' ? counts[ev.eventId] : undefined;
                             const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
                             const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
+                            
+                            // Exception: Git Wars (EVNT03) should remain open with actual counts
+                            if (ev.eventId === 'EVNT03') {
+                                return {
+                                    ...ev,
+                                    registeredCount,
+                                    seatsLeft,
+                                    closed: ev.closed || autoClosed,
+                                };
+                            }
+                            
+                            // Force all technical events to be closed
                             return {
                                 ...ev,
                                 registeredCount,
-                                seatsLeft,
-                                closed: ev.closed || autoClosed,
+                                seatsLeft: 0, // Force technical events to show 0 seats left
+                                closed: true, // Force technical events to be closed
                             };
                         });
                     } catch (e) {
@@ -861,15 +873,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             ))}
                         </div>
                     )}
-                    {category === 'events' && currentEvent.seatsLeft !== undefined && currentEvent.seatsLeft > 0 && currentEvent.seatsLeft <= 30 && (
-                        <div className={styles.seatsWarningBanner}>
-                            <i className="ri-alert-fill" aria-hidden></i>
-                            <div className={styles.seatsWarningText}>
-                                <strong>Only {currentEvent.seatsLeft} seats left.</strong>
-                                <span> Seats filling fast – register soon!</span>
-                            </div>
-                        </div>
-                    )}
+                    {/* Seats warning banner removed */}
                     <button className={styles.ctaButton} onClick={openModal}>
                         <span>Learn More</span>
                         <i className="ri-arrow-right-line"></i>

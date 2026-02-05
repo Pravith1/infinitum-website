@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
@@ -285,6 +285,7 @@ const StyledComponent = withStyles(styles)(Component);
 // Wrapper to capture referral code on homepage
 function HomePage() {
   const searchParams = useSearchParams();
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const ref = searchParams.get('ref');
@@ -299,9 +300,155 @@ function HomePage() {
       newUrl.searchParams.delete('ref');
       window.history.replaceState({}, '', newUrl.toString());
     }
+
+    // Show popup notification about registration being full
+    // Show popup every time user visits home page
+    setTimeout(() => {
+      setShowPopup(true);
+    }, 1000);
   }, [searchParams]);
 
-  return <StyledComponent />;
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  return (
+    <>
+      <StyledComponent />
+      
+      {/* Registration Full Popup */}
+      {showPopup && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10001,
+            backdropFilter: 'blur(6px)',
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closePopup();
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              maxWidth: '500px',
+              width: '90%',
+              padding: '40px 30px',
+              background: 'linear-gradient(135deg, rgba(20, 20, 30, 0.98) 0%, rgba(30, 30, 40, 0.98) 100%)',
+              border: '1px solid rgba(199, 32, 113, 0.6)',
+              borderRadius: '12px',
+              boxShadow: '0 8px 32px rgba(199, 32, 113, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              color: '#fff',
+              fontFamily: "'Orbitron', sans-serif",
+              animation: 'modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            {/* Icon */}
+            <div
+              style={{
+                width: '60px',
+                height: '60px',
+                margin: '0 auto 20px',
+                background: 'linear-gradient(135deg, rgba(199, 32, 113, 0.2) 0%, rgba(199, 32, 113, 0.1) 100%)',
+                border: '2px solid rgba(199, 32, 113, 0.5)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '28px',
+              }}
+            >
+              !
+            </div>
+
+            {/* Title */}
+            <h2
+              style={{
+                margin: '0 0 20px',
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                color: '#c72071',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
+              Registration Update
+            </h2>
+
+            {/* Message */}
+            <p
+              style={{
+                margin: '0 0 30px',
+                fontSize: '1rem',
+                lineHeight: '1.6',
+                textAlign: 'center',
+                color: 'rgba(255, 255, 255, 0.85)',
+              }}
+            >
+              <strong style={{ color: '#c72071' }}>Technical event</strong> registration slots are currently full. 
+              However, you can still register for our exciting <strong style={{ color: '#4CAF50' }}>non-technical events</strong>!
+              <br /><br />
+              We'll notify you if technical event slots become available.
+            </p>
+
+            {/* Close Button */}
+            <button
+              onClick={closePopup}
+              style={{
+                width: '100%',
+                padding: '12px 24px',
+                background: 'linear-gradient(135deg, #c72071 0%, #a01a5a 100%)',
+                border: 'none',
+                borderRadius: '6px',
+                color: '#fff',
+                fontFamily: "'Orbitron', sans-serif",
+                fontSize: '0.95rem',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 15px rgba(199, 32, 113, 0.4)',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 6px 20px rgba(199, 32, 113, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 15px rgba(199, 32, 113, 0.4)';
+              }}
+            >
+              Got It
+            </button>
+          </div>
+
+          {/* Animation Keyframes */}
+          <style jsx>{`
+            @keyframes modalSlideIn {
+              from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+          `}</style>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default HomePage;

@@ -15,7 +15,7 @@ export const isPreRegistrationEnabled =
 // Accommodation mode toggle
 // When true: Shows "Accommodation Full" message
 // When false: Shows Accommodation Registration Form
-export const IS_ACCOMMODATION_CLOSED = false;
+export const IS_ACCOMMODATION_CLOSED = true;
 
 // Pre-registration UI messaging
 export const preRegistrationConfig = {

@@ -467,7 +467,7 @@ export default function FlagshipEvent() {
                                     <i className="ri-megaphone-fill" style={{ color: '#2196F3', fontSize: '1.3rem', marginTop: '2px' }}></i>
                                     <div style={{ fontFamily: 'var(--font-electrolize), sans-serif', fontSize: '0.9rem', color: 'rgba(238, 238, 238, 0.95)' }}>
                                         <strong style={{ color: '#2196F3' }}>Important Notice:</strong>
-                                        <span> Due to high volume of registrations, we will be conducting <strong>online prelims before 13th February</strong>. Details will be shared in the WhatsApp group.</span>
+                                        <span> Due to high volume of registrations, we will be conducting <strong>online prelims (elimination round) before 13th February</strong>. Details will be shared in the WhatsApp group.</span>
                                     </div>
                                 </div>
 

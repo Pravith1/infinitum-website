@@ -12,9 +12,9 @@ const ANNOUNCEMENTS = [
         type: 'success',
     },
     {
-        id: 'kriya-quiz',
+        id: 'inf-quiz',
         icon: 'ri-fire-fill',
-        title: 'Kriya Open Quiz',
+        title: 'Infinitum Open Quiz',
         message: 'Is open now and seats are filling fast!',
         type: 'success',
     },

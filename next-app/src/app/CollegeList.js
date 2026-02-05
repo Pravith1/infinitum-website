@@ -25,7 +25,7 @@ const colleges = [
   `Angel College of Engineering and Technology, P.K.Palayam, Ugayanur Village, Tirupur District 641 665`,
   `Anjalai Ammal-Mahalingam Engineering College, Kovilvenni, Thiruvarur District 614403`,
   `Anna University Regional Campus - Coimbatore, Maruthamalai Main Road, Navavoor Bharathiyar University Post, Somayampalayam,
- Coimbatore District 641046`,`SRM TRP engineering college ,Trichy`,
+ Coimbatore District 641046`, `SRM TRP engineering college ,Trichy`,
   `Anna University Regional Campus - Madurai, Kanyakumari National Highway, Keelakuilkudi, Madurai District 625019`,
   `Anna University Regional Campus - Tirunelveli, Trivandrum Road, Palayamkottai, Tirunelveli District 627007`,
   `Annai College of Engineering and Technology, Kovilacheri, Kumbakonam, Thanjavur District 612503`,
@@ -217,7 +217,6 @@ const colleges = [
   `M.A.M. College of Engineering, Siruganur, Tiruchirappalli District 621105`,
   `M.A.M. School of Engineering, Siruganur, Tiruchirappalli District 621105`,
   `Madha Engineering College, Kundrathur, Chennai 600069`,
-  `Avinashilingam Institute for Home Science and Higher Education for Women, Coimbatore-641 043`,
   `Sri Ramakrishna Engineering College`,
   `Madha Institute of Engineering and Technology, Erandamkattalai Village, Sadhananthapuram, Thandalam Post, Chennai 602101`,
   `Madurai Institute of Engineering & Technology, Pottapalayam Village, Manamadurai Taluk, Sivagangai District 630611`,
@@ -615,6 +614,7 @@ const colleges = [
   `PSGR Krishnammal College for Women, Coimbatore`,
   `Kalasalingam academy of research and education, Srivilliputhur`,
   `Karunya Institute of Technology and Sciences, Coimbatore 641 114`,
+  `Avinashilingam Institute for Home Science and Higher Education for Women, Coimbatore-641 043`,
 ];
 
 colleges.sort();

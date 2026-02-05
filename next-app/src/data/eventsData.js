@@ -217,7 +217,7 @@ export const eventsData = [
         "teamSize": 3,
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
-        "cap": 100,
+        "cap": 114,
         "dateAndTime": "Feb 13, 10:00 AM – 12:30 PM",
 
         "image": "/images/events/infinitumopenquiz.png"

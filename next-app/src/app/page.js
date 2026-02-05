@@ -399,9 +399,10 @@ function HomePage() {
                 color: 'rgba(255, 255, 255, 0.85)',
               }}
             >
-              Event registration slots are currently <strong style={{ color: '#c72071' }}>full</strong>. 
-              We'll notify you if slots become available. 
-              Stay tuned for updates!
+              <strong style={{ color: '#c72071' }}>Technical event</strong> registration slots are currently full. 
+              However, you can still register for our exciting <strong style={{ color: '#4CAF50' }}>non-technical events</strong>!
+              <br /><br />
+              We'll notify you if technical event slots become available.
             </p>
 
             {/* Close Button */}

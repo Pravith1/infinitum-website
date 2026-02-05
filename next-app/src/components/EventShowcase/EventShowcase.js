@@ -139,11 +139,23 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             const registeredCount = cap != null && typeof counts[ev.eventId] === 'number' ? counts[ev.eventId] : undefined;
                             const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
                             const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
+                            
+                            // Exception: Git Wars (EVNT03) should remain open with actual counts
+                            if (ev.eventId === 'EVNT03') {
+                                return {
+                                    ...ev,
+                                    registeredCount,
+                                    seatsLeft,
+                                    closed: ev.closed || autoClosed,
+                                };
+                            }
+                            
+                            // Force all technical events to be closed
                             return {
                                 ...ev,
                                 registeredCount,
-                                seatsLeft: 0, // Force all events to show 0 seats left
-                                closed: true, // Force all events to be closed
+                                seatsLeft: 0, // Force technical events to show 0 seats left
+                                closed: true, // Force technical events to be closed
                             };
                         });
                     } catch (e) {

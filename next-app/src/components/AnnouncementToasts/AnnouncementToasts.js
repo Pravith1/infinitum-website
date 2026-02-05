@@ -5,11 +5,11 @@ import './AnnouncementToasts.css';
 
 const ANNOUNCEMENTS = [
     {
-        id: 'thooral-reopening',
-        icon: 'ri-timer-line',
+        id: 'thooral-open',
+        icon: 'ri-fire-fill',
         title: 'Thooral Hackathon',
-        message: 'Will open again for more registrations soon!',
-        type: 'info', // info, success, warning
+        message: 'Registrations are now OPEN! Limited to 250 seats - register now!\nJoin the official WhatsApp group for hackathon updates.',
+        type: 'success',
     },
     {
         id: 'kriya-quiz',

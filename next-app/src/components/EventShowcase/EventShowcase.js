@@ -142,8 +142,8 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             return {
                                 ...ev,
                                 registeredCount,
-                                seatsLeft,
-                                closed: ev.closed || autoClosed,
+                                seatsLeft: 0, // Force all events to show 0 seats left
+                                closed: true, // Force all events to be closed
                             };
                         });
                     } catch (e) {

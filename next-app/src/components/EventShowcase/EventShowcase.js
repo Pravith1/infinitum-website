@@ -625,18 +625,20 @@ export default function EventShowcase({ sounds, initialEventId }) {
                 {!isPreRegistrationEnabled && (
                     <button
                         className={styles.registerButton}
-                        onClick={!currentEvent.isRegistered ? handleRegisterClick : undefined}
+                        onClick={!currentEvent.isRegistered && category !== 'papers' ? handleRegisterClick : undefined}
                         style={{
-                            background: currentEvent.isRegistered ? 'transparent' : undefined,
-                            cursor: currentEvent.isRegistered ? 'default' : 'pointer',
-                            borderColor: currentEvent.isRegistered ? '#B0B0B0' : undefined,
-                            color: currentEvent.isRegistered ? '#B0B0B0' : undefined,
-                            boxShadow: currentEvent.isRegistered ? 'none' : undefined,
+                            background: currentEvent.isRegistered || category === 'papers' ? 'transparent' : undefined,
+                            cursor: currentEvent.isRegistered || category === 'papers' ? 'default' : 'pointer',
+                            borderColor: currentEvent.isRegistered || category === 'papers' ? '#B0B0B0' : undefined,
+                            color: currentEvent.isRegistered || category === 'papers' ? '#B0B0B0' : undefined,
+                            boxShadow: currentEvent.isRegistered || category === 'papers' ? 'none' : undefined,
                         }}
                     >
                         <span>
                             {currentEvent.isRegistered
                                 ? 'Registered'
+                                : category === 'papers'
+                                ? 'Registration Closed'
                                 : 'Register Now'
                             }
                         </span>
@@ -1052,15 +1054,15 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                 {!isPreRegistrationEnabled && (
                                     <button
                                         className={styles.registerBtn}
-                                        onClick={!currentEvent.isRegistered && !currentEvent.closed ? handleRegisterClick : undefined}
-                                        disabled={currentEvent.closed && !currentEvent.isRegistered}
+                                        onClick={!currentEvent.isRegistered && !currentEvent.closed && category !== 'papers' ? handleRegisterClick : undefined}
+                                        disabled={(currentEvent.closed || category === 'papers') && !currentEvent.isRegistered}
                                         style={{
-                                            opacity: (currentEvent.isRegistered || currentEvent.closed) ? 0.5 : 1,
-                                            cursor: (currentEvent.isRegistered || currentEvent.closed) ? 'not-allowed' : 'pointer',
-                                            background: currentEvent.isRegistered ? 'transparent' : (currentEvent.closed ? 'rgba(128, 128, 128, 0.2)' : undefined),
-                                            borderColor: currentEvent.isRegistered ? '#9E9E9E' : (currentEvent.closed ? '#888' : undefined),
-                                            color: currentEvent.isRegistered ? '#B0B0B0' : (currentEvent.closed ? '#888' : undefined),
-                                            boxShadow: (currentEvent.isRegistered || currentEvent.closed) ? 'none' : undefined,
+                                            opacity: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 0.5 : 1,
+                                            cursor: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 'not-allowed' : 'pointer',
+                                            background: currentEvent.isRegistered ? 'transparent' : ((currentEvent.closed || category === 'papers') ? 'rgba(128, 128, 128, 0.2)' : undefined),
+                                            borderColor: currentEvent.isRegistered ? '#9E9E9E' : ((currentEvent.closed || category === 'papers') ? '#888' : undefined),
+                                            color: currentEvent.isRegistered ? '#B0B0B0' : ((currentEvent.closed || category === 'papers') ? '#888' : undefined),
+                                            boxShadow: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 'none' : undefined,
                                         }}
                                     >
                                         <span>
@@ -1068,6 +1070,8 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                                 ? 'Registered'
                                                 : currentEvent.closed
                                                 ? 'Registration Full'
+                                                : category === 'papers'
+                                                ? 'Registration Closed'
                                                 : 'Register Now'
                                             }
                                         </span>

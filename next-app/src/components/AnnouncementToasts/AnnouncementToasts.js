@@ -8,8 +8,8 @@ const ANNOUNCEMENTS = [
         id: 'thooral-open',
         icon: 'ri-fire-fill',
         title: 'Thooral Hackathon',
-        message: 'Registrations are now OPEN! Limited to 250 seats - register now!\nJoin the official WhatsApp group for hackathon updates.',
-        type: 'success',
+        message: 'Join the official WhatsApp group for hackathon updates.',
+        type: 'info',
     },
     {
         id: 'inf-quiz',

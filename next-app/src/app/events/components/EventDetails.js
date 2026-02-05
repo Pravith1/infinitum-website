@@ -524,6 +524,15 @@ class EventDetails extends React.Component {
                                 <div className={classes.infoValue}>{event.teamSize || 1} Members</div>
                             </div>
 
+                            {event.cap != null && (
+                                <div className={classes.infoItem}>
+                                    <div className={classes.infoLabel}>Seats</div>
+                                    <div className={classes.infoValue} style={{ color: event.seatsLeft === 0 ? '#ff6b6b' : undefined }}>
+                                        {event.seatsLeft === 0 ? 'Full' : event.seatsLeft !== undefined ? `${event.seatsLeft} seats left` : `Up to ${event.cap} seats`}
+                                    </div>
+                                </div>
+                            )}
+
                             <div className={classes.infoItem}>
                                 <div className={classes.infoLabel}>Venue</div>
                                 <div className={classes.infoValue}>{event.hall || 'TBA'}</div>

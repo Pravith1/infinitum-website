@@ -11,13 +11,13 @@ const ANNOUNCEMENTS = [
         message: 'Join the official WhatsApp group for hackathon updates.',
         type: 'info',
     },
-    {
-        id: 'inf-quiz',
-        icon: 'ri-fire-fill',
-        title: 'Infinitum Open Quiz',
-        message: 'Is open now and seats are filling fast!',
-        type: 'success',
-    },
+    // {
+    //     id: 'inf-quiz',
+    //     icon: 'ri-fire-fill',
+    //     title: 'Infinitum Open Quiz',
+    //     message: 'Is open now and seats are filling fast!',
+    //     type: 'success',
+    // },
 ];
 
 export default function AnnouncementToasts() {

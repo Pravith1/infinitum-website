@@ -217,6 +217,7 @@ const colleges = [
   `M.A.M. College of Engineering, Siruganur, Tiruchirappalli District 621105`,
   `M.A.M. School of Engineering, Siruganur, Tiruchirappalli District 621105`,
   `Madha Engineering College, Kundrathur, Chennai 600069`,
+  'Avinashilingam Institute for Home Science and Higher Education for Women, Coimbatore-641 043',
   `Sri Ramakrishna Engineering College`,
   `Madha Institute of Engineering and Technology, Erandamkattalai Village, Sadhananthapuram, Thandalam Post, Chennai 602101`,
   `Madurai Institute of Engineering & Technology, Pottapalayam Village, Manamadurai Taluk, Sivagangai District 630611`,

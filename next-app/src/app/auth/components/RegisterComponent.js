@@ -365,6 +365,7 @@ export default function RegisterComponent() {
                                     <option value="Information Technology" />
                                     <option value="Textile Technology" />
                                     <option value="Artificial intelligence and Data Science" />
+                                    <option value="Applied Mathematics and Computational Science" />
                                 </datalist>
                             </div>
 

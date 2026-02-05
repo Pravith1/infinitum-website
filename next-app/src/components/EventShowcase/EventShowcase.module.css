@@ -1819,6 +1819,38 @@
   }
 }
 
+/* Yellow warning banner when seats left <= 30 */
+.seatsWarningBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.5);
+  border-radius: 10px;
+  color: #facc15;
+}
+
+.seatsWarningBanner i {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.seatsWarningText {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.seatsWarningText strong {
+  color: #fde047;
+}
+
 /* CTA Button for Learning More */
 .ctaButton {
   display: inline-flex;

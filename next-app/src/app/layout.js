@@ -52,6 +52,7 @@ import GrievanceButton from "@/components/GrievanceButton/GrievanceButton";
 import CircularMenuWrapper from "@/components/CircularMenu/CircularMenuWrapper";
 import { PreRegistrationProvider } from "@/context/PreRegistrationContext";
 import PreRegistrationModal from "@/components/PreRegistrationModal";
+import AnnouncementToasts from "@/components/AnnouncementToasts/AnnouncementToasts";
 
 export default function RootLayout({ children }) {
   return (
@@ -78,6 +79,7 @@ export default function RootLayout({ children }) {
                     <SoundMuteButton />
                     <GrievanceButton />
                     <PreRegistrationModal />
+                    <AnnouncementToasts />
                   </ShutterProvider>
                 </PreRegistrationProvider>
               </AuthProvider>

@@ -364,6 +364,8 @@ export default function RegisterComponent() {
                                     <option value="Fashion Technology" />
                                     <option value="Information Technology" />
                                     <option value="Textile Technology" />
+                                    <option value="Artificial intelligence and Data Science" />
+                                    <option value="Applied Mathematics and Computational Science" />
                                 </datalist>
                             </div>
 
@@ -416,6 +418,7 @@ export default function RegisterComponent() {
                                     <option value="">Select an option</option>
                                     <option value="social_media">Social Media</option>
                                     <option value="friends">Friends/Word of mouth</option>
+                                    <option value="eventopia">Eventopia</option>
                                     <option value="posters">Posters/Flyers</option>
                                     <option value="college_announcement">College Announcement</option>
                                     <option value="other">Other</option>

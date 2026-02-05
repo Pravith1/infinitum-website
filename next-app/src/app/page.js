@@ -302,15 +302,10 @@ function HomePage() {
     }
 
     // Show popup notification about registration being full
-    // Check if user has already seen the popup in this session
-    const hasSeenPopup = sessionStorage.getItem('hasSeenRegistrationPopup');
-    if (!hasSeenPopup) {
-      // Small delay for better UX
-      setTimeout(() => {
-        setShowPopup(true);
-        sessionStorage.setItem('hasSeenRegistrationPopup', 'true');
-      }, 1000);
-    }
+    // Show popup every time user visits home page
+    setTimeout(() => {
+      setShowPopup(true);
+    }, 1000);
   }, [searchParams]);
 
   const closePopup = () => {

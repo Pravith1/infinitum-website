@@ -873,15 +873,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             ))}
                         </div>
                     )}
-                    {category === 'events' && currentEvent.seatsLeft !== undefined && currentEvent.seatsLeft > 0 && currentEvent.seatsLeft <= 30 && (
-                        <div className={styles.seatsWarningBanner}>
-                            <i className="ri-alert-fill" aria-hidden></i>
-                            <div className={styles.seatsWarningText}>
-                                <strong>Only {currentEvent.seatsLeft} seats left.</strong>
-                                <span> Seats filling fast – register soon!</span>
-                            </div>
-                        </div>
-                    )}
+                    {/* Seats warning banner removed */}
                     <button className={styles.ctaButton} onClick={openModal}>
                         <span>Learn More</span>
                         <i className="ri-arrow-right-line"></i>

@@ -12,6 +12,7 @@ import { withStyles } from '@/tools/withStyles';
 import { Secuence as SecuenceComponent } from '@/components/Secuence';
 import { Button } from '@/components/Button';
 import colleges from '@/app/CollegeList';
+import { isPreRegistrationEnabled, IS_ACCOMMODATION_CLOSED } from '../../../settings/featureFlags';
 import { eventService } from '@/services/eventservice';
 
 // Accommodation Instructions
@@ -1971,7 +1972,7 @@ class ProfilePage extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        ) : (
+                                        ) : IS_ACCOMMODATION_CLOSED ? (
                                             <div style={{ 
                                                 padding: '30px 20px', 
                                                 textAlign: 'center',
@@ -2003,6 +2004,73 @@ class ProfilePage extends React.Component {
                                                     <br />
                                                     For any queries, please contact the accommodation team.
                                                 </p>
+                                            </div>
+                                        ) : (
+                                            <div className={classes.accommodationForm}>
+                                                {accommodationError && (
+                                                    <div style={{ padding: '10px', background: 'rgba(255,0,0,0.1)', border: '1px solid #ff4444', borderRadius: 8, color: '#ff6666', fontSize: '0.85rem' }}>
+                                                        {accommodationError}
+                                                    </div>
+                                                )}
+
+                                                <div className={classes.formField}>
+                                                    <label className={classes.formLabel}>Residential Address *</label>
+                                                    <textarea
+                                                        name="residentialAddress"
+                                                        value={accommodationForm.residentialAddress}
+                                                        onChange={this.handleAccommodationFormChange}
+                                                        className={classes.editInput}
+                                                        placeholder="Enter your full residential address"
+                                                        rows={3}
+                                                        style={{ resize: 'vertical', minHeight: '60px' }}
+                                                    />
+                                                </div>
+
+                                                <div className={classes.formRow}>
+                                                    <div className={classes.formField}>
+                                                        <label className={classes.formLabel}>City *</label>
+                                                        <input
+                                                            type="text"
+                                                            name="city"
+                                                            value={accommodationForm.city}
+                                                            onChange={this.handleAccommodationFormChange}
+                                                            className={classes.editInput}
+                                                            placeholder="Enter your city"
+                                                        />
+                                                    </div>
+                                                    <div className={classes.formField}>
+                                                        <label className={classes.formLabel}>Gender *</label>
+                                                        <select
+                                                            name="gender"
+                                                            value={accommodationForm.gender}
+                                                            onChange={this.handleAccommodationFormChange}
+                                                            className={`${classes.editInput} ${classes.editSelect}`}
+                                                        >
+                                                            <option value="">Select gender</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div style={{ marginTop: 10 }}>
+                                                    <button
+                                                        className={classes.actionBtn}
+                                                        onClick={this.registerAccommodation}
+                                                        disabled={accommodationSubmitting}
+                                                        style={{
+                                                            background: accommodationSubmitting ? '#666' : '#00ff64',
+                                                            color: '#000',
+                                                            border: 'none',
+                                                            fontWeight: 800,
+                                                            padding: '12px 24px',
+                                                            fontSize: '0.85rem'
+                                                        }}
+                                                    >
+                                                        {accommodationSubmitting ? 'Registering...' : 'Register for Accommodation'}
+                                                    </button>
+                                                </div>
                                             </div>
                                         )}
                                     </div>

@@ -12,6 +12,11 @@
 export const isPreRegistrationEnabled =
     process.env.NEXT_PUBLIC_PRE_REGISTRATION_ENABLED === 'true';
 
+// Accommodation mode toggle
+// When true: Shows "Accommodation Full" message
+// When false: Shows Accommodation Registration Form
+export const IS_ACCOMMODATION_CLOSED = false;
+
 // Pre-registration UI messaging
 export const preRegistrationConfig = {
     message: "Registrations opening soon! Pre-register now to get notified.",

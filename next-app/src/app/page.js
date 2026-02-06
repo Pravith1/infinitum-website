@@ -397,7 +397,7 @@ function HomePage() {
               <strong style={{ color: '#c72071' }}>Technical,Non-technical events</strong> and <strong style={{ color: '#c72071' }}>Paper presentation</strong> registration slots are currently full.
               However, you can still register for our exciting <a href="/events?category=workshops" style={{ color: '#4CAF50', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}>Workshops</a>!
               <br /><br />
-              We'll notify you if technical event slots become available.
+              We'll notify you if technical  and non technical event slots become available.
             </p>
 
             {/* Close Button */}

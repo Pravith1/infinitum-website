@@ -81,6 +81,23 @@ export const eventService = {
         return response.data;
     },
 
+    // Get registration counts per workshop (for seat caps).
+    getWorkshopRegistrationCounts: async () => {
+        const response = await api.get('/api/events/workshops/counts');
+        const data = response.data;
+        let counts = data?.counts ?? data;
+        // Normalize if array (mirrors getEventRegistrationCounts logic)
+        if (Array.isArray(counts)) {
+            counts = counts.reduce((acc, item) => {
+                const id = item.workshopId ?? item.workshop_id ?? item.id;
+                const n = item.count ?? item.registeredCount ?? item.registrations;
+                if (id != null && typeof n === 'number') acc[id] = n;
+                return acc;
+            }, {});
+        }
+        return typeof counts === 'object' && counts !== null ? counts : {};
+    },
+
 
     // --- Papers ---
     // Get all papers

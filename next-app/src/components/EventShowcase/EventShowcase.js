@@ -177,6 +177,27 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             _id: a._id
                         })) : []
                     }));
+                    // Fetch registration counts for workshops
+                    try {
+                        const counts = await eventService.getWorkshopRegistrationCounts();
+                        items = items.map(w => {
+                            // Map maxCount to cap for consistency with events
+                            const cap = w.maxCount;
+                            const registeredCount = cap != null && typeof counts[w.workshopId] === 'number' ? counts[w.workshopId] : undefined;
+                            const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
+                            const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
+                            
+                            return {
+                                ...w,
+                                cap, // Standardize cap field
+                                registeredCount,
+                                seatsLeft,
+                                closed: w.closed || autoClosed,
+                            };
+                        });
+                    } catch (e) {
+                        console.error("Failed to fetch workshop registration counts", e);
+                    }
                 } else if (category === 'papers') {
                     items = papersData.map(p => ({
                         ...p,
@@ -730,7 +751,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                         <div className={styles.statValue}>{currentEvent.hall}</div>
                     </div>
 
-                    {category === 'events' && currentEvent.cap != null && (
+                    {(category === 'events' || category === 'workshops') && currentEvent.cap != null && (
                         <div className={styles.statItem}>
                             <div className={styles.statLabel}>Seats left</div>
                             <div className={styles.statValue} style={{ color: currentEvent.seatsLeft === 0 ? '#ff6b6b' : undefined }}>

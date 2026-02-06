@@ -315,7 +315,7 @@ function HomePage() {
   return (
     <>
       <StyledComponent />
-      
+
       {/* Registration Full Popup */}
       {showPopup && (
         <div
@@ -394,8 +394,8 @@ function HomePage() {
                 color: 'rgba(255, 255, 255, 0.85)',
               }}
             >
-              <strong style={{ color: '#c72071' }}>Technical event</strong> and <strong style={{ color: '#c72071' }}>Paper presentation</strong> registration slots are currently full. 
-              However, you can still register for our exciting <a href="/events?category=workshops" style={{ color: '#4CAF50', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}>Workshops</a> and <a href="/events?id=EVNT03" style={{ color: '#4CAF50', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}>non-technical events</a>!
+              <strong style={{ color: '#c72071' }}>Technical,Non-technical events</strong> and <strong style={{ color: '#c72071' }}>Paper presentation</strong> registration slots are currently full.
+              However, you can still register for our exciting <a href="/events?category=workshops" style={{ color: '#4CAF50', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}>Workshops</a>!
               <br /><br />
               We'll notify you if technical event slots become available.
             </p>

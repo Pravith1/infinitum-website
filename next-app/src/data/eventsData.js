@@ -160,7 +160,7 @@ export const eventsData = [
             { "name": "Dhaarun Abhimanyu S", "mobile": "9790313358", "_id": { "$oid": "694ceca6297836cde768249c" } },
             { "name": "A T Abbilaash", "mobile": "8667093591", "_id": { "$oid": "694ceca6297836cde768249d" } }
         ],
-        "hall": "Computer Center",
+        "hall": "3AI,AIR",
         "eventRules": "Cheating is prohibited. Points are awarded for successful hacks and reduced for failed hacks or broken defenses. Final scores are calculated using aggregate performance across both rounds. Organisers' decisions are final.",
         "teamSize": 1,
         "prizePool": "₹10,000",
@@ -261,7 +261,7 @@ export const eventsData = [
                 }
             }
         ],
-        "hall": "Computer Center",
+        "hall": "GRD,Programming lab",
         "eventRules": "Team participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,

@@ -1124,6 +1124,7 @@ class ProfilePage extends React.Component {
             accommodationError: null,
             accommodationSuccess: false, // Success popup state
             showFeeReminder: false, // Reminder state (initially hidden)
+            showRegistrationClosed: false, // Registration closed popup state
         };
         this.fileInputRef = React.createRef();
     }
@@ -1630,7 +1631,7 @@ class ProfilePage extends React.Component {
                                 {/* Payment Button (Both Mobile & Desktop) */}
                                 <button
                                     className={classes.actionBtn}
-                                    onClick={() => window.location.href = '/fee-payment'}
+                                    onClick={() => this.setState({ showRegistrationClosed: true })}
                                     style={{
                                         marginLeft: 'auto',
                                         padding: isMobile ? '6px 12px' : '8px 16px',
@@ -2185,6 +2186,28 @@ class ProfilePage extends React.Component {
                         </div>
                     )}
 
+                    {/* Registration Closed Popup */}
+                    {!loading && user && this.state.showRegistrationClosed && (
+                        <div className={classes.idViewerOverlay} onClick={() => this.setState({ showRegistrationClosed: false })}>
+                            <div className={classes.successPopup} onClick={(e) => e.stopPropagation()} style={{ borderColor: '#c72071', boxShadow: '0 0 30px rgba(199, 32, 113, 0.2)' }}>
+                                <div className={classes.successIcon} style={{ background: 'rgba(199, 32, 113, 0.2)', color: '#c72071', border: '2px solid #c72071' }}>!</div>
+                                <div className={classes.successTitle} style={{ color: '#fff' }}>Registration Update</div>
+                                <div className={classes.successMessage} style={{ marginBottom: '20px', lineHeight: '1.6' }}>
+                                    Technical, Non-technical events, Paper presentations, and Workshops registration slots are currently full.
+                                    <br /><br />
+                                    We'll notify you if slots become available.
+                                </div>
+                                <button
+                                    className={classes.successBtn}
+                                    onClick={() => this.setState({ showRegistrationClosed: false })}
+                                    style={{ background: 'rgba(199, 32, 113, 0.8)', color: '#fff' }}
+                                >
+                                    Okay
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     {/* REMINDERS (Fee & ID Card) */}
                     {!loading && user && this.state.showFeeReminder && activeTab === 'profile' && (
                         <>
@@ -2200,7 +2223,7 @@ class ProfilePage extends React.Component {
                                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                                             <button
                                                 className={classes.successBtn}
-                                                onClick={() => window.location.href = '/fee-payment'}
+                                                onClick={() => this.setState({ showFeeReminder: false, showRegistrationClosed: true })}
                                                 style={{ background: 'linear-gradient(135deg, #fae127, #f0ca00)', color: '#000', fontWeight: 'bold' }}
                                             >
                                                 Pay Now

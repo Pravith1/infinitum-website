@@ -1226,7 +1226,16 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                 <button
                                     onClick={() => {
                                         closeNotification();
-                                        router.push('/fee-payment');
+                                        // Show registration closed notification
+                                        setNotification({
+                                            isOpen: true,
+                                            type: 'error',
+                                            title: 'Registration Update',
+                                            message: 'Technical, Non-technical events, Paper presentations, and Workshops registration slots are currently full. We\'ll notify you if slots become available.',
+                                            onConfirm: null,
+                                            showLoginButton: false,
+                                            showPayNowButton: false
+                                        });
                                     }}
                                     style={{
                                         padding: '12px 24px',

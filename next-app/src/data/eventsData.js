@@ -31,6 +31,7 @@ export const eventsData = [
         "prizePool": "₹5,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
+        "cap": 224,
         "dateAndTime": "Feb 13, 10:00 AM - 3:00 PM",
         "scheduleStart": "10:00",
         "scheduleEnd": "15:00",
@@ -42,7 +43,7 @@ export const eventsData = [
         "image": "/images/events/QuestX_website.png"
     },
 
-     {
+    {
         "_id": { "$oid": "694ce9d2297836cde7682488" },
         "eventId": "EVNT02",
         "eventName": "neXus",
@@ -68,6 +69,7 @@ export const eventsData = [
         "prizePool": "₹3,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
+        "cap": 150,
         "dateAndTime": "Feb 14, 9:00 AM – 12:30 PM",
         "scheduleStart": "09:00",
         "scheduleEnd": "12:30",
@@ -83,20 +85,20 @@ export const eventsData = [
         "eventId": "EVNT03",
         "eventName": "Git Wars",
         "category": "Non Technical",
-        "oneLineDescription": "Clone. Commit. Conquer",
+        "oneLineDescription": "Act Charades, Identify Logos, Solve Puzzles, Ace Rapid Fire & Choose Mystery Cup!",
         "description": "Git Wars is a two-round interactive event that blends creativity, communication, strategy, and basic technical thinking. With a Star Wars theme, participants compete as teams in progressive rounds where early performance directly impacts later advantages, fostering teamwork, improvisation, and decision-making in a fun and competitive environment.",
         "club_id": { "$oid": "69495a6a719d1b3bd5a9e7cf" },
         "rounds": [
             {
                 "title": "Code Charades",
-                "tagline": "Act fast, decode words, earn your advantage.",
-                "description": "Teams must enact and guess technical terms using only gestures and non-verbal cues. Speed is the key to victory, as points are awarded based on how quickly the team can identify the correct terms to climb the leaderboard.",
+                "tagline": "Act fast, find words, earn your advantage.",
+                "description": "A team member needs to act out technical terms using only gestures and non-verbal cues. Speed is the key to victory, as points are awarded based on how quickly the team can identify the correct terms to climb the leaderboard.",
                 "_id": { "$oid": "694cec9c297836cde7682491" }
             },
             {
                 "title": "Flash Memory",
-                "tagline": "Choose wisely or crash into uncertainty.",
-                "description": "Teams answer questions to earn the right to choose a mystery cup containing hidden points. The twist is that the cup values flash on the screen for mere seconds. This round combines quick thinking with sharp observation to maximize the final score.",
+                "tagline": "Think Fast. Look Sharp. Choose Wisely.",
+                "description": "This round challenges teams across three levels: Identify the Correct Logo, Rebus Puzzle (Decode visual clues), and Rapid Fire (Answer a bunch of questions within a time limit). Performance in these levels earns teams the right to choose a 'Mystery Cup' containing hidden points. The twist? Cup values flash on screen for mere seconds, requiring sharp observation to maximize the final score.",
                 "_id": { "$oid": "694cec9c297836cde7682492" }
             }
         ],
@@ -110,6 +112,7 @@ export const eventsData = [
         "prizePool": "₹4,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
+        "cap": 230,
         "dateAndTime": "Feb 14, 9:00 AM – 12:30 PM",
         "scheduleStart": "09:00",
         "scheduleEnd": "12:30",
@@ -126,7 +129,7 @@ export const eventsData = [
         "eventId": "EVNT04",
         "eventName": "ForceCoders",
         "category": "Technical",
-        "oneLineDescription": "Code like Tourist. Hack like a Grandmaster.",
+        "oneLineDescription": "Code like a Tourist. Hack like a Grandmaster.",
         "description": "ForceCoders is a high-intensity competitive coding event focused on core computer science fundamentals such as data structures, algorithms, and system logic. The event follows a progressive two-round format that tests implementation speed, algorithmic depth, debugging ability, and adversarial thinking.",
         "importantNotes": [
             "There are no preliminary rounds",
@@ -163,6 +166,7 @@ export const eventsData = [
         "prizePool": "₹10,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
+        "cap": 100,
         "dateAndTime": "Feb 13, 1:30 PM – 4:00 PM",
         "scheduleStart": "10:00",
         "scheduleEnd": "12:30",
@@ -213,6 +217,7 @@ export const eventsData = [
         "teamSize": 3,
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
+        "cap": 114,
         "dateAndTime": "Feb 13, 10:00 AM – 12:30 PM",
 
         "image": "/images/events/infinitumopenquiz.png"
@@ -260,6 +265,7 @@ export const eventsData = [
         "eventRules": "Team participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
+        "cap": 160,
         "timing": "Feb 14, 9:00 AM – 3:00 PM",
         "scheduleStart": "09:00",
         "scheduleEnd": "15:00",
@@ -358,7 +364,7 @@ export const workshopsData = [
                 }
             }
         ],
-        "maxCount": 50,
+        "maxCount": 80,
         "description": "A comprehensive workshop on AI Infrastructure featuring expert speakers from Cisco Systems. Learn about the infrastructure requirements for AI, including QoS, Load-Balancing, Security, and real-world AI implementations.",
         "agenda": [
             {
@@ -417,7 +423,7 @@ export const workshopsData = [
             { "name": "Saran M", "mobile": "8148599787", "_id": { "$oid": "dummy_oid_1" } },
             { "name": "Rohish Raj", "mobile": "8220990444", "_id": { "$oid": "dummy_oid_1b" } }
         ],
-        "maxCount": 50,
+        "maxCount": 80,
         "description": "A comprehensive workshop on Product Prototyping for Industry Applications.",
         "agenda": [],
         "earlyBirdActive": true,
@@ -450,7 +456,7 @@ export const workshopsData = [
             { "name": "Surya Narayanan NT", "mobile": "7448757584", "_id": { "$oid": "dummy_oid_1" } },
             { "name": "Dileepan", "mobile": "9344220239", "_id": { "$oid": "dummy_oid_1b" } }
         ],
-        "maxCount": 50,
+        "maxCount": 80,
         "description": "Learn about threat detection modelling and cybersecurity defense strategies.",
         "agenda": [],
         "earlyBirdActive": true,

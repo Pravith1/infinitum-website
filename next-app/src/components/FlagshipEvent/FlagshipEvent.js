@@ -38,6 +38,7 @@ const EVENT_DATA = {
     ],
     teamSize: "2 to 4",
     closed: false,
+    cap: 250,
     date: {
         "Day 1": "FEB 13",
         "Day 2": "FEB 14"
@@ -58,6 +59,8 @@ export default function FlagshipEvent() {
     const [isVisible, setIsVisible] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
     const [isRegistered, setIsRegistered] = useState(false);
+    const [seatsLeft, setSeatsLeft] = useState(undefined);
+    const [isClosed, setIsClosed] = useState(EVENT_DATA.closed);
     const [notification, setNotification] = useState({
         isOpen: false,
         type: '', // 'confirm', 'success', 'error', 'login'
@@ -77,9 +80,24 @@ export default function FlagshipEvent() {
     const expandSoundRef = useRef(null);
     const hoverSoundRef = useRef(null);
 
-    // Use hardcoded event data and check registration status
+    // Use hardcoded event data and check registration status + fetch seat count
     useEffect(() => {
-        const checkRegistration = async () => {
+        const checkRegistrationAndSeats = async () => {
+            // Fetch registration counts for seat caps and auto-close
+            try {
+                const counts = await eventService.getEventRegistrationCounts();
+                const registeredCount = typeof counts[EVENT_DATA.eventId] === 'number' ? counts[EVENT_DATA.eventId] : 0;
+                const remaining = EVENT_DATA.cap - registeredCount;
+                setSeatsLeft(Math.max(0, remaining));
+                
+                // Auto-close if capacity reached
+                if (registeredCount >= EVENT_DATA.cap) {
+                    setIsClosed(true);
+                }
+            } catch (err) {
+                console.error('Error fetching registration counts:', err);
+            }
+
             // Check if user is already registered
             if (isAuthenticated && EVENT_DATA.eventId) {
                 try {
@@ -93,7 +111,7 @@ export default function FlagshipEvent() {
             }
         };
 
-        checkRegistration();
+        checkRegistrationAndSeats();
     }, [isAuthenticated]);
 
     // Initialize audio on mount
@@ -391,6 +409,120 @@ export default function FlagshipEvent() {
                                 {/* One-liner */}
                                 <p className={styles.oneLiner}>{oneLineDescription}</p>
 
+                                {/* Seats Left & Team Size - Moved Up */}
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoLabel}>Team Size</div>
+                                        <div className={styles.infoValue}>{teamSize} Members</div>
+                                    </div>
+                                    {/* Seats Left */}
+                                    {seatsLeft !== undefined && (
+                                        <div className={styles.infoItem}>
+                                            <div className={styles.infoLabel}>Seats Left</div>
+                                            <div className={styles.infoValue} style={{ color: seatsLeft === 0 ? '#ff6b6b' : seatsLeft <= 50 ? '#ffc107' : undefined }}>
+                                                {seatsLeft === 0 ? 'Full' : `${seatsLeft}`}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Seats Warning Banner */}
+                                {seatsLeft !== undefined && seatsLeft > 0 && seatsLeft <= 100 && (
+                                    <div
+                                        style={{
+                                            marginTop: '16px',
+                                            padding: '12px 16px',
+                                            background: 'linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 152, 0, 0.08) 100%)',
+                                            border: '1px solid rgba(255, 193, 7, 0.4)',
+                                            borderLeft: '4px solid #ffc107',
+                                            borderRadius: '8px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            animation: 'pulseGlow 2s ease-in-out infinite',
+                                        }}
+                                    >
+                                        <i className="ri-alert-fill" style={{ color: '#ffc107', fontSize: '1.3rem' }}></i>
+                                        <div style={{ fontFamily: 'var(--font-electrolize), sans-serif', fontSize: '0.9rem', color: 'rgba(238, 238, 238, 0.95)' }}>
+                                            <strong style={{ color: '#ffc107' }}>Only {seatsLeft} seats left!</strong>
+                                            <span> Seats filling fast – register soon!</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Prelims Notice Card */}
+                                <div
+                                    style={{
+                                        marginTop: '16px',
+                                        padding: '14px 18px',
+                                        background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(30, 136, 229, 0.08) 100%)',
+                                        border: '1px solid rgba(33, 150, 243, 0.4)',
+                                        borderLeft: '4px solid #2196F3',
+                                        borderRadius: '8px',
+                                        display: 'flex',
+                                        alignItems: 'flex-start',
+                                        gap: '12px',
+                                    }}
+                                >
+                                    <i className="ri-megaphone-fill" style={{ color: '#2196F3', fontSize: '1.3rem', marginTop: '2px' }}></i>
+                                    <div style={{ fontFamily: 'var(--font-electrolize), sans-serif', fontSize: '0.9rem', color: 'rgba(238, 238, 238, 0.95)' }}>
+                                        <strong style={{ color: '#2196F3' }}>Important Notice:</strong>
+                                        <span> Due to high volume of registrations, we will be conducting <strong>online prelims (elimination round) before 13th February</strong>. Details will be shared in the WhatsApp group.</span>
+                                    </div>
+                                </div>
+
+                                {/* WhatsApp Group Card */}
+                                <div
+                                    style={{
+                                        marginTop: '12px',
+                                        padding: '14px 18px',
+                                        background: 'linear-gradient(135deg, rgba(37, 211, 102, 0.15) 0%, rgba(18, 140, 126, 0.08) 100%)',
+                                        border: '1px solid rgba(37, 211, 102, 0.4)',
+                                        borderLeft: '4px solid #25D366',
+                                        borderRadius: '8px',
+                                        display: 'flex',
+                                        alignItems: 'flex-start',
+                                        gap: '12px',
+                                    }}
+                                >
+                                    <i className="ri-whatsapp-fill" style={{ color: '#25D366', fontSize: '1.4rem', marginTop: '2px' }}></i>
+                                    <div style={{ fontFamily: 'var(--font-electrolize), sans-serif', fontSize: '0.9rem', color: 'rgba(238, 238, 238, 0.95)' }}>
+                                        <strong style={{ color: '#25D366' }}>Join WhatsApp Group (Required):</strong>
+                                        <span> All Hackathon participants <strong>must</strong> join the official WhatsApp group for updates, prelim details, and announcements.</span>
+                                        <div style={{ marginTop: '10px' }}>
+                                            <a
+                                                href="https://chat.whatsapp.com/IXuamMi1togJIHOuZ8MnBr"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    padding: '8px 16px',
+                                                    background: '#25D366',
+                                                    color: '#fff',
+                                                    borderRadius: '20px',
+                                                    textDecoration: 'none',
+                                                    fontSize: '0.85rem',
+                                                    fontWeight: 600,
+                                                    transition: 'transform 0.2s, box-shadow 0.2s',
+                                                }}
+                                                onMouseOver={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1.05)';
+                                                    e.currentTarget.style.boxShadow = '0 4px 15px rgba(37, 211, 102, 0.4)';
+                                                }}
+                                                onMouseOut={(e) => {
+                                                    e.currentTarget.style.transform = 'scale(1)';
+                                                    e.currentTarget.style.boxShadow = 'none';
+                                                }}
+                                            >
+                                                <i className="ri-external-link-line"></i>
+                                                Join Group
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* Description */}
                                 <p className={styles.modalDesc}>{description}</p>
 
@@ -417,14 +549,6 @@ export default function FlagshipEvent() {
                                                 </div>
                                             </div>
                                         ))}
-                                    </div>
-                                </div>
-
-                                {/* Team Size */}
-                                <div className={styles.infoGrid}>
-                                    <div className={styles.infoItem}>
-                                        <div className={styles.infoLabel}>Team Size</div>
-                                        <div className={styles.infoValue}>{teamSize} Members</div>
                                     </div>
                                 </div>
 
@@ -473,21 +597,51 @@ export default function FlagshipEvent() {
                                     </div>
                                 )}
 
-                                {/* Register Button - Hidden when pre-registration is enabled */}
+                                {/* Register Button / Status - Hidden when pre-registration is enabled */}
                                 {!isPreRegistrationEnabled && (
-                                    <button
-                                        className={styles.registerBtn}
-                                        onClick={isRegistered ? undefined : handleRegisterClick}
-                                        style={{
-                                            cursor: isRegistered ? 'default' : 'pointer',
-                                            background: isRegistered ? 'transparent' : undefined,
-                                            borderColor: isRegistered ? '#00E676' : undefined,
-                                            color: isRegistered ? '#00E676' : undefined,
-                                            boxShadow: isRegistered ? 'none' : undefined,
-                                        }}
-                                    >
-                                        {isRegistered ? 'Registered' : 'Register Now'}
-                                    </button>
+                                    isClosed && !isRegistered ? (
+                                        <div
+                                            style={{
+                                                marginTop: '1rem',
+                                                padding: '14px 18px',
+                                                borderRadius: '999px',
+                                                border: '1px solid rgba(255, 100, 100, 0.6)',
+                                                background: 'rgba(255, 100, 100, 0.08)',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: '10px',
+                                                color: '#ff7777',
+                                                fontSize: '0.9rem'
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    width: 8,
+                                                    height: 8,
+                                                    borderRadius: '50%',
+                                                    background: '#ff7777',
+                                                    boxShadow: '0 0 8px rgba(255, 119, 119, 0.8)'
+                                                }}
+                                            />
+                                            <span>
+                                                Registrations for Thooral Hackathon are now <strong>full</strong>. New registrations are closed.
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            className={styles.registerBtn}
+                                            onClick={isRegistered ? undefined : handleRegisterClick}
+                                            style={{
+                                                cursor: isRegistered ? 'default' : 'pointer',
+                                                background: isRegistered ? 'transparent' : undefined,
+                                                borderColor: isRegistered ? '#00E676' : undefined,
+                                                color: isRegistered ? '#00E676' : undefined,
+                                                boxShadow: isRegistered ? 'none' : undefined,
+                                            }}
+                                        >
+                                            {isRegistered ? 'Registered' : 'Register Now'}
+                                        </button>
+                                    )
                                 )}
                             </div>
                         </div>

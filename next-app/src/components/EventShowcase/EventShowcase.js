@@ -131,6 +131,36 @@ export default function EventShowcase({ sounds, initialEventId }) {
                     items = eventsData
                         .filter(e => !e.eventName.toLowerCase().includes('thooral'))
                         .map(e => ({ ...e, isFullDetailsLoaded: true }));
+                    // Fetch registration counts for seat caps and auto-close
+                    try {
+                        const counts = await eventService.getEventRegistrationCounts();
+                        items = items.map(ev => {
+                            const cap = ev.cap;
+                            const registeredCount = cap != null && typeof counts[ev.eventId] === 'number' ? counts[ev.eventId] : undefined;
+                            const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
+                            const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
+                            
+                            // Exception: Git Wars (EVNT03) should remain open with actual counts
+                            if (ev.eventId === 'EVNT03') {
+                                return {
+                                    ...ev,
+                                    registeredCount,
+                                    seatsLeft,
+                                    closed: ev.closed || autoClosed,
+                                };
+                            }
+                            
+                            // Force all technical events to be closed
+                            return {
+                                ...ev,
+                                registeredCount,
+                                seatsLeft: 0, // Force technical events to show 0 seats left
+                                closed: true, // Force technical events to be closed
+                            };
+                        });
+                    } catch (e) {
+                        console.error("Failed to fetch event registration counts", e);
+                    }
                 } else if (category === 'workshops') {
                     items = workshopsData.map(w => ({
                         ...w,
@@ -147,6 +177,27 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             _id: a._id
                         })) : []
                     }));
+                    // Fetch registration counts for workshops
+                    try {
+                        const counts = await eventService.getWorkshopRegistrationCounts();
+                        items = items.map(w => {
+                            // Map maxCount to cap for consistency with events
+                            const cap = w.maxCount;
+                            const registeredCount = cap != null && typeof counts[w.workshopId] === 'number' ? counts[w.workshopId] : undefined;
+                            const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
+                            const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
+                            
+                            return {
+                                ...w,
+                                cap, // Standardize cap field
+                                registeredCount,
+                                seatsLeft,
+                                closed: w.closed || autoClosed,
+                            };
+                        });
+                    } catch (e) {
+                        console.error("Failed to fetch workshop registration counts", e);
+                    }
                 } else if (category === 'papers') {
                     items = papersData.map(p => ({
                         ...p,
@@ -377,6 +428,18 @@ export default function EventShowcase({ sounds, initialEventId }) {
     const handleRegisterClick = () => {
         if (sounds?.click) sounds.click.play();
 
+        // Check if event is closed
+        if (currentEvent.closed) {
+            setNotification({
+                isOpen: true,
+                type: 'error',
+                title: 'Registration Closed',
+                message: `Registrations for ${currentEvent.eventName} are now full. New registrations are closed.`,
+                onConfirm: () => closeNotification()
+            });
+            return;
+        }
+
         // If pre-registration mode is enabled, open the pre-registration modal
         if (isPreRegistrationEnabled) {
             openPreRegModal();
@@ -595,18 +658,20 @@ export default function EventShowcase({ sounds, initialEventId }) {
                 {!isPreRegistrationEnabled && (
                     <button
                         className={styles.registerButton}
-                        onClick={!currentEvent.isRegistered ? handleRegisterClick : undefined}
+                        onClick={!currentEvent.isRegistered && category !== 'papers' ? handleRegisterClick : undefined}
                         style={{
-                            background: currentEvent.isRegistered ? 'transparent' : undefined,
-                            cursor: currentEvent.isRegistered ? 'default' : 'pointer',
-                            borderColor: currentEvent.isRegistered ? '#B0B0B0' : undefined,
-                            color: currentEvent.isRegistered ? '#B0B0B0' : undefined,
-                            boxShadow: currentEvent.isRegistered ? 'none' : undefined,
+                            background: currentEvent.isRegistered || category === 'papers' ? 'transparent' : undefined,
+                            cursor: currentEvent.isRegistered || category === 'papers' ? 'default' : 'pointer',
+                            borderColor: currentEvent.isRegistered || category === 'papers' ? '#B0B0B0' : undefined,
+                            color: currentEvent.isRegistered || category === 'papers' ? '#B0B0B0' : undefined,
+                            boxShadow: currentEvent.isRegistered || category === 'papers' ? 'none' : undefined,
                         }}
                     >
                         <span>
                             {currentEvent.isRegistered
                                 ? 'Registered'
+                                : category === 'papers'
+                                ? 'Registration Closed'
                                 : 'Register Now'
                             }
                         </span>
@@ -685,6 +750,19 @@ export default function EventShowcase({ sounds, initialEventId }) {
                         <div className={styles.statLabel}>Venue</div>
                         <div className={styles.statValue}>{currentEvent.hall}</div>
                     </div>
+
+                    {(category === 'events' || category === 'workshops') && currentEvent.cap != null && (
+                        <div className={styles.statItem}>
+                            <div className={styles.statLabel}>Seats left</div>
+                            <div className={styles.statValue} style={{ color: currentEvent.seatsLeft === 0 ? '#ff6b6b' : undefined }}>
+                                {currentEvent.seatsLeft === 0
+                                    ? 'Full'
+                                    : currentEvent.seatsLeft !== undefined
+                                    ? `${currentEvent.seatsLeft}`
+                                    : `Up to ${currentEvent.cap}`}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Center Event Display - Now contains primarily the image */}
@@ -816,6 +894,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             ))}
                         </div>
                     )}
+                    {/* Seats warning banner removed */}
                     <button className={styles.ctaButton} onClick={openModal}>
                         <span>Learn More</span>
                         <i className="ri-arrow-right-line"></i>
@@ -909,6 +988,18 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                             <span className={styles.modalInfoValue}>{currentEvent.teamSize} Members</span>
                                         </div>
                                     )}
+                                    {category === 'events' && currentEvent.cap != null && (
+                                        <div className={styles.modalInfoItem}>
+                                            <span className={styles.modalInfoLabel}>Seats left</span>
+                                            <span className={styles.modalInfoValue} style={{ color: currentEvent.seatsLeft === 0 ? '#ff6b6b' : undefined }}>
+                                                {currentEvent.seatsLeft === 0
+                                                    ? 'Full'
+                                                    : currentEvent.seatsLeft !== undefined
+                                                    ? `${currentEvent.seatsLeft} seats left`
+                                                    : `Up to ${currentEvent.cap} seats`}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Deadlines - Only for Papers */}
@@ -984,24 +1075,28 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                     </div>
                                 )}
 
-                                {/* Register Button in modal - Hidden when pre-registration is enabled */}
+                                {/* Register Button / Status - Hidden when pre-registration is enabled */}
                                 {!isPreRegistrationEnabled && (
                                     <button
                                         className={styles.registerBtn}
-                                        onClick={!currentEvent.isRegistered ? handleRegisterClick : undefined}
+                                        onClick={!currentEvent.isRegistered && !currentEvent.closed && category !== 'papers' ? handleRegisterClick : undefined}
+                                        disabled={(currentEvent.closed || category === 'papers') && !currentEvent.isRegistered}
                                         style={{
-                                            opacity: currentEvent.isRegistered ? 1 : 1,
-                                            cursor: currentEvent.isRegistered ? 'default' : 'pointer',
-                                            background: currentEvent.isRegistered ? 'transparent' : undefined,
-                                            borderColor: currentEvent.isRegistered ? '#9E9E9E' : undefined,
-                                            color: currentEvent.isRegistered ? '#B0B0B0' : undefined,
-                                            boxShadow: currentEvent.isRegistered ? '0 0 15px rgba(176, 176, 176, 0.3)' : undefined,
-                                            boxShadow: currentEvent.isRegistered ? 'none' : undefined,
+                                            opacity: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 0.5 : 1,
+                                            cursor: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 'not-allowed' : 'pointer',
+                                            background: currentEvent.isRegistered ? 'transparent' : ((currentEvent.closed || category === 'papers') ? 'rgba(128, 128, 128, 0.2)' : undefined),
+                                            borderColor: currentEvent.isRegistered ? '#9E9E9E' : ((currentEvent.closed || category === 'papers') ? '#888' : undefined),
+                                            color: currentEvent.isRegistered ? '#B0B0B0' : ((currentEvent.closed || category === 'papers') ? '#888' : undefined),
+                                            boxShadow: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 'none' : undefined,
                                         }}
                                     >
                                         <span>
                                             {currentEvent.isRegistered
                                                 ? 'Registered'
+                                                : currentEvent.closed
+                                                ? 'Registration Full'
+                                                : category === 'papers'
+                                                ? 'Registration Closed'
                                                 : 'Register Now'
                                             }
                                         </span>

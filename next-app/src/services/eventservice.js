@@ -32,6 +32,23 @@ export const eventService = {
         return response.data;
     },
 
+    // Get registration counts per event (for seat caps).
+    // Backend may return: { counts: { EVNT01: 50, ... } }, { EVNT01: 50, ... }, or [ { eventId: 'EVNT01', count: 50 }, ... ]
+    getEventRegistrationCounts: async () => {
+        const response = await api.get('/api/events/counts');
+        const data = response.data;
+        let counts = data?.counts ?? data;
+        if (Array.isArray(counts)) {
+            counts = counts.reduce((acc, item) => {
+                const id = item.eventId ?? item.event_id ?? item.id;
+                const n = item.count ?? item.registeredCount ?? item.registrations;
+                if (id != null && typeof n === 'number') acc[id] = n;
+                return acc;
+            }, {});
+        }
+        return typeof counts === 'object' && counts !== null ? counts : {};
+    },
+
 
     // --- Workshops ---
     // Get all workshops
@@ -62,6 +79,23 @@ export const eventService = {
     checkUserWorkshopRegistration: async (workshopId) => {
         const response = await api.get(`/api/events/user/workshop/${workshopId}`);
         return response.data;
+    },
+
+    // Get registration counts per workshop (for seat caps).
+    getWorkshopRegistrationCounts: async () => {
+        const response = await api.get('/api/events/workshops/counts');
+        const data = response.data;
+        let counts = data?.counts ?? data;
+        // Normalize if array (mirrors getEventRegistrationCounts logic)
+        if (Array.isArray(counts)) {
+            counts = counts.reduce((acc, item) => {
+                const id = item.workshopId ?? item.workshop_id ?? item.id;
+                const n = item.count ?? item.registeredCount ?? item.registrations;
+                if (id != null && typeof n === 'number') acc[id] = n;
+                return acc;
+            }, {});
+        }
+        return typeof counts === 'object' && counts !== null ? counts : {};
     },
 
 

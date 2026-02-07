@@ -12,6 +12,7 @@ import { withStyles } from '@/tools/withStyles';
 import { Secuence as SecuenceComponent } from '@/components/Secuence';
 import { Button } from '@/components/Button';
 import colleges from '@/app/CollegeList';
+import { isPreRegistrationEnabled, IS_ACCOMMODATION_CLOSED } from '../../../settings/featureFlags';
 import { eventService } from '@/services/eventservice';
 
 // Accommodation Instructions
@@ -1928,7 +1929,7 @@ class ProfilePage extends React.Component {
                                     {/* Registration Panel */}
                                     <div className={classes.accommodationPanel}>
                                         <h3 className={classes.panelHeader}>
-                                            {accommodationRegistered ? 'Registration Details' : 'Register for Accommodation'}
+                                            {accommodationRegistered ? 'Registration Details' : 'Accommodation Status'}
                                         </h3>
 
                                         {accommodationLoading ? (
@@ -1936,7 +1937,6 @@ class ProfilePage extends React.Component {
                                                 Loading accommodation status...
                                             </div>
                                         ) : accommodationRegistered ? (
-                                            /* Registered View */
                                             <div>
                                                 <div className={classes.registeredBadge}>
                                                     <span>✓</span> Registered for Accommodation
@@ -1973,8 +1973,40 @@ class ProfilePage extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
+                                        ) : IS_ACCOMMODATION_CLOSED ? (
+                                            <div style={{ 
+                                                padding: '30px 20px', 
+                                                textAlign: 'center',
+                                                background: 'rgba(255, 100, 100, 0.1)',
+                                                border: '1px solid rgba(255, 100, 100, 0.3)',
+                                                borderRadius: '12px'
+                                            }}>
+                                                <div style={{ 
+                                                    fontSize: '2rem', 
+                                                    marginBottom: '15px'
+                                                }}>
+                                                    🏠
+                                                </div>
+                                                <h4 style={{ 
+                                                    color: '#ff6666', 
+                                                    margin: '0 0 10px 0',
+                                                    fontSize: '1.2rem',
+                                                    fontWeight: 700
+                                                }}>
+                                                    Accommodation Full
+                                                </h4>
+                                                <p style={{ 
+                                                    color: '#aaa', 
+                                                    margin: 0,
+                                                    fontSize: '0.9rem',
+                                                    lineHeight: 1.5
+                                                }}>
+                                                    Registration for accommodation is now closed as all slots have been filled.
+                                                    <br />
+                                                    For any queries, please contact the accommodation team.
+                                                </p>
+                                            </div>
                                         ) : (
-                                            /* Registration Form */
                                             <div className={classes.accommodationForm}>
                                                 {accommodationError && (
                                                     <div style={{ padding: '10px', background: 'rgba(255,0,0,0.1)', border: '1px solid #ff4444', borderRadius: 8, color: '#ff6666', fontSize: '0.85rem' }}>

@@ -658,18 +658,22 @@ export default function EventShowcase({ sounds, initialEventId }) {
                 {!isPreRegistrationEnabled && (
                     <button
                         className={styles.registerButton}
-                        onClick={!currentEvent.isRegistered && category !== 'papers' ? handleRegisterClick : undefined}
+                        onClick={!currentEvent.isRegistered && !currentEvent.closed && category !== 'papers' ? handleRegisterClick : undefined}
+                        disabled={(currentEvent.closed || category === 'papers') && !currentEvent.isRegistered}
                         style={{
-                            background: currentEvent.isRegistered || category === 'papers' ? 'transparent' : undefined,
-                            cursor: currentEvent.isRegistered || category === 'papers' ? 'default' : 'pointer',
-                            borderColor: currentEvent.isRegistered || category === 'papers' ? '#B0B0B0' : undefined,
-                            color: currentEvent.isRegistered || category === 'papers' ? '#B0B0B0' : undefined,
-                            boxShadow: currentEvent.isRegistered || category === 'papers' ? 'none' : undefined,
+                            opacity: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 0.5 : 1,
+                            cursor: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 'not-allowed' : 'pointer',
+                            background: currentEvent.isRegistered ? 'transparent' : ((currentEvent.closed || category === 'papers') ? 'rgba(128, 128, 128, 0.2)' : undefined),
+                            borderColor: currentEvent.isRegistered ? '#9E9E9E' : ((currentEvent.closed || category === 'papers') ? '#888' : undefined),
+                            color: currentEvent.isRegistered ? '#B0B0B0' : ((currentEvent.closed || category === 'papers') ? '#888' : undefined),
+                            boxShadow: (currentEvent.isRegistered || currentEvent.closed || category === 'papers') ? 'none' : undefined,
                         }}
                     >
                         <span>
                             {currentEvent.isRegistered
                                 ? 'Registered'
+                                : currentEvent.closed
+                                ? 'Registration Full'
                                 : category === 'papers'
                                 ? 'Registration Closed'
                                 : 'Register Now'

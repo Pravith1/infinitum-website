@@ -390,7 +390,7 @@ export const workshopsData = [
             }
         ],
         "earlyBirdActive": true,
-        "closed": false,
+        "closed": true,
         "prerequisites": "Basic understanding of AI concepts, Laptop",
         "youtubeUrl": "https://youtube.com/watch?v=example",
         "createdAt": {

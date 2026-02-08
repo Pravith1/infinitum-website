@@ -364,7 +364,7 @@ export const workshopsData = [
                 }
             }
         ],
-        "maxCount": 80,
+        "maxCount": 79,
         "description": "A comprehensive workshop on AI Infrastructure featuring expert speakers from Cisco Systems. Learn about the infrastructure requirements for AI, including QoS, Load-Balancing, Security, and real-world AI implementations.",
         "agenda": [
             {
@@ -423,7 +423,7 @@ export const workshopsData = [
             { "name": "Saran M", "mobile": "8148599787", "_id": { "$oid": "dummy_oid_1" } },
             { "name": "Rohish Raj", "mobile": "8220990444", "_id": { "$oid": "dummy_oid_1b" } }
         ],
-        "maxCount": 80,
+        "maxCount": 75,
         "description": "A comprehensive workshop on Product Prototyping for Industry Applications.",
         "agenda": [],
         "earlyBirdActive": true,
@@ -456,7 +456,7 @@ export const workshopsData = [
             { "name": "Surya Narayanan NT", "mobile": "7448757584", "_id": { "$oid": "dummy_oid_1" } },
             { "name": "Dileepan", "mobile": "9344220239", "_id": { "$oid": "dummy_oid_1b" } }
         ],
-        "maxCount": 80,
+        "maxCount": 30,
         "description": "Learn about threat detection modelling and cybersecurity defense strategies.",
         "agenda": [],
         "earlyBirdActive": true,

@@ -8,6 +8,7 @@ import styles from './Sponsors.module.css';
 const SPONSORS_DATA = [
     { logo: "/images/sponsors/psiog_logo.png", type: "Title Sponsor", link: "https://psiog.com/" },
     { text: "BE CSE 2002 Batch Alumnus", type: "Event Sponsor" },
+    { text: "Ishwarya T M\nCSE 2019 batch Alumna", type: "Event Sponsor" },
     { logo: "/images/sponsors/dossier.nexus.png", type: "Tech Partner", link: "https://www.dossier.nexus/" },
     { logo: "/images/sponsors/Eventopia-Logo-07.png", type: "Media Partner" },
     { logo: "/images/sponsors/revline.png", type: "Other Sponsor", link: "https://rev-line-gamma.vercel.app/" }
@@ -37,14 +38,28 @@ export default function Sponsors() {
                                             {sponsor.logo ? (
                                                 <img src={sponsor.logo} alt={`${sponsor.type}`} className={styles.sponsorlogo} />
                                             ) : (
-                                                <span className={styles.sponsorText}>{sponsor.text}</span>
+                                                <span className={styles.sponsorText}>
+                                                    {sponsor.text.split('\n').map((line, i, lines) => (
+                                                        <React.Fragment key={i}>
+                                                            {line}
+                                                            {i < lines.length - 1 && <br />}
+                                                        </React.Fragment>
+                                                    ))}
+                                                </span>
                                             )}
                                         </a>
                                     ) : (
                                         sponsor.logo ? (
                                             <img src={sponsor.logo} alt={`${sponsor.type}`} className={styles.sponsorlogo} />
                                         ) : (
-                                            <span className={styles.sponsorText}>{sponsor.text}</span>
+                                            <span className={styles.sponsorText}>
+                                                {sponsor.text.split('\n').map((line, i, lines) => (
+                                                    <React.Fragment key={i}>
+                                                        {line}
+                                                        {i < lines.length - 1 && <br />}
+                                                    </React.Fragment>
+                                                ))}
+                                            </span>
                                         )
                                     )}
                                 </div>

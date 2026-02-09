@@ -987,7 +987,8 @@ class FeePaymentPage extends React.Component {
                                 <div className={classes.payNowSection}>
                                     <button
                                         onClick={this.handlePayNowClick}
-                                        className={classes.payNowButton}
+                                        className={`${classes.payNowButton} ${classes.disabled}`}
+                                        disabled
                                     >
                                         Pay Now
                                     </button>

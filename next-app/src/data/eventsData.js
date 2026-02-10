@@ -112,7 +112,7 @@ export const eventsData = [
         "prizePool": "₹4,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
-        "cap": 235,
+        "cap": 233,
         "dateAndTime": "Feb 14, 9:00 AM – 12:30 PM",
         "scheduleStart": "09:00",
         "scheduleEnd": "12:30",

@@ -18,19 +18,19 @@ const DAYS = [
 const RAW_EVENTS = [
     // Day 1
     { title: 'Inauguration', start: '09:00', end: '10:00', category: 'general', day: 'day1', venue: 'D Block Conference Hall' },
-    { title: 'Thooral Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1', venue: '3AI and AIR Labs' },
-    { title: 'Force Coders', start: '13:30', end: '16:00', category: 'technical', type: 'tech', day: 'day1', venue: 'Computer Center' },
-    { title: 'Quest X', start: '10:00', end: '15:00', category: 'nontechnical', type: 'nontech', day: 'day1', venue: 'Classrooms' },
-    { title: 'AI Infrastructure', start: '10:00', end: '16:00', category: 'workshop', day: 'day1', venue: 'SCPS Lab' },
-    { title: 'Open Quiz', start: '10:00', end: '12:30', category: 'quiz', day: 'day1', venue: 'D Block Conference Hall' },
+    { title: 'Thooral Hackathon', start: '10:00', end: '16:30', category: 'flagship', day: 'day1', venue: 'GRD Lab and Big Data Lab' },
+    { title: 'Force Coders', start: '13:30', end: '16:30', category: 'technical', type: 'tech', day: 'day1', venue: '3AI and Programming Lab-I' },
+    { title: 'Quest X', start: '10:00', end: '15:00', category: 'nontechnical', type: 'nontech', day: 'day1', venue: 'G405, G406, G408, G409' },
+    { title: 'AI Infrastructure', start: '10:00', end: '16:30', category: 'workshop', day: 'day1', venue: 'SCPS Lab' },
+    { title: 'Open Quiz', start: '10:00', end: '12:30', category: 'quiz', day: 'day1', venue: 'D Block' },
     { title: 'Award Ceremony - I', start: '16:30', end: '17:15', category: 'awards', day: 'day1', venue: 'F203' },
 
     // Day 2
-    { title: 'Thooral Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2', venue: 'GRD Lab and Programming-I Labs' },
-    { title: 'Code Mania', start: '09:00', end: '15:00', category: 'technical', type: 'tech', day: 'day2', venue: 'Computer Center' },
-    { title: 'Nexus', start: '09:00', end: '12:30', category: 'technical', type: 'tech', day: 'day2', venue: '3AI and Cloud Computing Labs' },
-    { title: 'Git Wars', start: '09:00', end: '12:30', category: 'nontechnical', type: 'nontech', day: 'day2', venue: 'Classrooms' },
-    { title: 'AI and Emerging Trends', start: '10:00', end: '12:30', category: 'presentation', day: 'day2', venue: 'Department Seminar Hall - CSE' },
+    { title: 'Thooral Hackathon', start: '09:00', end: '15:00', category: 'flagship', day: 'day2', venue: 'GRD Lab and Big Data Lab' },
+    { title: 'Code Mania', start: '09:00', end: '15:00', category: 'technical', type: 'tech', day: 'day2', venue: 'GRD Lab, Software Lab and Programming Lab-I' },
+    { title: 'Nexus', start: '09:00', end: '12:30', category: 'technical', type: 'tech', day: 'day2', venue: 'Cloud Computing Lab' },
+    { title: 'Git Wars', start: '09:00', end: '12:30', category: 'nontechnical', type: 'nontech', day: 'day2', venue: 'G402, G403, G404' },
+    { title: 'AI and Emerging Trends', start: '10:00', end: '12:30', category: 'presentation', day: 'day2', venue: 'G405, G406, G407, G408, G409' },
     { title: 'Product Prototyping for Industry Applications', start: '09:00', end: '15:00', category: 'workshop', day: 'day2', venue: 'AIR Lab' },
     { title: 'Threat Detection Modelling', start: '09:00', end: '15:00', category: 'workshop', day: 'day2', venue: 'SCPS Lab' },
     { title: 'Award Ceremony - II', start: '16:00', end: '16:45', category: 'awards', day: 'day2', venue: 'F203' }

@@ -48,8 +48,8 @@ const EVENT_DATA = {
         "Day 2": "9:00 AM - 3:00 PM"
     },
     hall: {
-        "Day 1": { date: "FEB 13", lab: "3AI and AIR Labs" },
-        "Day 2": { date: "FEB 14", lab: "GRD Lab and Programming Lab- I" }
+        "Day 1": { date: "FEB 13", lab: "GRD Lab and Big Data Lab" },
+        "Day 2": { date: "FEB 14", lab: "GRD Lab and Big Data Lab" }
     },
     clubName: "CSEA"
 };
@@ -89,7 +89,7 @@ export default function FlagshipEvent() {
                 const registeredCount = typeof counts[EVENT_DATA.eventId] === 'number' ? counts[EVENT_DATA.eventId] : 0;
                 const remaining = EVENT_DATA.cap - registeredCount;
                 setSeatsLeft(Math.max(0, remaining));
-                
+
                 // Auto-close if capacity reached
                 if (registeredCount >= EVENT_DATA.cap) {
                     setIsClosed(true);

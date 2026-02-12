@@ -25,7 +25,7 @@ export const eventsData = [
             { "name": "Neelesh Padmanabh", "mobile": "8148401083", "_id": { "$oid": "694ce9c4297836cde7682482" } },
             { "name": "Atul Vasanthakrishnan", "mobile": "9345722948", "_id": { "$oid": "694ce9c4297836cde7682483" } }
         ],
-        "hall": "Classrooms",
+        "hall": "G405, G406, G408, G409",
         "eventRules": "Participants must follow organiser instructions and maintain sportsmanship throughout the event.",
         "teamSize": 4,
         "prizePool": "₹5,000",
@@ -63,7 +63,7 @@ export const eventsData = [
             { "name": "Karthick J S", "mobile": "9042480747", "_id": { "$oid": "694ce9d2297836cde768248a" } },
             { "name": "Pravith", "mobile": "9843243610", "_id": { "$oid": "694ce9d2297836cde768248b" } }
         ],
-        "hall": "3AI and Cloud Computing Labs",
+        "hall": "Cloud Computing Lab",
         "eventRules": "Time limit is 2 hours. Participants must follow organiser instructions. Any cheating leads to disqualification. Points are awarded based on accuracy, creativity, and timely completion. Organisers' decisions are final.",
         "teamSize": 3,
         "prizePool": "₹3,000",
@@ -106,7 +106,7 @@ export const eventsData = [
             { "name": "Srimathikalpana T", "mobile": "8122966128", "_id": { "$oid": "694cec9c297836cde7682493" } },
             { "name": "Suryaprakash B", "mobile": "7339143171", "_id": { "$oid": "694cec9c297836cde7682494" } }
         ],
-        "hall": "Classrooms",
+        "hall": "G402, G403, G404",
         "eventRules": "Teams must follow organiser instructions. Judging is based on accuracy, time, creativity, team synergy, and effective use of advantages. Organisers' decisions are final.",
         "teamSize": 3,
         "prizePool": "₹4,000",
@@ -160,14 +160,14 @@ export const eventsData = [
             { "name": "Dhaarun Abhimanyu S", "mobile": "9790313358", "_id": { "$oid": "694ceca6297836cde768249c" } },
             { "name": "A T Abbilaash", "mobile": "8667093591", "_id": { "$oid": "694ceca6297836cde768249d" } }
         ],
-        "hall": "3AI,AIR",
+        "hall": "3AI and Programming Lab-I",
         "eventRules": "Cheating is prohibited. Points are awarded for successful hacks and reduced for failed hacks or broken defenses. Final scores are calculated using aggregate performance across both rounds. Organisers' decisions are final.",
         "teamSize": 1,
         "prizePool": "₹10,000",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
         "cap": 130,
-        "dateAndTime": "Feb 13, 1:30 PM – 4:00 PM",
+        "dateAndTime": "Feb 13, 1:30 PM – 4:30 PM",
         "scheduleStart": "10:00",
         "scheduleEnd": "12:30",
         "scheduleDay": "day1",
@@ -212,7 +212,7 @@ export const eventsData = [
                 "_id": { "$oid": "694ced34297836cde76824a8" }
             }
         ],
-        "hall": "D Block Conference Hall",
+        "hall": "D Block",
         "eventRules": "Participants must follow organiser instructions at all times. Fair play and integrity are mandatory. Organisers’ decisions are final.",
         "teamSize": 3,
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
@@ -261,7 +261,7 @@ export const eventsData = [
                 }
             }
         ],
-        "hall": "GRD,Programming lab",
+        "hall": "GRD Lab, Software Lab and Programming Lab-I",
         "eventRules": "Team participation only. Follow coding standards. Organisers' decisions are final.",
         "date": { "$date": "2026-02-01T09:00:00.000Z" },
         "closed": false,
@@ -520,7 +520,7 @@ export const papersData = [
             "$date": "2026-02-06T00:00:00.000Z"
         },
         "teamSize": "1 to 4",
-        "hall": "Department Seminar Hall - CSE",
+        "hall": "G405, G406, G407, G408, G409",
         "closed": false,
         "youtubeUrl": "https://www.youtube.com/watch?v=example",
         "club_id": {

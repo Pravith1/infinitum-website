@@ -23,3 +23,7 @@ export const preRegistrationConfig = {
     buttonText: "Pre-Register",
     successMessage: "You're on the list! We'll notify you when registrations open.",
 };
+
+// PSG Restriction toggle
+// When true: Restricts PSG students from registering and booking events
+export const isPsgRestricted = true;

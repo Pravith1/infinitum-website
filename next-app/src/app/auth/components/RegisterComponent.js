@@ -6,11 +6,9 @@ import { authService } from '@/services/authService';
 import '../auth.css';
 import colleges from '@/app/CollegeList';
 
-// PSG Colleges that require specific email domains
-const PSG_COLLEGES = {
-    'PSG College of Technology (Autonomous), Peelamedu, Coimbatore District 641004': '@psgtech.ac.in',
-    'PSG Institute of Technology and Applied Research, Avinashi Road, Neelambur, Coimbatore 641062': '@psgitech.ac.in'
-};
+// PSG Colleges import now from centralized file
+import { PSG_COLLEGES, isPsgEmail } from '@/data/psgColleges';
+import { isPsgRestricted } from '@/settings/featureFlags';
 
 export default function RegisterComponent() {
     const router = useRouter();
@@ -40,6 +38,7 @@ export default function RegisterComponent() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [showInstructionsOverlay, setShowInstructionsOverlay] = useState(false);
     const [instructionsAgreed, setInstructionsAgreed] = useState(false);
+    const [showPsgRestrictedOverlay, setShowPsgRestrictedOverlay] = useState(false);
 
     useEffect(() => {
         const storedEmail = localStorage.getItem('registration_email');
@@ -59,6 +58,11 @@ export default function RegisterComponent() {
             // Pre-fill referral field if exists in localStorage
             referral: storedReferralCode || prev.referral
         }));
+
+        // Immediate check for PSG Restricted Google Registration
+        if (isPsgRestricted && (source === 'google' || storedGoogleId) && storedEmail && isPsgEmail(storedEmail)) {
+            setShowPsgRestrictedOverlay(true);
+        }
     }, [source, router]);
 
     // Check if email is from a PSG college
@@ -90,11 +94,26 @@ export default function RegisterComponent() {
         const selectedCollege = formData.college;
         const email = formData.email.toLowerCase();
 
+        // If PSG restriction is enabled
+        if (isPsgRestricted) {
+            // Check if user is a PSG student (either by email domain or selected college)
+            const isPsgStudentByEmail = Object.values(PSG_COLLEGES).some(domain => email.endsWith(domain));
+            const isPsgCollegeSelected = PSG_COLLEGES[selectedCollege];
+
+            if (isPsgStudentByEmail || isPsgCollegeSelected) {
+                return { restricted: true };
+            }
+        }
+
+        // ORIGINAL VALIDATION (Only if not restricted or if restriction is disabled)
+        // If they select a PSG college, they MUST use the matching email domain
         if (PSG_COLLEGES[selectedCollege]) {
             const requiredDomain = PSG_COLLEGES[selectedCollege];
-            return email.endsWith(requiredDomain);
+            if (!email.endsWith(requiredDomain)) {
+                return { invalidDomain: true, requiredDomain };
+            }
         }
-        return true; // Not a PSG college, no domain restriction
+        return { valid: true };
     };
 
     const handleChange = (e) => {
@@ -113,7 +132,14 @@ export default function RegisterComponent() {
         setError('');
 
         // Check PSG college email validation
-        if (!validatePSGEmail()) {
+        const psgValidation = validatePSGEmail();
+
+        if (psgValidation.restricted) {
+            setShowPsgRestrictedOverlay(true);
+            return;
+        }
+
+        if (psgValidation.invalidDomain) {
             setShowEmailOverlay(true);
             return;
         }
@@ -548,6 +574,60 @@ export default function RegisterComponent() {
                             disabled={loading}
                         >
                             Review Details
+                        </button>
+                    </div>
+                </div>
+            )}
+            {/* PSG Restricted Registration Overlay */}
+            {showPsgRestrictedOverlay && (
+                <div className="psg-email-overlay">
+                    <div className="psg-email-overlay-content">
+                        <div className="psg-email-overlay-icon" style={{ borderColor: '#fae127', color: '#fae127' }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h2>Registration Restricted</h2>
+                        <p>
+                            <strong>PSG Students cannot register for a new account.</strong>
+                        </p>
+                        <p style={{ marginTop: '10px', fontSize: '0.9rem' }}>
+                            Please login with your existing credentials to access the portal.
+                        </p>
+                        <button
+                            className="auth-btn psg-overlay-btn"
+                            onClick={() => {
+                                router.push('/auth?type=login');
+                            }}
+                        >
+                            Go to Login
+                        </button>
+                        <button
+                            className="auth-link psg-overlay-close"
+                            onClick={() => {
+                                setShowPsgRestrictedOverlay(false);
+
+                                // Reset fields if they triggered the restriction
+                                if (isPsgRestricted) {
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        college: '', // Reset college selection
+                                        email: '' // We can't really clear email if it came from OTP verify, but user can click "Use another email" in logic if exists
+                                    }));
+
+                                    // Optionally clear email from storage if that was the blocker
+                                    localStorage.removeItem('registration_email');
+                                    localStorage.removeItem('registration_googleId');
+
+                                    // Redirect to start if email was the problem (so they can enter a valid one)
+                                    // router.push('/auth?type=register'); 
+                                    // Actually, just closing overlay lets them change college, but if email is fixed...
+                                }
+                            }}
+                        >
+                            Close
                         </button>
                     </div>
                 </div>

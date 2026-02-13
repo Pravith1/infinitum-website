@@ -6,7 +6,8 @@ import { eventService } from '@/services/eventservice';
 import { useAuth } from '@/context/AuthContext';
 import { useSound } from '@/context/SoundContext';
 import { usePreRegistration } from '@/context/PreRegistrationContext';
-import { isPreRegistrationEnabled, preRegistrationConfig } from '@/settings/featureFlags';
+import { isPsgRestricted, isPreRegistrationEnabled } from '@/settings/featureFlags';
+import { isPsgEmail } from '@/data/psgColleges';
 import { eventsData, workshopsData, papersData } from '@/data/eventsData';
 import { CometCard } from '@/components/ui/comet-card';
 import styles from './EventShowcase.module.css';
@@ -139,7 +140,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             const registeredCount = cap != null && typeof counts[ev.eventId] === 'number' ? counts[ev.eventId] : undefined;
                             const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
                             const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
-                            
+
                             // Exception: Git Wars (EVNT03) should remain open with actual counts
                             if (ev.eventId === 'EVNT03') {
                                 return {
@@ -149,7 +150,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                     closed: ev.closed || autoClosed,
                                 };
                             }
-                            
+
                             // Force all technical events to be closed
                             return {
                                 ...ev,
@@ -186,7 +187,7 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             const registeredCount = cap != null && typeof counts[w.workshopId] === 'number' ? counts[w.workshopId] : undefined;
                             const seatsLeft = cap != null && registeredCount !== undefined ? Math.max(0, cap - registeredCount) : undefined;
                             const autoClosed = cap != null && registeredCount !== undefined && registeredCount >= cap;
-                            
+
                             return {
                                 ...w,
                                 cap, // Standardize cap field
@@ -426,7 +427,8 @@ export default function EventShowcase({ sounds, initialEventId }) {
     };
 
     const handleRegisterClick = () => {
-        if (sounds?.click) sounds.click.play();
+        // Play click sound
+        if (sounds?.click) sounds.click.play(); // Assuming playSound is not globally available or needs to be defined. Keeping original sound logic.
 
         // Check if event is closed
         if (currentEvent.closed) {
@@ -456,6 +458,18 @@ export default function EventShowcase({ sounds, initialEventId }) {
                 message: 'Please login to register for this event.',
                 onConfirm: () => closeNotification(),
                 showLoginButton: true
+            });
+            return;
+        }
+
+        // Check for PSG student restriction
+        if (isPsgRestricted && user && isPsgEmail(user.email)) {
+            setNotification({
+                isOpen: true,
+                type: 'error',
+                title: 'Registration Restricted',
+                message: "PSG Students cannot register for events online. Please contact the organizers for more information.",
+                onConfirm: undefined
             });
             return;
         }
@@ -673,10 +687,10 @@ export default function EventShowcase({ sounds, initialEventId }) {
                             {currentEvent.isRegistered
                                 ? 'Registered'
                                 : currentEvent.closed
-                                ? 'Registration Full'
-                                : category === 'papers'
-                                ? 'Registration Closed'
-                                : 'Register Now'
+                                    ? 'Registration Full'
+                                    : category === 'papers'
+                                        ? 'Registration Closed'
+                                        : 'Register Now'
                             }
                         </span>
                     </button>
@@ -762,8 +776,8 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                 {currentEvent.seatsLeft === 0
                                     ? 'Full'
                                     : currentEvent.seatsLeft !== undefined
-                                    ? `${currentEvent.seatsLeft}`
-                                    : `Up to ${currentEvent.cap}`}
+                                        ? `${currentEvent.seatsLeft}`
+                                        : `Up to ${currentEvent.cap}`}
                             </div>
                         </div>
                     )}
@@ -999,8 +1013,8 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                                 {currentEvent.seatsLeft === 0
                                                     ? 'Full'
                                                     : currentEvent.seatsLeft !== undefined
-                                                    ? `${currentEvent.seatsLeft} seats left`
-                                                    : `Up to ${currentEvent.cap} seats`}
+                                                        ? `${currentEvent.seatsLeft} seats left`
+                                                        : `Up to ${currentEvent.cap} seats`}
                                             </span>
                                         </div>
                                     )}
@@ -1098,10 +1112,10 @@ export default function EventShowcase({ sounds, initialEventId }) {
                                             {currentEvent.isRegistered
                                                 ? 'Registered'
                                                 : currentEvent.closed
-                                                ? 'Registration Full'
-                                                : category === 'papers'
-                                                ? 'Registration Closed'
-                                                : 'Register Now'
+                                                    ? 'Registration Full'
+                                                    : category === 'papers'
+                                                        ? 'Registration Closed'
+                                                        : 'Register Now'
                                             }
                                         </span>
                                     </button>

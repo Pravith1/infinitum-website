@@ -8,7 +8,8 @@ import { eventService } from '@/services/eventservice';
 import { useSound } from '@/context/SoundContext';
 import { useAuth } from '@/context/AuthContext';
 import { usePreRegistration } from '@/context/PreRegistrationContext';
-import { isPreRegistrationEnabled, preRegistrationConfig } from '@/settings/featureFlags';
+import { isPsgRestricted, isPreRegistrationEnabled } from '@/settings/featureFlags';
+import { isPsgEmail } from '@/data/psgColleges';
 
 // Hardcoded event data for Thooral Hackathon
 const EVENT_DATA = {
@@ -219,7 +220,6 @@ export default function FlagshipEvent() {
     const handleRegisterClick = () => {
         playSound(clickSoundRef);
 
-        // If pre-registration mode is enabled, open the pre-registration modal
         if (isPreRegistrationEnabled) {
             openPreRegModal();
             return;
@@ -230,11 +230,22 @@ export default function FlagshipEvent() {
         if (!isAuthenticated && !token) {
             setNotification({
                 isOpen: true,
-                type: 'login',
+                type: 'error',
                 title: 'Login Required',
-                message: 'Please login to register for this event.',
-                onConfirm: () => closeNotification(),
-                showLoginButton: true
+                message: 'Please login to register for the flagship event.',
+                onConfirm: undefined
+            });
+            return;
+        }
+
+        // Check for PSG student restriction
+        if (isPsgRestricted && user && isPsgEmail(user.email)) {
+            setNotification({
+                isOpen: true,
+                type: 'error',
+                title: 'Registration Restricted',
+                message: "PSG Students cannot register for events online. Please contact the organizers for more information.",
+                onConfirm: undefined
             });
             return;
         }

@@ -26,4 +26,4 @@ export const preRegistrationConfig = {
 
 // PSG Restriction toggle
 // When true: Restricts PSG students from registering and booking events
-export const isPsgRestricted = true;
+export const isPsgRestricted = false;

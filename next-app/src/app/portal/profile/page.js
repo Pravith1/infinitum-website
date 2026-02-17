@@ -1417,6 +1417,48 @@ class ProfilePage extends React.Component {
         }
     };
 
+    handleDownloadCertificate = async (eventId, eventName) => {
+        try {
+            const blob = await eventService.downloadCertificate(eventId);
+
+            // Create a link element
+            const link = document.createElement('a');
+
+            // Create a URL for the blob
+            const url = window.URL.createObjectURL(blob);
+
+            link.href = url;
+            link.download = `Certificate-${eventName.replace(/\s+/g, '_')}.pdf`; // Suggest a filename
+
+            // Append the link to the body
+            document.body.appendChild(link);
+
+            // Trigger the download
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Failed to download certificate", error);
+            // Check if error response is available and is a blob
+            if (error.response && error.response.data instanceof Blob) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const errorData = JSON.parse(reader.result);
+                        alert(errorData.message || "Failed to download certificate");
+                    } catch (e) {
+                        alert("Failed to download certificate");
+                    }
+                };
+                reader.readAsText(error.response.data);
+            } else {
+                alert("Failed to download certificate. You may not have attended this event.");
+            }
+        }
+    };
+
     handleCloseIdViewer = () => {
         if (this.state.idCardPreviewUrl) {
             URL.revokeObjectURL(this.state.idCardPreviewUrl);
@@ -1889,8 +1931,22 @@ class ProfilePage extends React.Component {
                                                                 <label className={classes.fieldLabel} style={{ borderBottom: `1px solid ${categoryColor}40`, paddingBottom: 6, marginBottom: 4, color: categoryColor }}>{category}</label>
                                                                 <ul className={classes.eventList}>
                                                                     {groupedEvents[category].map(event => (
-                                                                        <li key={event._id || event.eventId}>
-                                                                            {event.eventName || event.workshopName || 'Unnamed Event'}
+                                                                        <li key={event._id || event.eventId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
+                                                                            <span>{event.eventName || event.workshopName || 'Unnamed Event'}</span>
+                                                                            {/* Only show certificate for events (not workshops/papers for now unless requested) */}
+                                                                            {event.itemType === 'event' && (
+                                                                                <button
+                                                                                    className={classes.actionBtn}
+                                                                                    onClick={() => this.handleDownloadCertificate(event.eventId, event.eventName)}
+                                                                                    style={{
+                                                                                        padding: '4px 8px',
+                                                                                        fontSize: '0.65rem',
+                                                                                        marginLeft: '10px'
+                                                                                    }}
+                                                                                >
+                                                                                    Certificate
+                                                                                </button>
+                                                                            )}
                                                                         </li>
                                                                     ))}
                                                                 </ul>
@@ -1899,7 +1955,7 @@ class ProfilePage extends React.Component {
                                                     })}
                                                 </div>
                                             ) : (
-                                                <div style={{ padding: '10px', color: '#888', fontStyle: 'italic', fontSize: '0.85rem', paddingTop: isMobile ? 0 : 15 }}>
+                                                <div style={{ paddingLeft: '10px', paddingRight: '10px', paddingBottom: '10px', color: '#888', fontStyle: 'italic', fontSize: '0.85rem', paddingTop: isMobile ? 0 : 15 }}>
                                                     No registered events yet.
                                                 </div>
                                             )}
@@ -1974,29 +2030,29 @@ class ProfilePage extends React.Component {
                                                 </div>
                                             </div>
                                         ) : IS_ACCOMMODATION_CLOSED ? (
-                                            <div style={{ 
-                                                padding: '30px 20px', 
+                                            <div style={{
+                                                padding: '30px 20px',
                                                 textAlign: 'center',
                                                 background: 'rgba(255, 100, 100, 0.1)',
                                                 border: '1px solid rgba(255, 100, 100, 0.3)',
                                                 borderRadius: '12px'
                                             }}>
-                                                <div style={{ 
-                                                    fontSize: '2rem', 
+                                                <div style={{
+                                                    fontSize: '2rem',
                                                     marginBottom: '15px'
                                                 }}>
                                                     🏠
                                                 </div>
-                                                <h4 style={{ 
-                                                    color: '#ff6666', 
+                                                <h4 style={{
+                                                    color: '#ff6666',
                                                     margin: '0 0 10px 0',
                                                     fontSize: '1.2rem',
                                                     fontWeight: 700
                                                 }}>
                                                     Accommodation Full
                                                 </h4>
-                                                <p style={{ 
-                                                    color: '#aaa', 
+                                                <p style={{
+                                                    color: '#aaa',
                                                     margin: 0,
                                                     fontSize: '0.9rem',
                                                     lineHeight: 1.5

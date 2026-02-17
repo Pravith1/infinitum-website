@@ -122,7 +122,7 @@ export const eventService = {
     submitPaper: async (paperId, file) => {
         const formData = new FormData();
         formData.append('file', file);
-        
+
         const response = await api.post(`/api/events/paper/${paperId}/submit`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -130,7 +130,7 @@ export const eventService = {
         });
         return response.data;
     },
-    
+
     // Save paper chat/comments (if applicable)
     savePaperChat: async (paperId, data) => {
         const response = await api.post(`/api/events/paper/${paperId}/chat`, data);
@@ -157,6 +157,14 @@ export const eventService = {
         const response = await api.get('/api/events/papers/registrations');
         //console.log(response.data);
         return response.data;
-        
+
+    },
+
+    // Download Certificate
+    downloadCertificate: async (eventId) => {
+        const response = await api.get(`/api/events/${eventId}/certificate`, {
+            responseType: 'blob'
+        });
+        return response.data;
     }
 };

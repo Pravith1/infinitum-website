@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '@/services/authService';
 import '../auth.css';
+import { isPsgRestricted } from '@/settings/featureFlags';
+import { isPsgEmail } from '@/data/psgColleges';
 
 export default function SendEmailComponent() {
     const router = useRouter();
@@ -16,6 +18,13 @@ export default function SendEmailComponent() {
         e.preventDefault();
         setError('');
         setLoading(true);
+
+        // Check if PSG restriction is enabled and email is from PSG domain
+        if (isPsgRestricted && isPsgEmail(email)) {
+            setError("PSG Students cannot register for a new account. Please login with your existing credentials.");
+            setLoading(false);
+            return;
+        }
 
         try {
             await authService.sendVerificationEmail({ email });

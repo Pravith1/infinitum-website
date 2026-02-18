@@ -1933,22 +1933,21 @@ class ProfilePage extends React.Component {
                                                                 <label className={classes.fieldLabel} style={{ borderBottom: `1px solid ${categoryColor}40`, paddingBottom: 6, marginBottom: 4, color: categoryColor }}>{category}</label>
                                                                 <ul className={classes.eventList}>
                                                                     {groupedEvents[category].map(event => (
-                                                                        <li key={event._id || event.eventId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, gap: 8 }}>
-                                                                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0 }}>{event.eventName || event.workshopName || 'Unnamed Event'}</span>
+                                                                        <li key={event._id || event.eventId} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: 12, gap: 6 }}>
+                                                                            <span>{event.eventName || event.workshopName || 'Unnamed Event'}</span>
                                                                             {/* Show certificate for events and paper presentations */}
                                                                             {(event.itemType === 'event' || event.itemType === 'paper') && (
                                                                                 <button
                                                                                     className={classes.actionBtn}
                                                                                     onClick={() => this.handleDownloadCertificate(event.eventId || event.paperId, event.eventName || event.workshopName || 'Certificate', event.itemType)}
                                                                                     style={{
-                                                                                        padding: '5px 10px',
-                                                                                        fontSize: '0.65rem',
-                                                                                        flexShrink: 0,
-                                                                                        minHeight: 28,
-                                                                                        whiteSpace: 'nowrap'
+                                                                                        padding: '8px 16px',
+                                                                                        fontSize: '0.75rem',
+                                                                                        width: '100%',
+                                                                                        textAlign: 'center'
                                                                                     }}
                                                                                 >
-                                                                                    Certificate
+                                                                                    Download Certificate
                                                                                 </button>
                                                                             )}
                                                                         </li>

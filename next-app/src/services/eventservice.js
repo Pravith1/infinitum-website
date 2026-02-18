@@ -160,9 +160,17 @@ export const eventService = {
 
     },
 
-    // Download Certificate
+    // Download Event Certificate
     downloadCertificate: async (eventId) => {
         const response = await api.post(`/api/events/${eventId}/certificate`, {}, {
+            responseType: 'blob'
+        });
+        return response.data;
+    },
+
+    // Download Paper Certificate
+    downloadPaperCertificate: async (paperId) => {
+        const response = await api.post(`/api/events/papers/${paperId}/certificate`, {}, {
             responseType: 'blob'
         });
         return response.data;

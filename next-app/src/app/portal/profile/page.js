@@ -1417,9 +1417,11 @@ class ProfilePage extends React.Component {
         }
     };
 
-    handleDownloadCertificate = async (eventId, eventName) => {
+    handleDownloadCertificate = async (eventId, eventName, itemType) => {
         try {
-            const blob = await eventService.downloadCertificate(eventId);
+            const blob = itemType === 'paper'
+                ? await eventService.downloadPaperCertificate(eventId)
+                : await eventService.downloadCertificate(eventId);
 
             // Create a link element
             const link = document.createElement('a');
@@ -1933,11 +1935,11 @@ class ProfilePage extends React.Component {
                                                                     {groupedEvents[category].map(event => (
                                                                         <li key={event._id || event.eventId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                                                             <span>{event.eventName || event.workshopName || 'Unnamed Event'}</span>
-                                                                            {/* Only show certificate for events (not workshops/papers for now unless requested) */}
-                                                                            {event.itemType === 'event' && (
+                                                                            {/* Show certificate for events and paper presentations */}
+                                                                            {(event.itemType === 'event' || event.itemType === 'paper') && (
                                                                                 <button
                                                                                     className={classes.actionBtn}
-                                                                                    onClick={() => this.handleDownloadCertificate(event.eventId, event.eventName)}
+                                                                                    onClick={() => this.handleDownloadCertificate(event.eventId, event.eventName || event.workshopName || 'Certificate', event.itemType)}
                                                                                     style={{
                                                                                         padding: '4px 8px',
                                                                                         fontSize: '0.65rem',

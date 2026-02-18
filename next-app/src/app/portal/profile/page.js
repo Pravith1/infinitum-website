@@ -1939,7 +1939,7 @@ class ProfilePage extends React.Component {
                                                                             {(event.itemType === 'event' || event.itemType === 'paper') && (
                                                                                 <button
                                                                                     className={classes.actionBtn}
-                                                                                    onClick={() => this.handleDownloadCertificate(event.eventId, event.eventName || event.workshopName || 'Certificate', event.itemType)}
+                                                                                    onClick={() => this.handleDownloadCertificate(event.eventId || event.paperId, event.eventName || event.workshopName || 'Certificate', event.itemType)}
                                                                                     style={{
                                                                                         padding: '4px 8px',
                                                                                         fontSize: '0.65rem',
